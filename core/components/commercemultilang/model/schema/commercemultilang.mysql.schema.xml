@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="commercemultilang" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="commercemultilang" version="0.1">
+
+    <object class="CommerceMultiLangItem" table="commercemultilang_items" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="description" dbtype="text" phptype="text" null="false" default="" />
+        <field key="position" dbtype="int" precision="10" phptype="integer" null="false"/>
+    </object>
+
+</model>

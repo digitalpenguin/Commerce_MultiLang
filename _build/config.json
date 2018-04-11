@@ -1,0 +1,55 @@
+{
+    "name": "CommerceMultiLang",
+    "lowCaseName": "commercemultilang",
+    "description": "Custom multi-lang products and CMP for Commerce (MODX)",
+    "author": "Murray Wood",
+    "version": "0.1.0",
+    "package":{
+        
+        
+        "menus": [{
+            "text": "commercemultilang.menu.commercemultilang"
+            ,"description": "commercemultilang.menu.commercemultilang_desc"
+            ,"action": "home"
+        }],
+        
+        
+
+        "elements": {
+        
+            
+            "plugins": [],
+            
+        
+            
+            "snippets": [{
+                "name": "CommerceMultiLang"
+            }],
+            
+        
+            
+            "chunks": [
+            
+            {
+                "name": "Item"
+            }
+            
+            ],
+            
+        
+            
+            "templates": [],
+            
+        
+            "tvs": []
+        
+        },
+
+        "systemSettings": []
+    }
+    
+    ,"database": {
+        "tables": ["CommerceMultiLangItem"]
+    }
+    
+}
