@@ -16,7 +16,7 @@ CommerceMultiLang.panel.Home = function(config) {
             ,activeTab: 0
             ,hideMode: 'offsets'
             ,items: [{
-                title: 'General'
+                title: 'Products'
                 ,layout:'anchor'
                 ,items: [{
                     html: '<p>'+_('commercemultilang.item.intro_msg')+'</p>'
@@ -28,10 +28,10 @@ CommerceMultiLang.panel.Home = function(config) {
                     ,cls: 'main-wrapper'
                 }]
             },{
-                title: 'Technical'
+                title: 'Catalogs'
                 ,layout:'anchor'
                 ,items: [{
-                    html: '<p>This is the technical tab.</p>'
+                    html: '<p>'+_('commercemultilang.item.intro_msg')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 }]

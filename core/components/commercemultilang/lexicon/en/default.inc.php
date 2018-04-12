@@ -9,7 +9,7 @@
 $_lang['commercemultilang'] = 'CommerceMultiLang';
 
 $_lang['commercemultilang.menu.commercemultilang'] = 'CommerceMultiLang';
-$_lang['commercemultilang.menu.commercemultilang_desc'] = 'A sample Extra to develop from.';
+$_lang['commercemultilang.menu.commercemultilang_desc'] = 'Multi-lingual products for Commerce.';
 
 $_lang['commercemultilang.global.search'] = 'Search';
 
