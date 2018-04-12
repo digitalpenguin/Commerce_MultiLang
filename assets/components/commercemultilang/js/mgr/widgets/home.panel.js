@@ -16,7 +16,7 @@ CommerceMultiLang.panel.Home = function(config) {
             ,activeTab: 0
             ,hideMode: 'offsets'
             ,items: [{
-                title: _('commercemultilang.item.items')
+                title: 'General'
                 ,layout:'anchor'
                 ,items: [{
                     html: '<p>'+_('commercemultilang.item.intro_msg')+'</p>'
@@ -26,6 +26,14 @@ CommerceMultiLang.panel.Home = function(config) {
                     xtype: 'commercemultilang-grid-items'
                     ,preventRender: true
                     ,cls: 'main-wrapper'
+                }]
+            },{
+                title: 'Technical'
+                ,layout:'anchor'
+                ,items: [{
+                    html: '<p>This is the technical tab.</p>'
+                    ,border: false
+                    ,bodyCssClass: 'panel-desc'
                 }]
             }]
         }]
