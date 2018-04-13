@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="commercemultilang" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="commercemultilang" version="0.1">
+<model package="commercemultilang" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="commercemultilang" version="0.1">
+
     <object class="CommerceMultiLangProduct" table="commercemultilang_products" extends="xPDOSimpleObject">
-        <aggregate alias="FlatProduct" class="CommerceMultiLangFlatProduct" local="id" foreign="product_id" cardinality="many" owner="local" />
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
+        <composite alias="ProductLanguage" class="CommerceMultiLangProductLanguage" local="id" foreign="product_id" cardinality="many" owner="local" />
+        <composite alias="Flat Row" class="CommerceMultiLangFlatRow" local="id" foreign="product_id" cardinality="many" owner="local" />
     </object>
 
-    <object class="CommerceMultiLangFlatProduct" table="commercemultilang_flat_products" extends="xPDOSimpleObject">
+    <object class="CommerceMultiLangProductLanguage" table="commercemultilang_product_languages" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="lang_key" dbtype="varchar" precision="5" phptype="string" null="false" default="" />
+        <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
-    <object class="CommerceMultiLangItem" table="commercemultilang_items" extends="xPDOSimpleObject">
-        <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
-        <field key="description" dbtype="text" phptype="text" null="false" default="" />
-        <field key="position" dbtype="int" precision="10" phptype="integer" null="false"/>
+    <object class="CommerceMultiLangFlatRow" table="commercemultilang_flat_rows" extends="xPDOSimpleObject">
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
+        <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
+
 </model>

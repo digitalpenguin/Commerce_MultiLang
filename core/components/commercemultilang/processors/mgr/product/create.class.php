@@ -1,18 +1,17 @@
 <?php
 /**
- * Create an Item
+ * Create a Product
  * 
  * @package commercemultilang
  * @subpackage processors
  */
-class CommerceMultiLangItemCreateProcessor extends modObjectCreateProcessor {
-    public $classKey = 'CommerceMultiLangItem';
+class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
+    public $classKey = 'CommerceMultiLangProduct';
     public $languageTopics = array('commercemultilang:default');
-    public $objectType = 'commercemultilang.item';
+    public $objectType = 'commercemultilang.product';
 
     public function beforeSet(){
         $items = $this->modx->getCollection($this->classKey);
-
         $this->setProperty('position', count($items));
 
         return parent::beforeSet();
@@ -22,11 +21,11 @@ class CommerceMultiLangItemCreateProcessor extends modObjectCreateProcessor {
         $name = $this->getProperty('name');
 
         if (empty($name)) {
-            $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.item_name_ns'));
+            $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_name_ns'));
         } else if ($this->doesAlreadyExist(array('name' => $name))) {
-            $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.item_name_ae'));
+            $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_name_ae'));
         }
         return parent::beforeSave();
     }
 }
-return 'CommerceMultiLangItemCreateProcessor';
+return 'CommerceMultiLangProductCreateProcessor';

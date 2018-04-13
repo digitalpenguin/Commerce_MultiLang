@@ -1,16 +1,16 @@
 <?php
 /**
- * Get list Items
+ * Get list of products
  *
  * @package commercemultilang
  * @subpackage processors
  */
-class CommerceMultiLangItemGetListProcessor extends modObjectGetListProcessor {
-    public $classKey = 'CommerceMultiLangItem';
+class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor {
+    public $classKey = 'CommerceMultiLangProduct';
     public $languageTopics = array('commercemultilang:default');
     public $defaultSortField = 'position';
     public $defaultSortDirection = 'ASC';
-    public $objectType = 'commercemultilang.item';
+    public $objectType = 'commercemultilang.product';
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
         $query = $this->getProperty('query');
@@ -23,4 +23,4 @@ class CommerceMultiLangItemGetListProcessor extends modObjectGetListProcessor {
         return $c;
     }
 }
-return 'CommerceMultiLangItemGetListProcessor';
+return 'CommerceMultiLangProductGetListProcessor';

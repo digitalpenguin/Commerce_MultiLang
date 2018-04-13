@@ -16,7 +16,7 @@ class CommerceMultiLangHomeManagerController extends CommerceMultiLangBaseManage
     
         $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/extras/griddraganddrop.js');
     
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/items.grid.js');
+        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/products.grid.js');
         $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/home.panel.js');
         $this->addLastJavascript($this->commercemultilang->getOption('jsUrl').'mgr/sections/home.js');
     

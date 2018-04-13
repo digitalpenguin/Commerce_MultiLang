@@ -1,14 +1,14 @@
 <?php
 /**
- * Reorder items
+ * Reorder products
  *
  * @package commercemultilang
  * @subpackage processors
  */
-class CommerceMultiLangReorderItemUpdateProcessor extends modObjectProcessor {
-    public $classKey = 'CommerceMultiLangItem';
+class CommerceMultiLangReorderProductUpdateProcessor extends modObjectProcessor {
+    public $classKey = 'CommerceMultiLangProduct';
     public $languageTopics = array('commercemultilang:default');
-    public $objectType = 'commercemultilang.item';
+    public $objectType = 'commercemultilang.product';
 
     public function process(){
         $idItem = $this->getProperty('idItem');
@@ -50,4 +50,4 @@ class CommerceMultiLangReorderItemUpdateProcessor extends modObjectProcessor {
     }
 
 }
-return 'CommerceMultiLangReorderItemUpdateProcessor';
+return 'CommerceMultiLangReorderProductUpdateProcessor';

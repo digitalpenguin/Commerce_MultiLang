@@ -1,42 +1,42 @@
-CommerceMultiLang.grid.Items = function(config) {
+CommerceMultiLang.grid.Products = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'commercemultilang-grid-items'
+        id: 'commercemultilang-grid-products'
         ,url: CommerceMultiLang.config.connectorUrl
         ,baseParams: {
-            action: 'mgr/item/getlist'
+            action: 'mgr/product/getlist'
         }
-        ,save_action: 'mgr/item/updatefromgrid'
+        ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
         ,fields: ['id','name','description', 'position']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
-        ,ddGroup: 'commercemultilangItemDDGroup'
+        ,ddGroup: 'commercemultilangProductDDGroup'
         ,enableDragDrop: true
         ,columns: [{
             header: _('id')
             ,dataIndex: 'id'
             ,width: 70
         },{
-            header: _('commercemultilang.item.name')
+            header: _('commercemultilang.product.name')
             ,dataIndex: 'name'
             ,width: 200
             ,editor: { xtype: 'textfield' }
         },{
-            header: _('commercemultilang.item.description')
+            header: _('commercemultilang.product.description')
             ,dataIndex: 'description'
             ,width: 250
             ,editor: { xtype: 'textfield' }
         },{
-            header: _('commercemultilang.item.position')
+            header: _('commercemultilang.product.position')
             ,dataIndex: 'position'
             ,width: 250
             ,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
         }]
         ,tbar: [{
-            text: _('commercemultilang.item.create')
-            ,handler: this.createItem
+            text: _('commercemultilang.product.create')
+            ,handler: this.createProduct
             ,scope: this
         },'->',{
             xtype: 'textfield'
@@ -69,7 +69,7 @@ CommerceMultiLang.grid.Items = function(config) {
                             MODx.Ajax.request({
                                 url: CommerceMultiLang.config.connectorUrl
                                 ,params: {
-                                    action: 'mgr/item/reorder'
+                                    action: 'mgr/product/reorder'
                                     ,idItem: records.pop().id
                                     ,oldIndex: oldIndex
                                     ,newIndex: newIndex
@@ -96,64 +96,64 @@ CommerceMultiLang.grid.Items = function(config) {
 
         }
     });
-    CommerceMultiLang.grid.Items.superclass.constructor.call(this,config);
+    CommerceMultiLang.grid.Products.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.grid.Items,MODx.grid.Grid,{
+Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
     windows: {}
 
     ,getMenu: function() {
         var m = [];
         m.push({
-            text: _('commercemultilang.item.update')
-            ,handler: this.updateItem
+            text: _('commercemultilang.product.update')
+            ,handler: this.updateProduct
         });
         m.push('-');
         m.push({
-            text: _('commercemultilang.item.remove')
-            ,handler: this.removeItem
+            text: _('commercemultilang.product.remove')
+            ,handler: this.removeProduct
         });
         this.addContextMenuItem(m);
     }
     
-    ,createItem: function(btn,e) {
+    ,createProduct: function(btn,e) {
 
-        var createItem = MODx.load({
-            xtype: 'commercemultilang-window-item'
+        var createProduct = MODx.load({
+            xtype: 'commercemultilang-window-product'
             ,listeners: {
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
 
-        createItem.show(e.target);
+        createProduct.show(e.target);
     }
 
-    ,updateItem: function(btn,e,isUpdate) {
+    ,updateProduct: function(btn,e,isUpdate) {
         if (!this.menu.record || !this.menu.record.id) return false;
 
-        var updateItem = MODx.load({
-            xtype: 'commercemultilang-window-item'
-            ,title: _('commercemultilang.item.update')
-            ,action: 'mgr/item/update'
+        var updateProduct = MODx.load({
+            xtype: 'commercemultilang-window-product'
+            ,title: _('commercemultilang.product.update')
+            ,action: 'mgr/product/update'
             ,record: this.menu.record
             ,listeners: {
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
 
-        updateItem.fp.getForm().reset();
-        updateItem.fp.getForm().setValues(this.menu.record);
-        updateItem.show(e.target);
+        updateProduct.fp.getForm().reset();
+        updateProduct.fp.getForm().setValues(this.menu.record);
+        updateProduct.show(e.target);
     }
     
-    ,removeItem: function(btn,e) {
+    ,removeProduct: function(btn,e) {
         if (!this.menu.record) return false;
         
         MODx.msg.confirm({
-            title: _('commercemultilang.item.remove')
-            ,text: _('commercemultilang.item.remove_confirm')
+            title: _('commercemultilang.product.remove')
+            ,text: _('commercemultilang.product.remove_confirm')
             ,url: this.config.url
             ,params: {
-                action: 'mgr/item/remove'
+                action: 'mgr/product/remove'
                 ,id: this.menu.record.id
             }
             ,listeners: {
@@ -173,15 +173,15 @@ Ext.extend(CommerceMultiLang.grid.Items,MODx.grid.Grid,{
         return this.selModel.selections.items[0].data.name;
     }
 });
-Ext.reg('commercemultilang-grid-items',CommerceMultiLang.grid.Items);
+Ext.reg('commercemultilang-grid-products',CommerceMultiLang.grid.Products);
 
-CommerceMultiLang.window.Item = function(config) {
+CommerceMultiLang.window.Product = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('commercemultilang.item.create')
+        title: _('commercemultilang.product.create')
         ,closeAction: 'close'
         ,url: CommerceMultiLang.config.connectorUrl
-        ,action: 'mgr/item/create'
+        ,action: 'mgr/product/create'
         ,fields: [{
             xtype: 'textfield'
             ,name: 'id'
@@ -202,8 +202,8 @@ CommerceMultiLang.window.Item = function(config) {
             ,hidden: true
         }]
     });
-    CommerceMultiLang.window.Item.superclass.constructor.call(this,config);
+    CommerceMultiLang.window.Product.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.window.Item,MODx.Window);
-Ext.reg('commercemultilang-window-item',CommerceMultiLang.window.Item);
+Ext.extend(CommerceMultiLang.window.Product,MODx.Window);
+Ext.reg('commercemultilang-window-product',CommerceMultiLang.window.Product);
 

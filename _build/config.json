@@ -47,9 +47,9 @@
 
         "systemSettings": []
     }
-    
+
     ,"database": {
-        "tables": ["CommerceMultiLangItem"]
+        "tables": ["CommerceMultiLangProduct","CommerceMultiLangProductLanguage","CommerceMultiLangFlatRow"]
     }
     
 }

@@ -19,11 +19,11 @@ CommerceMultiLang.panel.Home = function(config) {
                 title: 'Products'
                 ,layout:'anchor'
                 ,items: [{
-                    html: '<p>'+_('commercemultilang.item.intro_msg')+'</p>'
+                    html: '<p>'+_('commercemultilang.product.intro_msg')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 },{
-                    xtype: 'commercemultilang-grid-items'
+                    xtype: 'commercemultilang-grid-products'
                     ,preventRender: true
                     ,cls: 'main-wrapper'
                 }]
@@ -31,7 +31,7 @@ CommerceMultiLang.panel.Home = function(config) {
                 title: 'Catalogs'
                 ,layout:'anchor'
                 ,items: [{
-                    html: '<p>'+_('commercemultilang.item.intro_msg')+'</p>'
+                    html: '<p>'+_('commercemultilang.product.intro_msg')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 }]
