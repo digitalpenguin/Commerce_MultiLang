@@ -49,7 +49,7 @@
     }
 
     ,"database": {
-        "tables": ["CommerceMultiLangProduct","CommerceMultiLangProductLanguage","CommerceMultiLangFlatRow"]
+        "tables": ["CommerceMultiLangLanguage","CommerceMultiLangProduct","CommerceMultiLangProductLanguage","CommerceMultiLangFlatRow"]
     }
     
 }
