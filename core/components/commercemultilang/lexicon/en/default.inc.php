@@ -17,6 +17,9 @@ $_lang['commercemultilang.product.products'] = 'Products';
 $_lang['commercemultilang.product.intro_msg'] = 'Manage your products.';
 
 $_lang['commercemultilang.product.name'] = 'Name';
+$_lang['commercemultilang.product.sku'] = 'SKU';
+$_lang['commercemultilang.product.stock'] = 'Stock';
+$_lang['commercemultilang.product.image'] = 'Image';
 $_lang['commercemultilang.product.description'] = 'Description';
 $_lang['commercemultilang.product.position'] = 'Position';
 $_lang['commercemultilang.product.create'] = 'Create product';

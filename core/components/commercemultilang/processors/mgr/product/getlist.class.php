@@ -13,6 +13,8 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
     public $objectType = 'commercemultilang.product';
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
+        
+
         $query = $this->getProperty('query');
         if (!empty($query)) {
             $c->where(array(

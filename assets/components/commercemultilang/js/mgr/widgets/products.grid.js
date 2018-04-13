@@ -8,7 +8,7 @@ CommerceMultiLang.grid.Products = function(config) {
         }
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','name','description', 'position']
+        ,fields: ['id','sku','main_image','name','description','price','stock','weight','weight_unit','target','properties','images','position']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -19,19 +19,35 @@ CommerceMultiLang.grid.Products = function(config) {
             ,dataIndex: 'id'
             ,width: 70
         },{
+            header: _('commercemultilang.product.image')
+            ,dataIndex: 'main_image'
+            ,fixed:true
+            ,width: 140
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('commercemultilang.product.sku')
+            ,dataIndex: 'sku'
+            ,width: 100
+            ,editor: { xtype: 'textfield' }
+        },{
             header: _('commercemultilang.product.name')
             ,dataIndex: 'name'
             ,width: 200
             ,editor: { xtype: 'textfield' }
         },{
+            header: _('commercemultilang.product.stock')
+            ,dataIndex: 'stock'
+            ,width: 40
+            ,editor: { xtype: 'textfield' }
+        },{
             header: _('commercemultilang.product.description')
             ,dataIndex: 'description'
-            ,width: 250
+            ,width: 350
             ,editor: { xtype: 'textfield' }
         },{
             header: _('commercemultilang.product.position')
             ,dataIndex: 'position'
-            ,width: 250
+            ,width: 60
             ,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
         }]
         ,tbar: [{
