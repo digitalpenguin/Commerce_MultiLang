@@ -7,6 +7,7 @@
  */
 class CommerceMultiLang {
     public $modx = null;
+    public $commerce = null;
     public $namespace = 'commercemultilang';
     public $cache = null;
     public $options = array();
@@ -34,6 +35,12 @@ class CommerceMultiLang {
             'connectorUrl' => $assetsUrl . 'connector.php'
         ), $options);
 
+        $this->commerce = $this->modx->getService('commerce','Commerce',MODX_CORE_PATH.'components/commerce/model/commerce/');
+        if (!($this->commerce instanceof Commerce)) $this->modx->log(1,'Couldn\'t load commerce');
+
+        //$url = $this->commerce->adapter->makeResourceUrl(1);
+        //$this->modx->log(1,$url);
+        $this->modx->lexicon->load('commerce:default');
         $this->modx->addPackage('commercemultilang', $this->getOption('modelPath'));
         $this->modx->lexicon->load('commercemultilang:default');
     }

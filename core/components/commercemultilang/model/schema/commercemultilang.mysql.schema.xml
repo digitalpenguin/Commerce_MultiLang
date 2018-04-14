@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="commercemultilang" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="commercemultilang" version="0.1">
+<model package="commercemultilang" baseClass="comSimpleObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="commercemultilang" version="0.1">
+
+
+    <!--<object class="CommerceMultiLangProduct" extends="comProduct" inherit="single">
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
+        <composite alias="ProductLanguage" class="CommerceMultiLangProductLanguage" local="id" foreign="product_id" cardinality="many" owner="local" />
+        <composite alias="Flat Row" class="CommerceMultiLangFlatRow" local="id" foreign="product_id" cardinality="many" owner="local" />
+    </object>-->
 
     <object class="CommerceMultiLangProduct" table="commercemultilang_products" extends="xPDOSimpleObject">
         <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
