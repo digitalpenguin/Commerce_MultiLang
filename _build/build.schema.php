@@ -61,7 +61,10 @@ $generator->mapHeader= <<<EOD
  */
 EOD;
 $generator->parseSchema($sources['model'] . 'schema/'.PKG_NAME_LOWER.'.mysql.schema.xml', $sources['model']);
-
+$modx->addPackage('commercemultilang', $sources['model']);
+$manager->createObjectContainer('CommerceMultiLangProductData');
+$manager->createObjectContainer('CommerceMultiLangProductLanguage');
+$manager->createObjectContainer('CommerceMultiLangFlatRow');
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);

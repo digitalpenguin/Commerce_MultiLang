@@ -2,5 +2,5 @@
 /**
  * @package commercemultilang
  */
-class CommerceMultiLangProduct extends xPDOSimpleObject {}
+class CommerceMultiLangProduct extends comProduct {}
 ?>

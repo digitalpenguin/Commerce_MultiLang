@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model package="commercemultilang" baseClass="comSimpleObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="commercemultilang" version="0.1">
 
-
-    <!--<object class="CommerceMultiLangProduct" extends="comProduct" inherit="single">
-        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
+    <object class="CommerceMultiLangProduct" extends="comProduct" inherit="single">
         <composite alias="ProductLanguage" class="CommerceMultiLangProductLanguage" local="id" foreign="product_id" cardinality="many" owner="local" />
         <composite alias="Flat Row" class="CommerceMultiLangFlatRow" local="id" foreign="product_id" cardinality="many" owner="local" />
-    </object>-->
+        <composite alias="ProductData" local="id" class="CommerceMultiLangProductData" foreign="product_id" cardinality="one" owner="local" />
+    </object>
 
-    <object class="CommerceMultiLangProduct" table="commercemultilang_products" extends="xPDOSimpleObject">
+    <object class="CommerceMultiLangProductData" table="commercemultilang_product_data" extends="xPDOSimpleObject">
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="test_field" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
-        <composite alias="ProductLanguage" class="CommerceMultiLangProductLanguage" local="id" foreign="product_id" cardinality="many" owner="local" />
-        <composite alias="Flat Row" class="CommerceMultiLangFlatRow" local="id" foreign="product_id" cardinality="many" owner="local" />
+        <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
     <object class="CommerceMultiLangProductLanguage" table="commercemultilang_product_languages" extends="xPDOSimpleObject">

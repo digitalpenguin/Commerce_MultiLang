@@ -8,7 +8,8 @@ CommerceMultiLang.grid.Products = function(config) {
         }
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','sku','main_image','name','description','price','stock','weight','weight_unit','target','properties','images','position']
+        ,fields: ['id','sku','main_image','name','description','price','stock','weight','weight_unit','target',
+            'properties','images','position']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -17,7 +18,7 @@ CommerceMultiLang.grid.Products = function(config) {
         ,columns: [{
             header: _('id')
             ,dataIndex: 'id'
-            ,width: 70
+            ,width: 40
         },{
             header: _('commercemultilang.product.image')
             ,dataIndex: 'main_image'
