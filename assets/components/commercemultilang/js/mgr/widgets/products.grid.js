@@ -9,12 +9,10 @@ CommerceMultiLang.grid.Products = function(config) {
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
         ,fields: ['id','sku','main_image','name','description','price','stock','weight','weight_unit','target',
-            'properties','images','position']
+            'properties','images','delivery_type','tax_group','langs']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
-        ,ddGroup: 'commercemultilangProductDDGroup'
-        ,enableDragDrop: true
         ,columns: [{
             header: _('id')
             ,dataIndex: 'id'
@@ -24,7 +22,9 @@ CommerceMultiLang.grid.Products = function(config) {
             ,dataIndex: 'main_image'
             ,fixed:true
             ,width: 140
-            ,editor: { xtype: 'textfield' }
+            ,renderer: function(value){
+                return '<img style="width:100%;" src="' + value + '" />';
+            }
         },{
             header: _('commercemultilang.product.sku')
             ,dataIndex: 'sku'
@@ -45,12 +45,12 @@ CommerceMultiLang.grid.Products = function(config) {
             ,dataIndex: 'description'
             ,width: 350
             ,editor: { xtype: 'textfield' }
-        },{
+        }/*,{
             header: _('commercemultilang.product.position')
             ,dataIndex: 'position'
             ,width: 60
             ,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
-        }]
+        }*/]
         ,tbar: [{
             text: _('commercemultilang.product.create')
             ,handler: this.createProduct
@@ -73,45 +73,6 @@ CommerceMultiLang.grid.Products = function(config) {
                 },scope:this}
             }
         }]
-        ,listeners: {
-            'render': function(g) {
-                var ddrow = new Ext.ux.dd.GridReorderDropTarget(g, {
-                    copy: false
-                    ,listeners: {
-                        'beforerowmove': function(objThis, oldIndex, newIndex, records) {
-                        }
-
-                        ,'afterrowmove': function(objThis, oldIndex, newIndex, records) {
-
-                            MODx.Ajax.request({
-                                url: CommerceMultiLang.config.connectorUrl
-                                ,params: {
-                                    action: 'mgr/product/reorder'
-                                    ,idItem: records.pop().id
-                                    ,oldIndex: oldIndex
-                                    ,newIndex: newIndex
-                                }
-                                ,listeners: {
-
-                                }
-                            });
-                        }
-
-                        ,'beforerowcopy': function(objThis, oldIndex, newIndex, records) {
-                        }
-
-                        ,'afterrowcopy': function(objThis, oldIndex, newIndex, records) {
-                        }
-                    }
-                });
-
-                Ext.dd.ScrollManager.register(g.getView().getEditorParent());
-            }
-            ,beforedestroy: function(g) {
-                Ext.dd.ScrollManager.unregister(g.getView().getEditorParent());
-            }
-
-        }
     });
     CommerceMultiLang.grid.Products.superclass.constructor.call(this,config);
 };
@@ -135,12 +96,12 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
     ,createProduct: function(btn,e) {
 
         var createProduct = MODx.load({
-            xtype: 'commercemultilang-window-product'
+            xtype: 'commercemultilang-window-product-create'
             ,listeners: {
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
-
+        createProduct.addLanguageTabs(this.store.reader.jsonData.languages);
         createProduct.show(e.target);
     }
 
@@ -148,7 +109,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         if (!this.menu.record || !this.menu.record.id) return false;
 
         var updateProduct = MODx.load({
-            xtype: 'commercemultilang-window-product'
+            xtype: 'commercemultilang-window-product-update'
             ,title: _('commercemultilang.product.update')
             ,action: 'mgr/product/update'
             ,record: this.menu.record
@@ -160,6 +121,20 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         updateProduct.fp.getForm().reset();
         updateProduct.fp.getForm().setValues(this.menu.record);
         updateProduct.show(e.target);
+        var record = this.menu.record;
+        var langTabs = this.store.reader.jsonData.languages;
+        langTabs.forEach(function(langTab,index) {
+            record.langs.forEach(function(lang,index) {
+                if(langTab.lang_key === lang.lang_key) {
+                    langTab['fields'] = lang;
+                }
+            });
+            //console.log(langTabs);
+        });
+
+        updateProduct.addLanguageTabs(this.store.reader.jsonData.languages);
+        updateProduct.doLayout();
+
     }
     
     ,removeProduct: function(btn,e) {
@@ -185,42 +160,152 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         this.getBottomToolbar().changePage(1);
         this.refresh();
     }
-    
-    ,getDragDropText: function(){
-        return this.selModel.selections.items[0].data.name;
-    }
 });
 Ext.reg('commercemultilang-grid-products',CommerceMultiLang.grid.Products);
 
-CommerceMultiLang.window.Product = function(config) {
+CommerceMultiLang.window.ProductCreate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('commercemultilang.product.create')
         ,closeAction: 'close'
+        ,width:600
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product/create'
         ,fields: [{
-            xtype: 'textfield'
-            ,name: 'id'
-            ,hidden: true
+            style:'padding:15px 0'
+            ,html:'<h4>Add Product</h4><p>Images and translations can only be added after the product has been created.</p>'
         },{
-            xtype: 'textfield'
-            ,fieldLabel: _('name')
-            ,name: 'name'
-            ,anchor: '100%'
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('description')
-            ,name: 'description'
-            ,anchor: '100%'
-        },{
-            xtype: 'textfield'
-            ,name: 'position'
-            ,hidden: true
+            xtype: 'modx-tabs'
+            ,id: 'product-create-window-tabs'
+            ,defaults: { border: false ,autoHeight: true }
+            ,border: true
+            ,activeTab: 0
+            ,hideMode: 'offsets'
+            ,items: [{
+                title:'General'
+                ,layout:'form'
+                ,items:[{
+                    xtype: 'textfield'
+                    ,name: 'id'
+                    ,hidden: true
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('name')
+                    ,name: 'name'
+                    ,anchor: '100%'
+                },{
+                    layout: 'column'
+                    ,border: false
+                    ,items: [{
+                        columnWidth: .33
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.sku')
+                            ,name: 'sku'
+                            ,anchor: '100%'
+                        }]
+                    }, {
+                        columnWidth: .33
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.price')
+                            ,name: 'price'
+                            ,anchor: '100%'
+                        }]
+                    },{
+                        columnWidth: .33
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.stock')
+                            ,name: 'stock'
+                            ,anchor: '100%'
+                        }]
+                    }]
+                },{
+                    layout: 'column'
+                    ,border: false
+                    ,items: [{
+                        columnWidth: .33
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.weight')
+                            ,name: 'weight'
+                            ,anchor: '100%'
+                        }]
+                    }, {
+                        columnWidth: .33
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'commercemultilang-combo-weightunit'
+                            ,fieldLabel: _('commercemultilang.product.weight_unit')
+                            ,name: 'weight_unit'
+                            ,hiddenName: 'weight_unit'
+                            ,anchor: '100%'
+                        }]
+                    },{
+                        columnWidth: .33
+                        ,layout: 'form'
+                        ,items: []
+                    }]
+                },{
+                    layout: 'column'
+                    ,border: false
+                    ,items: [{
+                        columnWidth: .5
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'commercemultilang-combo-taxgroup'
+                            ,fieldLabel: _('commercemultilang.product.tax_group')
+                            ,name: 'tax_group'
+                            ,hiddenName: 'tax_group'
+                            ,anchor: '100%'
+                        }]
+                    }, {
+                        columnWidth: .5
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'commercemultilang-combo-deliverytype'
+                            ,fieldLabel: _('commercemultilang.product.delivery_type')
+                            ,name: 'delivery_type'
+                            ,hiddenName: 'delivery_type'
+                            ,anchor: '100%'
+                        }]
+                    }]
+                },{
+                    xtype: 'textarea'
+                    ,fieldLabel: _('description')
+                    ,name: 'description'
+                    ,anchor: '100%'
+                }]
+            }]
         }]
     });
-    CommerceMultiLang.window.Product.superclass.constructor.call(this,config);
+    CommerceMultiLang.window.ProductCreate.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.window.Product,MODx.Window);
-Ext.reg('commercemultilang-window-product',CommerceMultiLang.window.Product);
+Ext.extend(CommerceMultiLang.window.ProductCreate,MODx.Window,{
+    addLanguageTabs: function(languages) {
+        var tabs = Ext.getCmp('product-create-window-tabs');
+        var imageTab = [{
+            title: 'Images'
+            ,disabled:true
+        }];
+        tabs.add(imageTab);
+        languages.forEach(function(item) {
+            var tab = [{
+                title: item['name']+' ('+item['lang_key']+')'
+                ,disabled:true
+            }];
+
+            tabs.add(tab);
+            //var lastTab = tabs.items.length-1;
+            //tabs.items.items[lastTab].disable();
+        });
+    }
+});
+Ext.reg('commercemultilang-window-product-create',CommerceMultiLang.window.ProductCreate);
+
 

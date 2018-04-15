@@ -16,7 +16,6 @@ $xpdo_meta_map['CommerceMultiLangProductLanguage']= array (
     'product_id' => NULL,
     'lang_key' => '',
     'name' => '',
-    'position' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -44,14 +43,6 @@ $xpdo_meta_map['CommerceMultiLangProductLanguage']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '',
-    ),
-    'position' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'attributes' => 'unsigned',
-      'phptype' => 'integer',
-      'null' => false,
     ),
   ),
   'aggregates' => 

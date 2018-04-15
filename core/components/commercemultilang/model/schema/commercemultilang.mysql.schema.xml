@@ -10,7 +10,6 @@
     <object class="CommerceMultiLangProductData" table="commercemultilang_product_data" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="test_field" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
-        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
@@ -18,13 +17,12 @@
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="lang_key" dbtype="varchar" precision="5" phptype="string" null="false" default="" />
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
-        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
+        <field key="description" dbtype="text" phptype="string" null="false" default="" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
     <object class="CommerceMultiLangFlatRow" table="commercemultilang_flat_rows" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
-        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 

@@ -14,7 +14,6 @@ $xpdo_meta_map['CommerceMultiLangFlatRow']= array (
   'fields' => 
   array (
     'product_id' => NULL,
-    'position' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -26,14 +25,6 @@ $xpdo_meta_map['CommerceMultiLangFlatRow']= array (
       'phptype' => 'integer',
       'null' => false,
       'index' => 'index',
-    ),
-    'position' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'attributes' => 'unsigned',
-      'phptype' => 'integer',
-      'null' => false,
     ),
   ),
   'aggregates' => 
