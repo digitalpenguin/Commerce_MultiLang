@@ -5,44 +5,18 @@
     "author": "Murray Wood - www.digitalpenguin.hk",
     "version": "0.1.0",
     "package":{
-        
-        
+
         "menus": [{
             "text": "commercemultilang.menu.commercemultilang"
             ,"description": "commercemultilang.menu.commercemultilang_desc"
             ,"action": "home"
         }],
-        
-        
-
         "elements": {
-        
-            
             "plugins": [],
-            
-        
-            
-            "snippets": [{
-                "name": "CommerceMultiLang"
-            }],
-            
-        
-            
-            "chunks": [
-            
-            {
-                "name": "Item"
-            }
-            
-            ],
-            
-        
-            
+            "snippets": [],
+            "chunks": [],
             "templates": [],
-            
-        
             "tvs": []
-        
         },
 
         "systemSettings": [{
@@ -51,10 +25,6 @@
             "area": "defaults",
             "value": "en"
         }]
-    }
-
-    ,"database": {
-        "tables": ["CommerceMultiLangProduct","CommerceMultiLangProductLanguage","CommerceMultiLangFlatRow"]
     }
     
 }
