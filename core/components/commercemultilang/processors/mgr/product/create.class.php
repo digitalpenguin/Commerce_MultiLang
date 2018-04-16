@@ -26,6 +26,7 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
         $productLang->set('name',$this->object->get('name'));
         $productLang->set('lang_key',$this->modx->getOption('commercemultilang.default_lang'));
         $productLang->set('description',$this->object->get('description'));
+        $this->modx->log(1,'This is the description:'.$this->object->get('description'));
         $productLang->save();
 
         $productData = $this->modx->newObject('CommerceMultiLangProductData');

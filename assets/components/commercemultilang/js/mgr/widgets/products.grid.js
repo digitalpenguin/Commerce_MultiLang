@@ -126,13 +126,14 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         langTabs.forEach(function(langTab,index) {
             record.langs.forEach(function(lang,index) {
                 if(langTab.lang_key === lang.lang_key) {
+                    //console.log(lang);
                     langTab['fields'] = lang;
                 }
             });
             //console.log(langTabs);
         });
 
-        updateProduct.addLanguageTabs(this.store.reader.jsonData.languages);
+        updateProduct.addLanguageTabs(langTabs);
         updateProduct.doLayout();
     }
     

@@ -49,7 +49,7 @@
             "key": "default_lang",
             "type": "textfield",
             "area": "defaults",
-            "value": ""
+            "value": "en"
         }]
     }
 

@@ -44,7 +44,10 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
     public function prepareQueryBeforeCount(xPDOQuery $c) {
         $c->leftJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
         $c->select('CommerceMultiLangProduct.*');
-        $c->where(array('removed'=>0));
+        $c->where(array(
+            'removed:='=>0,
+            'AND:CommerceMultiLangProduct.class_key:!='=>'comProduct'
+        ));
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
         $query = $this->getProperty('query');

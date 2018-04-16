@@ -17,7 +17,7 @@
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="lang_key" dbtype="varchar" precision="5" phptype="string" null="false" default="" />
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
-        <field key="description" dbtype="text" phptype="string" null="false" default="" />
+        <field key="description" dbtype="text" phptype="string" null="true" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 

@@ -22,6 +22,7 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
     }
 
     public function afterSave() {
+        // Grabs related data table
         $productData = $this->modx->getObject('CommerceMultiLangProductData',array(
             'product_id' => $this->object->get('id')
         ));
@@ -30,16 +31,28 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
         }
         $productData->save();
 
-
+        // Grabs related language table
         $productLanguages = $this->modx->getCollection('CommerceMultiLangProductLanguage',array(
             'product_id' => $this->object->get('id')
         ));
         foreach($productLanguages as $productLanguage) {
+            $langKey = $productLanguage->get('lang_key');
+            $lkLength = strlen($langKey);
             foreach($this->getProperties() as $key => $value) {
-                //if($productLanguage['lang_key'] == ) {
-//TODO:!!!!!!!
-                //}
+                // Get the lang_key from the submitted field name and check if it matches current language row
+                if(substr($key, -$lkLength) == $langKey) {
+                    // If there's a match extract the field name with underscore and lang_key
+                    $keyLength = strlen($key);
+                    $fieldLength = $keyLength - $lkLength;
+                    $fieldName = substr($key,0,$fieldLength-1); //-1 to compensate for underscore
+                    // Set the new value
+                    $this->modx->log(1,'field name: '.$fieldName);
+                    $productLanguage->set($fieldName,$value);
+                }
+
             }
+            // After going through all fields, save this language.
+            $productLanguage->save();
         }
         return parent::afterSave();
     }

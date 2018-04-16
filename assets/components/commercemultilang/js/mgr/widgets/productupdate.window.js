@@ -84,11 +84,12 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
 Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
     addLanguageTabs: function(langTabs) {
         var tabs = Ext.getCmp('product-update-window-tabs');
+        //console.log(langTabs);
         langTabs.forEach(function(langTab) {
             var tab = [{
                 title: langTab['name']+' ('+langTab['lang_key']+')'
                 ,layout:'form'
-                ,forceLayout:true
+                ,forceLayout:true // important! if not added new tabs will not submit.
                 ,items:[{
                     xtype: 'textfield'
                     ,fieldLabel: _('name')
@@ -99,12 +100,12 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                     xtype: 'textarea'
                     ,fieldLabel: _('description')
                     ,name: 'description_'+langTab['lang_key']
+                    ,value: langTab.fields ? langTab.fields['description']: ''
                     ,anchor: '100%'
                 }]
             }];
             tabs.add(tab);
         });
-
     }
 });
 Ext.reg('commercemultilang-window-product-update',CommerceMultiLang.window.ProductUpdate);
