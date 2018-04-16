@@ -134,7 +134,6 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
 
         updateProduct.addLanguageTabs(this.store.reader.jsonData.languages);
         updateProduct.doLayout();
-
     }
     
     ,removeProduct: function(btn,e) {

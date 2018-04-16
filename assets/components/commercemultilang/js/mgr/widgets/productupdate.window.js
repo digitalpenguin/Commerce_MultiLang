@@ -13,6 +13,7 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
             ,border: true
             ,activeTab: 0
             ,hideMode: 'offsets'
+            ,deferredRender: false
             ,items: [{
                 title:'General'
                 ,layout:'form'
@@ -87,6 +88,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             var tab = [{
                 title: langTab['name']+' ('+langTab['lang_key']+')'
                 ,layout:'form'
+                ,forceLayout:true
                 ,items:[{
                     xtype: 'textfield'
                     ,fieldLabel: _('name')
@@ -102,6 +104,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             }];
             tabs.add(tab);
         });
+
     }
 });
 Ext.reg('commercemultilang-window-product-update',CommerceMultiLang.window.ProductUpdate);
