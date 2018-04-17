@@ -38,4 +38,19 @@ $_lang['commercemultilang.err.product_name_ns'] = 'Name is not specified.';
 $_lang['commercemultilang.err.product_remove'] = 'An error occurred while trying to remove the product.';
 $_lang['commercemultilang.err.product_save'] = 'An error occurred while trying to save the product.';
 
+/* Product Images */
+$_lang['commercemultilang.product_image.title'] = 'Title';
+$_lang['commercemultilang.product_image.main'] = 'Main';
+$_lang['commercemultilang.product_image.image'] = 'Image';
+$_lang['commercemultilang.product_image.description'] = 'Description';
+$_lang['commercemultilang.product_image.position'] = 'Position';
+$_lang['commercemultilang.product_image.add'] = 'Add Image';
+$_lang['commercemultilang.product_image.edit'] = 'Edit image';
+$_lang['commercemultilang.product_image.remove'] = 'Remove image';
+$_lang['commercemultilang.product_image.remove_confirm'] = 'Are you sure you want to remove this image?';
 
+$_lang['commercemultilang.err.product_image_name_ae'] = 'A product image already exists with that name.';
+$_lang['commercemultilang.err.product_image_nf'] = 'Product image not found.';
+$_lang['commercemultilang.err.product_image_title_ns'] = 'Image title is not specified.';
+$_lang['commercemultilang.err.product_image_remove'] = 'An error occurred while trying to remove the image.';
+$_lang['commercemultilang.err.product_image_save'] = 'An error occurred while trying to save the image.';

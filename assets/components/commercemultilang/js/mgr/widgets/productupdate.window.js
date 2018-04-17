@@ -3,6 +3,7 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
         title: _('commercemultilang.product.update')
         ,closeAction: 'close'
         ,width:1000
+        ,id:'commercemultilang-window-product-update'
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product/update'
         ,fields: [{
@@ -27,7 +28,9 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                     ,value: config.record['name']
                     ,hidden: true
                 },{
-                    html:'<h2 style="margin-top:15px;">'+ config.record['name'] +'</h2>'
+                    html:'<h2 style="margin-top:5px; width:87%; overflow:hidden;">'+ config.record['name'] +'</h2>' +
+                    '<p style="max-height:20px; width:87%; overflow:hidden;">'+ config.record['description'] +'</p>'
+
                     ,anchor: '100%'
                 },{
                     layout: 'column'
@@ -74,6 +77,17 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                             ,hiddenName: 'tax_group'
                             ,anchor: '100%'
                         }]
+                    },{
+                        columnWidth: .66
+                        ,layout:'form'
+                        ,items: [{
+                            xtype: 'commercemultilang-grid-product-images'
+                            ,style:'margin-top:-23px;'
+                            ,baseParams: {
+                                action: 'mgr/product/image/getlist'
+                                ,product_id: config.record ? config.record['id'] : ''
+                            }
+                        }]
                     }]
                 }]
             }]
@@ -109,3 +123,165 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
     }
 });
 Ext.reg('commercemultilang-window-product-update',CommerceMultiLang.window.ProductUpdate);
+
+
+
+CommerceMultiLang.grid.ProductImages = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'commercemultilang-grid-product-images'
+        ,url: CommerceMultiLang.config.connectorUrl
+        ,save_action: 'mgr/product/image/updatefromgrid'
+        ,autosave: true
+        ,fields: ['id','product_id','image','title','description','alt','main','position']
+        ,autoHeight: true
+        ,paging: true
+        ,pageSize: 10
+        ,remoteSort: true
+        ,columns: [{
+            header: _('id')
+            ,dataIndex: 'id'
+            ,width: 40
+        },{
+            header: _('commercemultilang.product_image.image')
+            ,dataIndex: 'image'
+            ,fixed:true
+            ,width: 100
+            ,renderer: function(value){
+                if(value) {
+                    return '<img style="max-width:100%; height:80px;" src="' + value + '" />';
+                } else {
+                    return '<img style="max-width:100%; height:80px;" src="/packages/commercemultilang/assets/components/commercemultilang/img/placeholder.jpg" />';
+                }
+            }
+        },{
+            header: _('commercemultilang.product_image.title')
+            ,dataIndex: 'title'
+            ,width: 100
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('commercemultilang.product_image.description')
+            ,dataIndex: 'description'
+            ,width: 200
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('commercemultilang.product_image.main')
+            ,dataIndex: 'main'
+            ,width: 40
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('commercemultilang.product_image.position')
+            ,dataIndex: 'position'
+            ,width: 60
+            ,hidden:true
+            ,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
+        }]
+        ,tbar: ['->',{
+            text: _('commercemultilang.product_image.add')
+            ,handler: this.createProductImage
+            ,scope: this
+        }]
+    });
+    CommerceMultiLang.grid.ProductImages.superclass.constructor.call(this,config);
+};
+Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
+    windows: {}
+
+    ,getMenu: function() {
+        var m = [];
+        m.push({
+            text: _('commercemultilang.product_image.edit')
+            ,handler: this.updateProductImage
+        });
+        m.push('-');
+        m.push({
+            text: _('commercemultilang.product_image.remove')
+            ,handler: this.removeProductImage
+        });
+        this.addContextMenuItem(m);
+    }
+
+    ,createProductImage: function(btn,e) {
+
+        var createProductImage = MODx.load({
+            xtype: 'commercemultilang-window-product-image'
+            ,listeners: {
+                'success': {fn:function() { this.refresh(); },scope:this}
+            }
+        });
+        createProductImage.show(e.target);
+    }
+
+    ,updateProductImage: function(btn,e,isUpdate) {
+        if (!this.menu.record || !this.menu.record.id) return false;
+
+        var updateProductImage = MODx.load({
+            xtype: 'commercemultilang-window-product-image'
+            ,title: _('commercemultilang.product_image.update')
+            ,action: 'mgr/product/image/update'
+            ,record: this.menu.record
+            ,listeners: {
+                'success': {fn:function() { this.refresh(); },scope:this}
+            }
+        });
+
+        updateProductImage.fp.getForm().reset();
+        updateProductImage.fp.getForm().setValues(this.menu.record);
+        updateProductImage.show(e.target);
+    }
+
+    ,removeProductImage: function(btn,e) {
+        if (!this.menu.record) return false;
+
+        MODx.msg.confirm({
+            title: _('commercemultilang.product_image.remove')
+            ,text: _('commercemultilang.product_image.remove_confirm')
+            ,url: this.config.url
+            ,params: {
+                action: 'mgr/product/image/remove'
+                ,id: this.menu.record.id
+            }
+            ,listeners: {
+                'success': {fn:function(r) { this.refresh(); },scope:this}
+            }
+        });
+    }
+
+    ,search: function(tf,nv,ov) {
+        var s = this.getStore();
+        s.baseParams.query = tf.getValue();
+        this.getBottomToolbar().changePage(1);
+        this.refresh();
+    }
+});
+Ext.reg('commercemultilang-grid-product-images',CommerceMultiLang.grid.ProductImages);
+
+
+CommerceMultiLang.window.ProductImage = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('commercemultilang.product_image.add')
+        ,closeAction: 'close'
+        ,url: CommerceMultiLang.config.connectorUrl
+        ,action: 'mgr/product/image/create'
+        ,fields: [{
+            xtype: 'textfield'
+            ,name: 'id'
+            ,hidden: true
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('commercemultilang.product_image.title')
+            ,name: 'title'
+            ,anchor: '100%'
+            ,autocomplete:'off'
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('description')
+            ,name: 'description'
+            ,anchor: '100%'
+        }]
+    });
+    CommerceMultiLang.window.ProductImage.superclass.constructor.call(this,config);
+};
+Ext.extend(CommerceMultiLang.window.ProductImage,MODx.Window);
+Ext.reg('commercemultilang-window-product-image',CommerceMultiLang.window.ProductImage);

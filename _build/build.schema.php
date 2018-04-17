@@ -64,6 +64,7 @@ $generator->parseSchema($sources['model'] . 'schema/'.PKG_NAME_LOWER.'.mysql.sch
 $modx->addPackage('commercemultilang', $sources['model']);
 $manager->createObjectContainer('CommerceMultiLangProductData');
 $manager->createObjectContainer('CommerceMultiLangProductLanguage');
+$manager->createObjectContainer('CommerceMultiLangProductImage');
 $manager->createObjectContainer('CommerceMultiLangFlatRow');
 
 $mtime= microtime();

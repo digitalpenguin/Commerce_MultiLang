@@ -27,6 +27,14 @@ $xpdo_meta_map['CommerceMultiLangProduct']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
+    'ProductImage' => 
+    array (
+      'class' => 'CommerceMultiLangProductImage',
+      'local' => 'id',
+      'foreign' => 'product_id',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
     'Flat Row' => 
     array (
       'class' => 'CommerceMultiLangFlatRow',

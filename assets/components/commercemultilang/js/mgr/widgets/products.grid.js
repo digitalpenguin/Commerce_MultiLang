@@ -23,7 +23,11 @@ CommerceMultiLang.grid.Products = function(config) {
             ,fixed:true
             ,width: 140
             ,renderer: function(value){
-                return '<img style="width:100%;" src="' + value + '" />';
+                if(value) {
+                    return '<img style="width:100%;" src="' + value + '" />';
+                } else {
+                    return '<img style="width:100%;" src="/packages/commercemultilang/assets/components/commercemultilang/img/placeholder.jpg" />';
+                }
             }
         },{
             header: _('commercemultilang.product.sku')
@@ -193,6 +197,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                     ,fieldLabel: _('name')
                     ,name: 'name'
                     ,anchor: '100%'
+                    ,autocomplete:'off'
                 },{
                     layout: 'column'
                     ,border: false

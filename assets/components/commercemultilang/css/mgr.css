@@ -2,3 +2,10 @@
     content: "* ";
     color: red;
 }
+
+
+#commercemultilang-window-product-update .x-grid3-scroller {
+    height:356px;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+}
