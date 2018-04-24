@@ -38,26 +38,32 @@ CommerceMultiLang.grid.Products = function(config) {
             header: _('commercemultilang.product.name')
             ,dataIndex: 'name'
             ,width: 200
-            ,editor: { xtype: 'textfield' }
         },{
             header: _('commercemultilang.product.category')
             ,dataIndex: 'category'
-            ,width: 350
-            ,editor: { xtype: 'textfield' }
+            ,width: 200
             ,renderer: function(value, meta, record) {
                 return value + ' <span style="color:#888;">(Category ID:' +record.data['category_id']+')</span>';
             }
         },{
             header: _('commercemultilang.product.stock')
             ,dataIndex: 'stock'
-            ,width: 40
+            ,width: 100
             ,editor: { xtype: 'textfield' }
-        }/*,{
-            header: _('commercemultilang.product.position')
-            ,dataIndex: 'position'
-            ,width: 60
-            ,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
-        }*/]
+        },{
+            header: _('commercemultilang.product.price')
+            ,dataIndex: 'price'
+            ,width: 100
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('commercemultilang.product.weight')
+            ,dataIndex: 'weight'
+            ,width: 100
+            ,editor: { xtype: 'textfield' }
+            ,renderer: function(value, meta, record) {
+                return value+record.data['weight_unit'];
+            }
+        }]
         ,tbar: [{
             text: _('commercemultilang.product.create')
             ,handler: this.createProduct

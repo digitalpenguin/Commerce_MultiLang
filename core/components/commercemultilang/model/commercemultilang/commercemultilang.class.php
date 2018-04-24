@@ -69,6 +69,11 @@ class CommerceMultiLang {
     }
 
     public function getProductList(array $scriptProperties = array()) {
+        $contentType = $this->modx->getObject('modContentType',array(
+            'mime_type' => 'text/html'
+        ));
+        $extension = $contentType->get('file_extensions');
+
         $c = $this->commerce->modx->newQuery('comProduct');
         $c->leftJoin('CommerceMultiLangProductData', 'ProductData', 'comProduct.id=ProductData.product_id');
         $c->leftJoin('CommerceMultiLangProductLanguage', 'ProductLanguage', 'comProduct.id=ProductLanguage.product_id');
@@ -76,12 +81,14 @@ class CommerceMultiLang {
             'comProduct.removed'    =>  0,
             'ProductLanguage.lang_key'  =>  $this->modx->getOption('cultureKey')
         ));
-        $c->select('comProduct.id,ProductData.alias,ProductLanguage.name,ProductLanguage.description');
+        $c->select('comProduct.id,ProductData.alias,ProductLanguage.*');
         if ($c->prepare() && $c->stmt->execute()) {
             $products = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $output = '';
             foreach ($products as $product) {
+                //Add current document extension to product
+                $product['extension'] = $extension;
                 // Grab images related to the product
                 $q = $this->modx->newQuery('CommerceMultiLangProductImage');
                 $q->where(array('product_id' => $product['id']));

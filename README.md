@@ -31,6 +31,7 @@ Dependencies
 --------------
 - Make sure Babel and LangRouter are already setup and working. http://jako.github.io/LangRouter/
 - You'll need different contexts for each language. These should have been set up when you were installing Babel and LangRouter.
+- Make sure friendly URLs and friend alias paths are turned on.
 
 Settings
 ---------------

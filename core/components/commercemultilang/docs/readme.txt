@@ -30,6 +30,7 @@ Setup:
 
 - Make sure Babel and LangRouter are already setup and working. http://jako.github.io/LangRouter/
 - You'll need different contexts for each language. These should have been set up when you were installing Babel and LangRouter.
+- Make sure friendly URLs and friend alias paths are turned on.
 
 - Each of these contexts should have a cultureKey setting and the value should be a language key such as en/zh/fr/de etc.
 - make a system setting (not context setting) called commercemultilang.default_lang and set it to your default language. Example: en
