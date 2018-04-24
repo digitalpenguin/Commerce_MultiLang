@@ -12,6 +12,7 @@ Commerce is a a premium extra for MODX and using CommerceMultiLang requires a va
 https://www.modmore.com/commerce/pricing/
 
 Even though Commerce is HTML-first, this extra has been built with the UI framework the rest of MODX currently uses in the manager: ExtJS. (Sorry Mark! :) )
+Special thanks to @dimmy (Dimitri Hilverda) for advice given about some functionality such as loading with the resource viewport.
 
 Requirements:
 - MODX (of course!)
@@ -39,4 +40,4 @@ Settings
 - Then add a context setting to each context called commercemultilang.category_root_id and set the id of your parent category for that context.
 - Add another resource to each context (NOT as a child to the parent category resource) and call it something like "Product Detail". This is the viewport that will have the resource data loaded into it.
 - Add a context setting to each context called commercemultilang.product_detail_page and set the value to the idea of your product detail resource for that context.
-
+- Add the redirectToProduct plugin and have it fire on the onPageNotFound system event.
