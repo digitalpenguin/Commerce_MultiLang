@@ -27,7 +27,7 @@ CommerceMultiLang.panel.Home = function(config) {
                     ,preventRender: true
                     ,cls: 'main-wrapper'
                 }]
-            },{
+            }/*,{
                 title: 'Catalogs'
                 ,layout:'anchor'
                 ,items: [{
@@ -35,7 +35,7 @@ CommerceMultiLang.panel.Home = function(config) {
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 }]
-            }]
+            }*/]
         }]
     });
     CommerceMultiLang.panel.Home.superclass.constructor.call(this,config);

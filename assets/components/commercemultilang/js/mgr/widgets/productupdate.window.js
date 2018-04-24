@@ -114,8 +114,9 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                     xtype: 'commercemultilang-combo-category'
                     ,fieldLabel: _('commercemultilang.product.category')
                     ,id: 'product-update-category-combo'+langTab['lang_key']
-                    ,name: 'category'
-                    ,hiddenName: 'category'
+                    ,name: 'category_'+langTab['lang_key']
+                    ,hiddenName: 'category_'+langTab['lang_key']
+                    ,value: langTab.fields ? langTab.fields['category']: ''
                     ,anchor: '100%'
                 },{
                     xtype: 'textarea'

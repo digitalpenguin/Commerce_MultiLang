@@ -105,7 +105,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
-        createProduct.addLanguageTabs(this.store.reader.jsonData.languages);
+        //createProduct.addLanguageTabs(this.store.reader.jsonData.languages);
         createProduct.addCategoryLanguage(this.store.reader.jsonData.default_language,this.store.reader.jsonData.default_context);
         createProduct.show(e.target);
     }
@@ -131,7 +131,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         langTabs.forEach(function(langTab,index) {
             record.langs.forEach(function(lang,index) {
                 if(langTab.lang_key === lang.lang_key) {
-                    //console.log(lang);
+                    console.log(lang);
                     langTab['fields'] = lang;
                 }
             });
