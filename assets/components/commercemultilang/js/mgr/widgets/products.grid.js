@@ -8,7 +8,7 @@ CommerceMultiLang.grid.Products = function(config) {
         }
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','sku','main_image','name','description','price','stock','weight','weight_unit','target',
+        ,fields: ['id','sku','main_image','name','category','category_id','description','price','stock','weight','weight_unit','target',
             'properties','images','delivery_type','tax_group','langs']
         ,autoHeight: true
         ,paging: true
@@ -40,14 +40,17 @@ CommerceMultiLang.grid.Products = function(config) {
             ,width: 200
             ,editor: { xtype: 'textfield' }
         },{
+            header: _('commercemultilang.product.category')
+            ,dataIndex: 'category'
+            ,width: 350
+            ,editor: { xtype: 'textfield' }
+            ,renderer: function(value, meta, record) {
+                return value + ' <span style="color:#888;">(Category ID:' +record.data['category_id']+')</span>';
+            }
+        },{
             header: _('commercemultilang.product.stock')
             ,dataIndex: 'stock'
             ,width: 40
-            ,editor: { xtype: 'textfield' }
-        },{
-            header: _('commercemultilang.product.description')
-            ,dataIndex: 'description'
-            ,width: 350
             ,editor: { xtype: 'textfield' }
         }/*,{
             header: _('commercemultilang.product.position')

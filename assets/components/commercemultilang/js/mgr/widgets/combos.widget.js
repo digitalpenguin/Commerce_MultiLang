@@ -67,7 +67,7 @@ CommerceMultiLang.combo.Category = function(config) {
         }
         ,fields: ['id','pagetitle', {
             name: 'display',
-            convert: function(v, rec) { return rec['pagetitle'] + ' (id:' + rec['id'] + ')'}
+            convert: function(v, rec) { return rec['pagetitle'] + ' - (Category ID:' + rec['id'] + ')'}
         }]
         ,mode: 'remote'
         ,displayField: 'display'
