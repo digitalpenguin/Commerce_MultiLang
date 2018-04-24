@@ -67,4 +67,42 @@ class CommerceMultiLang {
         }
         return $option;
     }
+
+    public function getProductList(array $scriptProperties = array()) {
+        $c = $this->commerce->modx->newQuery('comProduct');
+        $c->leftJoin('CommerceMultiLangProductData', 'ProductData', 'comProduct.id=ProductData.product_id');
+        $c->leftJoin('CommerceMultiLangProductLanguage', 'ProductLanguage', 'comProduct.id=ProductLanguage.product_id');
+        $c->where(array(
+            'comProduct.removed'    =>  0,
+            'ProductLanguage.lang_key'  =>  $this->modx->getOption('cultureKey')
+        ));
+        $c->select('comProduct.id,ProductData.alias,ProductLanguage.name,ProductLanguage.description');
+        if ($c->prepare() && $c->stmt->execute()) {
+            $products = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $output = '';
+            foreach ($products as $product) {
+                // Grab images related to the product
+                $q = $this->modx->newQuery('CommerceMultiLangProductImage');
+                $q->where(array('product_id' => $product['id']));
+                $q->select('CommerceMultiLangProductImage.*');
+                if ($q->prepare() && $q->stmt->execute()) {
+                    $product['images'] = $q->stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+                //$this->modx->log(1,print_r($product,true));
+                if($scriptProperties['tpl']) {
+                    $output .= $this->modx->getChunk($scriptProperties['tpl'],$product);
+                } else {
+                    $output .= $this->modx->getChunk('product_preview_tpl',$product);
+                }
+
+            }
+            if($scriptProperties['debug']) {
+                return '<pre>'.print_r($products, true).'</pre>';
+            }
+            return $output;
+
+        }
+        return '';
+    }
 }

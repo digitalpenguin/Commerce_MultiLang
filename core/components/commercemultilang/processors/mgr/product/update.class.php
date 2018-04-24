@@ -46,13 +46,21 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
                     $fieldLength = $keyLength - $lkLength;
                     $fieldName = substr($key,0,$fieldLength-1); //-1 to compensate for underscore
                     // Set the new value
-                    $this->modx->log(1,'field name: '.$fieldName);
+                    //$this->modx->log(1,'field name: '.$fieldName);
                     $productLanguage->set($fieldName,$value);
                 }
-
             }
             // After going through all fields, save this language.
             $productLanguage->save();
+
+            // Overwrite base product name and description with default language.
+            if($this->modx->getOption('commercemultilang.default_lang')) {
+                if ($productLanguage->get('lang_key') == $this->modx->getOption('commercemultilang.default_lang')) {
+                    $this->object->set('name', $productLanguage->get('name'));
+                    $this->object->set('description', $productLanguage->get('description'));
+                    $this->object->save();
+                }
+            }
         }
         return parent::afterSave();
     }

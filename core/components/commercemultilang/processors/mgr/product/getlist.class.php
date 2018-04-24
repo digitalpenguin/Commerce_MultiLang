@@ -12,6 +12,8 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
     public $defaultSortDirection = 'ASC';
     public $objectType = 'commercemultilang.product';
     protected $langKeys = array();
+    protected $defaultLanguage = null;
+    protected $defaultContext = null;
 
     /**
      * Retrieves array of context keys and associated cultureKeys. Excludes mgr.
@@ -38,6 +40,32 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
 
     public function initialize() {
         $this->getLanguages();
+
+        // Default language and context are used so we know where to put data when creating new products.
+        $this->defaultLanguage = $this->modx->getOption('commercemultilang.default_lang');
+
+        foreach($this->langKeys as $langKey) {
+            // If no default language has been set, set it with the manager_language setting.
+            // TODO: Change this to an install option later
+            if($this->defaultLanguage == '' || $this->defaultLanguage == null) {
+                $managerLang = $this->modx->getOption('manager_language');
+                // make sure the manager_language key is one of the context languages
+                if($langKey['lang_key'] == $managerLang) {
+                    $setting = $this->modx->getObject('modSystemSetting',array(
+                        'key'   =>  'commercemultilang.default_lang'
+                    ));
+                    $setting->set('value',$managerLang);
+                    $setting->save();
+                    $cacheRefreshOptions =  array( 'system_settings' => array() );
+                    $this->modx->cacheManager-> refresh($cacheRefreshOptions);
+                }
+            }
+
+            if($langKey['lang_key'] == $this->defaultLanguage) {
+                $this->defaultContext = $langKey['context_key'];
+            }
+        }
+
         return parent::initialize();
     }
 
@@ -79,6 +107,8 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
         $output = json_encode(array(
             'success' => true,
             'languages' => $this->langKeys,
+            'default_language' =>$this->defaultLanguage,
+            'default_context'   => $this->defaultContext,
             'total' => $count,
             'results' => $array
         ));

@@ -111,6 +111,13 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                     ,value: langTab.fields ? langTab.fields['name']: ''
                     ,anchor: '100%'
                 },{
+                    xtype: 'commercemultilang-combo-category'
+                    ,fieldLabel: _('commercemultilang.product.category')
+                    ,id: 'product-update-category-combo'+langTab['lang_key']
+                    ,name: 'category'
+                    ,hiddenName: 'category'
+                    ,anchor: '100%'
+                },{
                     xtype: 'textarea'
                     ,fieldLabel: _('description')
                     ,name: 'description_'+langTab['lang_key']
@@ -118,7 +125,14 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                     ,anchor: '100%'
                 }]
             }];
+
             tabs.add(tab);
+            // Set the current language on the category combo
+            var comboStore = Ext.getCmp('product-update-category-combo'+langTab['lang_key']).getStore();
+            comboStore.setBaseParam('lang_key',langTab['lang_key']);
+            comboStore.setBaseParam('context_key',langTab['context_key']);
+            comboStore.setBaseParam('lang_name',langTab['name']);
+            comboStore.setBaseParam('action','mgr/product/category/getlist');
         });
     }
 });

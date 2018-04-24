@@ -4,13 +4,13 @@
     <object class="CommerceMultiLangProduct" extends="comProduct" inherit="single">
         <composite alias="ProductLanguage" class="CommerceMultiLangProductLanguage" local="id" foreign="product_id" cardinality="many" owner="local" />
         <composite alias="ProductImage" class="CommerceMultiLangProductImage" local="id" foreign="product_id" cardinality="many" owner="local" />
-        <composite alias="Flat Row" class="CommerceMultiLangFlatRow" local="id" foreign="product_id" cardinality="many" owner="local" />
+        <!--<composite alias="Flat Row" class="CommerceMultiLangFlatRow" local="id" foreign="product_id" cardinality="many" owner="local" />-->
         <composite alias="ProductData" local="id" class="CommerceMultiLangProductData" foreign="product_id" cardinality="one" owner="local" />
     </object>
 
     <object class="CommerceMultiLangProductData" table="commercemultilang_product_data" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
-        <field key="test_field" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="alias" dbtype="varchar" precision="190" phptype="string" null="false" default="" index="index" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
@@ -18,6 +18,7 @@
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="lang_key" dbtype="varchar" precision="5" phptype="string" null="false" default="" />
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="category" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index" />
         <field key="description" dbtype="text" phptype="string" null="true" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
@@ -25,16 +26,23 @@
     <object class="CommerceMultiLangProductImage" table="commercemultilang_product_images" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="main" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false"/>
+        <composite alias="ProductImageLanguage" class="CommerceMultiLangProductImageLanguage" local="id" foreign="product_image_id" cardinality="many" owner="local" />
+        <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+
+    <object class="CommerceMultiLangProductImageLanguage" table="commercemultilang_product_image_languages" extends="xPDOSimpleObject">
+        <field key="product_image_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="lang_key" dbtype="varchar" precision="5" phptype="string" null="false" default="" />
         <field key="title" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="alt" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="image" dbtype="varchar" precision="191" phptype="string" null="false" default="" />
         <field key="description" dbtype="text" phptype="string" null="true" />
-        <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="ProductImage" class="CommerceMultiLangProductImage" local="product_image_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
-    <object class="CommerceMultiLangFlatRow" table="commercemultilang_flat_rows" extends="xPDOSimpleObject">
+    <!--<object class="CommerceMultiLangFlatRow" table="commercemultilang_flat_rows" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
-    </object>
+    </object>-->
 
 </model>

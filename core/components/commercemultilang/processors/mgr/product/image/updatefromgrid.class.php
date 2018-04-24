@@ -1,13 +1,13 @@
 <?php
 /**
- * Update From Grid a product
+ * Update From Grid a product image
  *
  * @package commercemultilang
  * @subpackage processors
  */
 require_once(dirname(__FILE__) . '/update.class.php');
 
-class CommerceMultiLangProductUpdateFromGridProcessor extends CommerceMultiLangProductUpdateProcessor {
+class CommerceMultiLangProductImageUpdateFromGridProcessor extends CommerceMultiLangProductUpdateProcessor {
     public function initialize() {
         $data = $this->getProperty('data');
         if (empty($data)) return $this->modx->lexicon('invalid_data');
@@ -20,4 +20,4 @@ class CommerceMultiLangProductUpdateFromGridProcessor extends CommerceMultiLangP
     }
 
 }
-return 'CommerceMultiLangProductUpdateFromGridProcessor';
+return 'CommerceMultiLangProductImageUpdateFromGridProcessor';

@@ -65,7 +65,8 @@ $modx->addPackage('commercemultilang', $sources['model']);
 $manager->createObjectContainer('CommerceMultiLangProductData');
 $manager->createObjectContainer('CommerceMultiLangProductLanguage');
 $manager->createObjectContainer('CommerceMultiLangProductImage');
-$manager->createObjectContainer('CommerceMultiLangFlatRow');
+$manager->createObjectContainer('CommerceMultiLangProductImageLanguage');
+//$manager->createObjectContainer('CommerceMultiLangFlatRow');
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);

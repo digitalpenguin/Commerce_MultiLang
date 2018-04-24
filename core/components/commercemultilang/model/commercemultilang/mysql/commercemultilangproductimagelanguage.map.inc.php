@@ -2,10 +2,10 @@
 /**
  * @package commercemultilang
  */
-$xpdo_meta_map['CommerceMultiLangProductLanguage']= array (
+$xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
   'package' => 'commercemultilang',
   'version' => '0.1',
-  'table' => 'commercemultilang_product_languages',
+  'table' => 'commercemultilang_product_image_languages',
   'extends' => 'xPDOSimpleObject',
   'tableMeta' => 
   array (
@@ -13,15 +13,16 @@ $xpdo_meta_map['CommerceMultiLangProductLanguage']= array (
   ),
   'fields' => 
   array (
-    'product_id' => NULL,
+    'product_image_id' => NULL,
     'lang_key' => '',
-    'name' => '',
-    'category' => NULL,
+    'title' => '',
+    'alt' => '',
+    'image' => '',
     'description' => NULL,
   ),
   'fieldMeta' => 
   array (
-    'product_id' => 
+    'product_image_id' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -38,7 +39,7 @@ $xpdo_meta_map['CommerceMultiLangProductLanguage']= array (
       'null' => false,
       'default' => '',
     ),
-    'name' => 
+    'title' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '100',
@@ -46,14 +47,21 @@ $xpdo_meta_map['CommerceMultiLangProductLanguage']= array (
       'null' => false,
       'default' => '',
     ),
-    'category' => 
+    'alt' => 
     array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'attributes' => 'unsigned',
-      'phptype' => 'integer',
+      'dbtype' => 'varchar',
+      'precision' => '100',
+      'phptype' => 'string',
       'null' => false,
-      'index' => 'index',
+      'default' => '',
+    ),
+    'image' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '191',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
     ),
     'description' => 
     array (
@@ -64,10 +72,10 @@ $xpdo_meta_map['CommerceMultiLangProductLanguage']= array (
   ),
   'aggregates' => 
   array (
-    'Product' => 
+    'ProductImage' => 
     array (
-      'class' => 'CommerceMultiLangProduct',
-      'local' => 'product_id',
+      'class' => 'CommerceMultiLangProductImage',
+      'local' => 'product_image_id',
       'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',

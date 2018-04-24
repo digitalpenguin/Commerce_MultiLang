@@ -1,13 +1,13 @@
 <?php
 /**
- * Remove a product.
+ * Remove a product image.
  * 
  * @package commercemultilang
  * @subpackage processors
  */
-class CommerceMultiLangProductRemoveProcessor extends modObjectRemoveProcessor {
-    public $classKey = 'CommerceMultiLangProduct';
+class CommerceMultiLangProductImageRemoveProcessor extends modObjectRemoveProcessor {
+    public $classKey = 'CommerceMultiLangProductImage';
     public $languageTopics = array('commercemultilang:default');
-    public $objectType = 'commercemultilang.product';
+    public $objectType = 'commercemultilang.productimage';
 }
-return 'CommerceMultiLangProductRemoveProcessor';
+return 'CommerceMultiLangProductImageRemoveProcessor';

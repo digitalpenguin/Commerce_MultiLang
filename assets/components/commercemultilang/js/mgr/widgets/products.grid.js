@@ -106,6 +106,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
             }
         });
         createProduct.addLanguageTabs(this.store.reader.jsonData.languages);
+        createProduct.addCategoryLanguage(this.store.reader.jsonData.default_language,this.store.reader.jsonData.default_context);
         createProduct.show(e.target);
     }
 
@@ -210,7 +211,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             ,name: 'sku'
                             ,anchor: '100%'
                         }]
-                    }, {
+                    },{
                         columnWidth: .33
                         ,layout: 'form'
                         ,items: [{
@@ -223,9 +224,11 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         columnWidth: .33
                         ,layout: 'form'
                         ,items: [{
-                            xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.stock')
-                            ,name: 'stock'
+                            xtype: 'commercemultilang-combo-category'
+                            ,fieldLabel: _('commercemultilang.product.category')
+                            ,id: 'product-create-category-combo'
+                            ,name: 'category'
+                            ,hiddenName: 'category'
                             ,anchor: '100%'
                         }]
                     }]
@@ -237,11 +240,22 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.stock')
+                            ,name: 'stock'
+                            ,anchor: '100%'
+                            ,value:1
+                        }]
+                    },{
+                        columnWidth: .33
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
                             ,fieldLabel: _('commercemultilang.product.weight')
                             ,name: 'weight'
                             ,anchor: '100%'
+                            ,value:1
                         }]
-                    }, {
+                    },{
                         columnWidth: .33
                         ,layout: 'form'
                         ,items: [{
@@ -250,11 +264,8 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             ,name: 'weight_unit'
                             ,hiddenName: 'weight_unit'
                             ,anchor: '100%'
+                            ,value:'kg'
                         }]
-                    },{
-                        columnWidth: .33
-                        ,layout: 'form'
-                        ,items: []
                     }]
                 },{
                     layout: 'column'
@@ -268,6 +279,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             ,name: 'tax_group'
                             ,hiddenName: 'tax_group'
                             ,anchor: '100%'
+                            ,value:1
                         }]
                     }, {
                         columnWidth: .5
@@ -278,6 +290,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             ,name: 'delivery_type'
                             ,hiddenName: 'delivery_type'
                             ,anchor: '100%'
+                            ,value:1
                         }]
                     }]
                 },{
@@ -308,7 +321,16 @@ Ext.extend(CommerceMultiLang.window.ProductCreate,MODx.Window,{
             tabs.add(tab);
             //var lastTab = tabs.items.length-1;
             //tabs.items.items[lastTab].disable();
+            // Set the current language on the category combo
+
         });
+    }
+    ,addCategoryLanguage: function(defaultLanguage,defaultContext) {
+        // Set the default language on the category combo
+        var comboStore = Ext.getCmp('product-create-category-combo').getStore();
+        comboStore.setBaseParam('lang_key',defaultLanguage);
+        comboStore.setBaseParam('context_key',defaultContext);
+        comboStore.setBaseParam('action','mgr/product/category/getlist');
     }
 });
 Ext.reg('commercemultilang-window-product-create',CommerceMultiLang.window.ProductCreate);
