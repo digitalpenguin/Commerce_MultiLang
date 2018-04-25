@@ -8,7 +8,8 @@ CommerceMultiLang.grid.Products = function(config) {
         }
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','sku','main_image','name','category','category_id','description','price','stock','weight','weight_unit','target',
+        ,fields: ['id','sku','main_image','name','category','category_id','description','price','price_formatted',
+            'stock','weight_formatted','weight','weight_unit','target',
             'properties','images','delivery_type','tax_group','langs']
         ,autoHeight: true
         ,paging: true
@@ -24,9 +25,9 @@ CommerceMultiLang.grid.Products = function(config) {
             ,width: 140
             ,renderer: function(value){
                 if(value) {
-                    return '<img style="width:100%;" src="' + value + '" />';
+                    return '<img style="max-width:100%;" src="/' + value + '" />';
                 } else {
-                    return '<img style="width:100%;" src="/packages/commercemultilang/assets/components/commercemultilang/img/placeholder.jpg" />';
+                    return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }
             }
         },{
@@ -52,16 +53,15 @@ CommerceMultiLang.grid.Products = function(config) {
             ,editor: { xtype: 'textfield' }
         },{
             header: _('commercemultilang.product.price')
-            ,dataIndex: 'price'
+            ,dataIndex: 'price_formatted'
             ,width: 100
-            ,editor: { xtype: 'textfield' }
         },{
             header: _('commercemultilang.product.weight')
             ,dataIndex: 'weight'
             ,width: 100
             ,editor: { xtype: 'textfield' }
             ,renderer: function(value, meta, record) {
-                return value+record.data['weight_unit'];
+                return value+' '+record.data['weight_unit'];
             }
         }]
         ,tbar: [{
@@ -133,14 +133,17 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         });
 
         updateProduct.fp.getForm().reset();
+        updateProduct.record.languages = this.store.reader.jsonData.languages;
+        updateProduct.record.product_id = this.menu.record.id;
         updateProduct.fp.getForm().setValues(this.menu.record);
+
         updateProduct.show(e.target);
         var record = this.menu.record;
         var langTabs = this.store.reader.jsonData.languages;
         langTabs.forEach(function(langTab,index) {
             record.langs.forEach(function(lang,index) {
                 if(langTab.lang_key === lang.lang_key) {
-                    console.log(lang);
+                    //console.log(lang);
                     langTab['fields'] = lang;
                 }
             });

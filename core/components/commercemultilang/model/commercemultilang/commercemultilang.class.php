@@ -68,6 +68,12 @@ class CommerceMultiLang {
         return $option;
     }
 
+    /**
+     * Return a list of products
+     *
+     * @param array $scriptProperties
+     * @return string
+     */
     public function getProductList(array $scriptProperties = array()) {
         $contentType = $this->modx->getObject('modContentType',array(
             'mime_type' => 'text/html'

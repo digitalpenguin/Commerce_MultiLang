@@ -1,4 +1,5 @@
 CommerceMultiLang.window.ProductUpdate = function(config) {
+
     Ext.applyIf(config,{
         title: _('commercemultilang.product.update')
         ,closeAction: 'close'
@@ -83,9 +84,9 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                         ,items: [{
                             xtype: 'commercemultilang-grid-product-images'
                             ,style:'margin-top:-23px;'
-                            ,baseParams: {
+                            ,baseParams:{
                                 action: 'mgr/product/image/getlist'
-                                ,product_id: config.record ? config.record['id'] : ''
+                                ,product_id: config.record.id
                             }
                         }]
                     }]
@@ -146,9 +147,10 @@ CommerceMultiLang.grid.ProductImages = function(config) {
     Ext.applyIf(config,{
         id: 'commercemultilang-grid-product-images'
         ,url: CommerceMultiLang.config.connectorUrl
+
         ,save_action: 'mgr/product/image/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','product_id','image','title','description','alt','main','position']
+        ,fields: ['id','image','title','description','languages','alt','main','position']
         ,autoHeight: true
         ,paging: true
         ,pageSize: 10
@@ -164,9 +166,9 @@ CommerceMultiLang.grid.ProductImages = function(config) {
             ,width: 100
             ,renderer: function(value){
                 if(value) {
-                    return '<img style="max-width:100%; height:80px;" src="' + value + '" />';
+                    return '<img style="max-width:100%;" src="/' + value + '" />';
                 } else {
-                    return '<img style="max-width:100%; height:80px;" src="/packages/commercemultilang/assets/components/commercemultilang/img/placeholder.jpg" />';
+                    return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }
             }
         },{
@@ -196,6 +198,12 @@ CommerceMultiLang.grid.ProductImages = function(config) {
             ,handler: this.createProductImage
             ,scope: this
         }]
+        ,listeners: {
+            'render': function(grid) {
+                grid.languages = Ext.getCmp('commercemultilang-window-product-update').config.record.languages;
+                grid.product_id = Ext.getCmp('commercemultilang-window-product-update').config.record.id;
+            }
+        }
     });
     CommerceMultiLang.grid.ProductImages.superclass.constructor.call(this,config);
 };
@@ -217,13 +225,19 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
     }
 
     ,createProductImage: function(btn,e) {
-
+        var languages = JSON.stringify(this.languages);
         var createProductImage = MODx.load({
             xtype: 'commercemultilang-window-product-image'
+            ,baseParams: {
+                action: 'mgr/product/image/create'
+                ,languages: languages
+                ,product_id: Ext.getCmp('commercemultilang-window-product-update').config.record.id
+            }
             ,listeners: {
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
+
         createProductImage.show(e.target);
     }
 
@@ -261,13 +275,6 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
             }
         });
     }
-
-    ,search: function(tf,nv,ov) {
-        var s = this.getStore();
-        s.baseParams.query = tf.getValue();
-        this.getBottomToolbar().changePage(1);
-        this.refresh();
-    }
 });
 Ext.reg('commercemultilang-grid-product-images',CommerceMultiLang.grid.ProductImages);
 
@@ -289,6 +296,17 @@ CommerceMultiLang.window.ProductImage = function(config) {
             ,name: 'title'
             ,anchor: '100%'
             ,autocomplete:'off'
+        },{
+            xtype: 'modx-combo-browser'
+            ,id: 'update-product-image-select-' + Ext.id()
+            ,fieldLabel: 'Select Image'
+            //,source: CommerceMultiLang.config.institutionMediaSource
+            ,name: 'image'
+            ,anchor:'100%'
+            ,rootId: '/'
+            //,openTo: 'institution/'+config.record['alias']+'/'
+            ,rootVisible:true
+            ,hideSourceCombo: true
         },{
             xtype: 'textarea'
             ,fieldLabel: _('description')

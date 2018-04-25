@@ -14,9 +14,14 @@ class CommerceMultiLangProductImageGetListProcessor extends modObjectGetListProc
     protected $langKeys = array();
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
+        $c->leftJoin('CommerceMultiLangProductImageLanguage','ProductImageLanguage',array(
+            'CommerceMultiLangProductImage.id=ProductImageLanguage.product_image_id',
+            'ProductImageLanguage.lang_key'    =>  $this->modx->getOption('commercemultilang.default_lang')
+        ));
         $c->where(array(
             'product_id'=>$this->getProperty('product_id')
         ));
+        $c->select('CommerceMultiLangProductImage.*,ProductImageLanguage.*');
         /*$c->prepare();
         $this->modx->log(1,$c->toSQL());*/
         $query = $this->getProperty('query');
