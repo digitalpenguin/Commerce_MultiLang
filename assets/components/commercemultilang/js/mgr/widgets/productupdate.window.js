@@ -91,6 +91,14 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                         }]
                     }]
                 }]
+            },{
+                title:'Variations'
+                ,layout:'form'
+                ,items:[{
+                    html:'<h2>'+_('commercemultilang.product_variation.product_variations')+'</h2>' +
+                    '<p>'+_('commercemultilang.product_variation.intro')+'</p>'
+
+                }]
             }]
         }]
     });

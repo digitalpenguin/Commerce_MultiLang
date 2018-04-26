@@ -206,21 +206,40 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                     ,name: 'id'
                     ,hidden: true
                 },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('name')
-                    ,name: 'name'
-                    ,anchor: '100%'
-                    ,autocomplete:'off'
-                },{
                     layout: 'column'
                     ,border: false
                     ,items: [{
+                        columnWidth: .66
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('name')
+                            ,name: 'name'
+                            ,anchor: '100%'
+                            ,autocomplete:'off'
+                        }]
+                    },{
                         columnWidth: .33
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
                             ,fieldLabel: _('commercemultilang.product.sku')
                             ,name: 'sku'
+                            ,anchor: '100%'
+                        }]
+                    }]
+                },{
+                    layout: 'column'
+                    ,border: false
+                    ,items: [{
+                        columnWidth: .66
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'commercemultilang-combo-category'
+                            ,fieldLabel: _('commercemultilang.product.category')
+                            ,id: 'product-create-category-combo'
+                            ,name: 'category'
+                            ,hiddenName: 'category'
                             ,anchor: '100%'
                         }]
                     },{
@@ -230,17 +249,6 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             xtype: 'textfield'
                             ,fieldLabel: _('commercemultilang.product.price')
                             ,name: 'price'
-                            ,anchor: '100%'
-                        }]
-                    },{
-                        columnWidth: .33
-                        ,layout: 'form'
-                        ,items: [{
-                            xtype: 'commercemultilang-combo-category'
-                            ,fieldLabel: _('commercemultilang.product.category')
-                            ,id: 'product-create-category-combo'
-                            ,name: 'category'
-                            ,hiddenName: 'category'
                             ,anchor: '100%'
                         }]
                     }]

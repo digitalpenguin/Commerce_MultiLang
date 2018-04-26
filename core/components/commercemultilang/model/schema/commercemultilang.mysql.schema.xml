@@ -11,6 +11,7 @@
     <object class="CommerceMultiLangProductData" table="commercemultilang_product_data" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="alias" dbtype="varchar" precision="190" phptype="string" null="false" default="" index="index" />
+        <field key="related_product_ids" dbtype="text" phptype="string" null="true" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
@@ -33,9 +34,9 @@
     <object class="CommerceMultiLangProductImageLanguage" table="commercemultilang_product_image_languages" extends="xPDOSimpleObject">
         <field key="product_image_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="lang_key" dbtype="varchar" precision="5" phptype="string" null="false" default="" />
-        <field key="title" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
-        <field key="alt" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
-        <field key="image" dbtype="varchar" precision="191" phptype="string" null="false" default="" />
+        <field key="title" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="alt" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="image" dbtype="varchar" precision="19" phptype="string" null="false" default="" />
         <field key="description" dbtype="text" phptype="string" null="true" />
         <aggregate alias="ProductImage" class="CommerceMultiLangProductImage" local="product_image_id" foreign="id" cardinality="one" owner="foreign" />
     </object>

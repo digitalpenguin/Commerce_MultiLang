@@ -80,3 +80,132 @@ CommerceMultiLang.combo.Category = function(config) {
 };
 Ext.extend(CommerceMultiLang.combo.Category,MODx.combo.ComboBox);
 Ext.reg('commercemultilang-combo-category',CommerceMultiLang.combo.Category);
+
+CommerceMultiLang.combo.RelatedProducts = function (config, getStore) {
+    config = config || {};
+    Ext.applyIf(config, {
+        name:'products[]'
+        ,displayField: 'name'
+        ,valueField: 'id'
+        ,fields: ['name', 'id']
+        ,mode: 'remote'
+        ,triggerAction: 'all'
+        ,forceSelection: true
+        ,allowAddNewData:true
+        ,preventDuplicates:true
+        ,renderFieldButtons:false
+        ,pageSize: 20
+        ,url: CommerceMultiLang.config.connectorUrl
+        ,baseParams:{
+            action: 'mgr/product/getList'
+        }
+        ,minChars:0
+        ,lazyInit: false
+        ,listeners: {
+            'focus': function(combo) {
+                combo.doQuery('',true);
+            }
+        }
+    });
+    Ext.applyIf(config,{
+        store: new Ext.data.JsonStore({
+            url: config.url
+            ,root: 'results'
+            ,totalProperty: 'total'
+            ,fields: config.fields
+            ,errorReader: MODx.util.JSONReader
+            ,baseParams: config.baseParams || {}
+            ,remoteSort: config.remoteSort || false
+            ,autoDestroy: true
+        })
+
+    });
+    if (getStore === true) {
+        config.store.load();
+        return config.store;
+    }
+
+    CommerceMultiLang.combo.RelatedProducts.superclass.constructor.call(this, config);
+    this.config = config;
+    return this;
+};
+Ext.extend(CommerceMultiLang.combo.RelatedProducts, Ext.ux.form.SuperBoxSelect,{
+    addItemBox : function(itemVal,itemDisplay,itemCaption, itemClass, itemStyle) {
+        var hConfig, parseStyle = function(s){
+            var ret = '';
+            switch(typeof s){
+                case 'function' :
+                    ret = s.call();
+                    break;
+                case 'object' :
+                    for(var p in s){
+                        ret+= p +':'+s[p]+';';
+                    }
+                    break;
+                case 'string' :
+                    ret = s + ';';
+            }
+            return ret;
+        }, itemKey = Ext.id(null,'sbx-item'), box = new Ext.ux.form.SuperBoxSelectItem({
+            owner: this,
+            disabled: this.disabled,
+            renderTo: this.wrapEl,
+            cls: this.extraItemCls + ' ' + itemClass,
+            style: parseStyle(this.extraItemStyle) + ' ' + itemStyle,
+            caption: itemCaption,
+            display: itemDisplay,
+            value:  itemVal,
+            key: itemKey,
+            listeners: {
+                'remove': function(item){
+                    if(this.fireEvent('beforeremoveitem',this,item.value) === false){
+                        return false;
+                    }
+                    this.items.removeKey(item.key);
+                    if(this.removeValuesFromStore){
+                        if(this.usedRecords.containsKey(item.value)){
+                            this.store.add(this.usedRecords.get(item.value));
+                            this.usedRecords.removeKey(item.value);
+                            this.sortStore();
+                            if(this.view){
+                                this.view.render();
+                            }
+                        }
+                    }
+                    if(!this.preventMultipleRemoveEvents){
+                        this.fireEvent.defer(250,this,['removeitem',this,item.value, this.findInStore(item.value)]);
+                    }
+                },
+                destroy: function(){
+                    this.collapse();
+                    this.autoSize().manageClearBtn().validateValue();
+                },
+                scope: this
+            }
+        });
+        box.render();
+
+        hConfig = {
+            tag :'input',
+            type :'hidden',
+            value : itemVal,
+            name : (this.hiddenName || this.name)
+        };
+
+        if(this.disabled){
+            Ext.apply(hConfig,{
+                disabled : 'disabled'
+            })
+        }
+        box.hidden = this.el.insertSibling({
+            tag:'input',
+            type:'hidden',
+            value: itemVal,
+            name: (this.hiddenName || this.name+'['+itemVal+']') // could also be this.name+'[]' I assume
+        },'before');
+
+        this.items.add(itemKey,box);
+        this.applyEmptyText().autoSize().manageClearBtn().validateValue();
+    }
+});
+Ext.reg('commercemultilang-combo-relatedproducts', CommerceMultiLang.combo.RelatedProducts);

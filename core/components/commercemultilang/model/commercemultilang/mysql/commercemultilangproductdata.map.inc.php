@@ -15,6 +15,7 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
   array (
     'product_id' => NULL,
     'alias' => '',
+    'related_product_ids' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -35,6 +36,12 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
       'null' => false,
       'default' => '',
       'index' => 'index',
+    ),
+    'related_product_ids' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => true,
     ),
   ),
   'aggregates' => 

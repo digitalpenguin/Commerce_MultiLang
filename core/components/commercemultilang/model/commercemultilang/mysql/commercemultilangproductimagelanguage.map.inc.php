@@ -42,7 +42,7 @@ $xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
     'title' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '100',
+      'precision' => '190',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
@@ -50,7 +50,7 @@ $xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
     'alt' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '100',
+      'precision' => '190',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
@@ -58,7 +58,7 @@ $xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
     'image' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '191',
+      'precision' => '19',
       'phptype' => 'string',
       'null' => false,
       'default' => '',

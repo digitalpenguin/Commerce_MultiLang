@@ -56,3 +56,7 @@ $_lang['commercemultilang.err.product_image_nf'] = 'Product image not found.';
 $_lang['commercemultilang.err.product_image_title_ns'] = 'Image title is not specified.';
 $_lang['commercemultilang.err.product_image_remove'] = 'An error occurred while trying to remove the image.';
 $_lang['commercemultilang.err.product_image_save'] = 'An error occurred while trying to save the image.';
+
+/* Product Variations */
+$_lang['commercemultilang.product_variation.product_variations'] = 'Product Variations';
+$_lang['commercemultilang.product_variation.intro'] = 'Product variations are complete products with their own SKU and alias however by default they are hidden from the customer when browsing product listings. Customers can select to buy a product variation (e.g. colour, size etc.) instead of the default listed product on the product detail screen.';
