@@ -27,18 +27,47 @@ CommerceMultiLang.panel.Home = function(config) {
                     ,preventRender: true
                     ,cls: 'main-wrapper'
                 }]
-            }/*,{
-                title: 'Catalogs'
+            },{
+                title: 'Bundles'
                 ,layout:'anchor'
                 ,items: [{
                     html: '<p>'+_('commercemultilang.product.intro_msg')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 }]
-            }*/]
+            }]
         }]
+        ,listeners: {
+            render: this.getButtons
+        }
     });
     CommerceMultiLang.panel.Home.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.panel.Home,MODx.Panel);
+Ext.extend(CommerceMultiLang.panel.Home,MODx.Panel,{
+    getButtons: function(e) {
+        // get rid of the side bar
+        //Ext.getCmp('modx-layout').hideLeftbar();
+        var modab = new MODx.toolbar.ActionButtons;
+        modab.add({
+            xtype:'button',
+            text:'<i class="icon icon-cart-arrow-down"></i> &nbsp;Orders',
+            handler: this.loadOrdersPage,
+            scope:this
+        });
+        modab.add({
+            xtype:'button',
+            text:'<i class="icon icon-cog"></i> &nbsp;Product Settings',
+            handler: this.loadSettingsPage,
+            scope:this
+        });
+
+        modab.doLayout();
+    }
+    ,loadSettingsPage: function() {
+        MODx.loadPage('settings', 'namespace=commercemultilang');
+    }
+    ,loadOrdersPage: function() {
+        MODx.loadPage('index&ca=orders', 'namespace=commerce');
+    }
+});
 Ext.reg('commercemultilang-panel-home',CommerceMultiLang.panel.Home);

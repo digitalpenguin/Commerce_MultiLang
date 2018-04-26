@@ -66,6 +66,8 @@ $manager->createObjectContainer('CommerceMultiLangProductData');
 $manager->createObjectContainer('CommerceMultiLangProductLanguage');
 $manager->createObjectContainer('CommerceMultiLangProductImage');
 $manager->createObjectContainer('CommerceMultiLangProductImageLanguage');
+$manager->createObjectContainer('CommerceMultiLangProductVariationType');
+$manager->createObjectContainer('CommerceMultiLangProductVariation');
 //$manager->createObjectContainer('CommerceMultiLangFlatRow');
 
 $mtime= microtime();

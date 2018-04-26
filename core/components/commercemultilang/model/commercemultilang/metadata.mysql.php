@@ -11,5 +11,7 @@ $xpdo_meta_map = array (
     1 => 'CommerceMultiLangProductLanguage',
     2 => 'CommerceMultiLangProductImage',
     3 => 'CommerceMultiLangProductImageLanguage',
+    4 => 'CommerceMultiLangProductVariationType',
+    5 => 'CommerceMultiLangProductVariation',
   ),
 );

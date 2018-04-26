@@ -2,10 +2,10 @@
 /**
  * @package commercemultilang
  */
-$xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
+$xpdo_meta_map['CommerceMultiLangProductVariation']= array (
   'package' => 'commercemultilang',
   'version' => '0.1',
-  'table' => 'commercemultilang_product_image_languages',
+  'table' => 'commercemultilang_product_variations',
   'extends' => 'xPDOSimpleObject',
   'tableMeta' => 
   array (
@@ -13,16 +13,17 @@ $xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
   ),
   'fields' => 
   array (
-    'product_image_id' => NULL,
+    'type_id' => NULL,
+    'name' => '',
     'lang_key' => NULL,
-    'title' => '',
-    'alt' => '',
+    'value' => NULL,
     'image' => '',
-    'description' => NULL,
+    'image_title' => '',
+    'alt' => '',
   ),
   'fieldMeta' => 
   array (
-    'product_image_id' => 
+    'type_id' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -30,6 +31,14 @@ $xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
       'phptype' => 'integer',
       'null' => false,
       'index' => 'index',
+    ),
+    'name' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '190',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
     ),
     'lang_key' => 
     array (
@@ -39,7 +48,21 @@ $xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
       'null' => false,
       'index' => 'index',
     ),
-    'title' => 
+    'value' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => true,
+    ),
+    'image' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '190',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'image_title' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '190',
@@ -55,27 +78,13 @@ $xpdo_meta_map['CommerceMultiLangProductImageLanguage']= array (
       'null' => false,
       'default' => '',
     ),
-    'image' => 
-    array (
-      'dbtype' => 'varchar',
-      'precision' => '190',
-      'phptype' => 'string',
-      'null' => false,
-      'default' => '',
-    ),
-    'description' => 
-    array (
-      'dbtype' => 'text',
-      'phptype' => 'string',
-      'null' => true,
-    ),
   ),
   'aggregates' => 
   array (
-    'ProductImage' => 
+    'VariationType' => 
     array (
-      'class' => 'CommerceMultiLangProductImage',
-      'local' => 'product_image_id',
+      'class' => 'CommerceMultiLangProductVariationType',
+      'local' => 'product_type_id',
       'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',
