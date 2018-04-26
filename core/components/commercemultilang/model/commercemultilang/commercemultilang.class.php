@@ -80,14 +80,16 @@ class CommerceMultiLang {
         ));
         $extension = $contentType->get('file_extensions');
 
-        $c = $this->commerce->modx->newQuery('comProduct');
-        $c->leftJoin('CommerceMultiLangProductData', 'ProductData', 'comProduct.id=ProductData.product_id');
-        $c->leftJoin('CommerceMultiLangProductLanguage', 'ProductLanguage', 'comProduct.id=ProductLanguage.product_id');
+        $c = $this->commerce->modx->newQuery('CommerceMultiLangProduct');
+        $c->leftJoin('CommerceMultiLangProductData', 'ProductData', 'CommerceMultiLangProduct.id=ProductData.product_id');
+        $c->leftJoin('CommerceMultiLangProductLanguage', 'ProductLanguage', 'CommerceMultiLangProduct.id=ProductLanguage.product_id');
+        //$c->leftJoin('modResource','Category','ProductLanguage.category=Category.id');
         $c->where(array(
-            'comProduct.removed'    =>  0,
-            'ProductLanguage.lang_key'  =>  $this->modx->getOption('cultureKey')
+            'CommerceMultiLangProduct.removed'    =>  0,
+            'ProductLanguage.lang_key'  =>  $this->modx->getOption('cultureKey'),
+            'ProductLanguage.category'  =>  $this->modx->resource->get('id') // only show products on the correct resource
         ));
-        $c->select('comProduct.id,ProductData.alias,ProductLanguage.*');
+        $c->select('CommerceMultiLangProduct.id,ProductData.alias,ProductLanguage.*');
         if ($c->prepare() && $c->stmt->execute()) {
             $products = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
 
