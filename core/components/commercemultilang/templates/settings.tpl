@@ -1,0 +1,1 @@
+<div id="commercemultilang-panel-settings-div"></div>

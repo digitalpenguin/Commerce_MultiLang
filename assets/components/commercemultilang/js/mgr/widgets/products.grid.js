@@ -263,7 +263,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             ,fieldLabel: _('commercemultilang.product.stock')
                             ,name: 'stock'
                             ,anchor: '100%'
-                            ,value:1
+                            ,value: 1
                         }]
                     },{
                         columnWidth: .33
@@ -273,7 +273,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             ,fieldLabel: _('commercemultilang.product.weight')
                             ,name: 'weight'
                             ,anchor: '100%'
-                            ,value:1
+                            ,value: 1
                         }]
                     },{
                         columnWidth: .33

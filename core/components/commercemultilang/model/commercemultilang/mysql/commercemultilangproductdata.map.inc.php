@@ -43,8 +43,7 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => false,
-      'index' => 'index',
+      'null' => true,
     ),
   ),
   'aggregates' => 

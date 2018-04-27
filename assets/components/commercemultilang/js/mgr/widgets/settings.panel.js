@@ -1,4 +1,4 @@
-CommerceMultiLang.panel.Home = function(config) {
+CommerceMultiLang.panel.Settings = function(config) {
     config = config || {};
     Ext.apply(config,{
         border: false
@@ -6,7 +6,8 @@ CommerceMultiLang.panel.Home = function(config) {
         ,cls: 'container'
         ,layout:'anchor'
         ,items: [{
-            html: '<h2>Commerce <span style="font-size:15px; position:relative; top:-5px;">>></span> Products</h2>'//'<h2>'+_('commercemultilang')+'</h2>'
+            html: '<h2>Commerce <span style="font-size:15px; position:relative; top:-5px;">>></span> Products ' +
+            '<span style="font-size:15px; position:relative; top:-5px;">>></span> Settings </h2>'//'<h2>'+_('commercemultilang')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
         },{
@@ -22,16 +23,16 @@ CommerceMultiLang.panel.Home = function(config) {
                     html: '<p>'+_('commercemultilang.product.intro_msg')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
-                },{
+                }/*,{
                     xtype: 'commercemultilang-grid-products'
                     ,preventRender: true
                     ,cls: 'main-wrapper'
-                }]
+                }*/]
             },{
-                title: 'Variations'
+                title: 'Bundles'
                 ,layout:'anchor'
                 ,items: [{
-                    html: '<p>'+_('commercemultilang.product.variations_intro')+'</p>'
+                    html: '<p>Groups of products sold together.</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 }]
@@ -41,9 +42,9 @@ CommerceMultiLang.panel.Home = function(config) {
             render: this.getButtons
         }
     });
-    CommerceMultiLang.panel.Home.superclass.constructor.call(this,config);
+    CommerceMultiLang.panel.Settings.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.panel.Home,MODx.Panel,{
+Ext.extend(CommerceMultiLang.panel.Settings,MODx.Panel,{
     getButtons: function(e) {
         // get rid of the side bar
         //Ext.getCmp('modx-layout').hideLeftbar();
@@ -56,18 +57,18 @@ Ext.extend(CommerceMultiLang.panel.Home,MODx.Panel,{
         });
         modab.add({
             xtype:'button',
-            text:'<i class="icon icon-cog"></i> &nbsp;Product Settings',
-            handler: this.loadSettingsPage,
+            text:'<i class="icon icon-shopping-basket"></i> &nbsp;Products',
+            handler: this.loadHomePage,
             scope:this
         });
 
         modab.doLayout();
     }
-    ,loadSettingsPage: function() {
-        MODx.loadPage('settings', 'namespace=commercemultilang');
+    ,loadHomePage: function() {
+        MODx.loadPage('home', 'namespace=commercemultilang');
     }
     ,loadOrdersPage: function() {
         MODx.loadPage('index&ca=orders', 'namespace=commerce');
     }
 });
-Ext.reg('commercemultilang-panel-home',CommerceMultiLang.panel.Home);
+Ext.reg('commercemultilang-panel-settings',CommerceMultiLang.panel.Settings);

@@ -316,6 +316,12 @@ CommerceMultiLang.window.ProductImage = function(config) {
             ,rootVisible:true
             ,hideSourceCombo: true
         },{
+            xtype: 'textfield'
+            ,fieldLabel: _('commercemultilang.product_image.alt')
+            ,name: 'alt'
+            ,anchor: '100%'
+            ,autocomplete:'off'
+        },{
             xtype: 'textarea'
             ,fieldLabel: _('description')
             ,name: 'description'
