@@ -50,6 +50,8 @@ $_lang['commercemultilang.product_image.description'] = 'Description';
 $_lang['commercemultilang.product_image.position'] = 'Position';
 $_lang['commercemultilang.product_image.add'] = 'Add Image';
 $_lang['commercemultilang.product_image.edit'] = 'Edit image';
+$_lang['commercemultilang.product_image.make_main'] = 'Make main image';
+$_lang['commercemultilang.product_image.make_main_confirm'] = 'Are you sure you want to make this the main image?';
 $_lang['commercemultilang.product_image.remove'] = 'Remove image';
 $_lang['commercemultilang.product_image.remove_confirm'] = 'Are you sure you want to remove this image?';
 

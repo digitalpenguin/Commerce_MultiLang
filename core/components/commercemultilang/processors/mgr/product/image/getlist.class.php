@@ -21,7 +21,8 @@ class CommerceMultiLangProductImageGetListProcessor extends modObjectGetListProc
         $c->where(array(
             'product_id'=>$this->getProperty('product_id')
         ));
-        $c->select('CommerceMultiLangProductImage.*,ProductImageLanguage.*');
+        $c->sortby('main','DESC');
+        $c->select('CommerceMultiLangProductImage.*,CommerceMultiLangProductImage.product_id,ProductImageLanguage.title,ProductImageLanguage.image,ProductImageLanguage.alt,ProductImageLanguage.description');
         /*$c->prepare();
         $this->modx->log(1,$c->toSQL());*/
         $query = $this->getProperty('query');

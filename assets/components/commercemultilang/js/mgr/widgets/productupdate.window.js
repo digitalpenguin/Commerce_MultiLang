@@ -158,7 +158,7 @@ CommerceMultiLang.grid.ProductImages = function(config) {
 
         ,save_action: 'mgr/product/image/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','image','title','description','languages','alt','main','position']
+        ,fields: ['id','image','product_id','title','description','languages','alt','main','position']
         ,autoHeight: true
         ,paging: true
         ,pageSize: 10
@@ -224,6 +224,10 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
             text: _('commercemultilang.product_image.edit')
             ,handler: this.updateProductImage
         });
+        m.push({
+            text: _('commercemultilang.product_image.make_main')
+            ,handler: this.makeMainImage
+        });
         m.push('-');
         m.push({
             text: _('commercemultilang.product_image.remove')
@@ -265,6 +269,20 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
         updateProductImage.fp.getForm().reset();
         updateProductImage.fp.getForm().setValues(this.menu.record);
         updateProductImage.show(e.target);
+    }
+
+    ,makeMainImage: function(btn,e,isUpdate) {
+        if (!this.menu.record || !this.menu.record.id) return false;
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'mgr/product/image/makemain'
+                ,id: this.menu.record.id
+            }
+            ,listeners: {
+                'success': {fn:function(r) { this.refresh(); },scope:this}
+            }
+        });
     }
 
     ,removeProductImage: function(btn,e) {
