@@ -85,7 +85,11 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
         $c->leftJoin('modResource','Category',array(
             'ProductLanguage.category=Category.id'
         ));
-        $c->select('CommerceMultiLangProduct.*,ProductImageLanguage.image AS main_image,Category.pagetitle AS category,Category.id AS category_id');
+        $c->select('CommerceMultiLangProduct.*,
+                    ProductData.type,
+                    ProductImageLanguage.image AS main_image,
+                    Category.pagetitle AS category,
+                    Category.id AS category_id');
         $c->where(array(
             'removed:='=>0,
             'AND:CommerceMultiLangProduct.class_key:!='=>'comProduct'

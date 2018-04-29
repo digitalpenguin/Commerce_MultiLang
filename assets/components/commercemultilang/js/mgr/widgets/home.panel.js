@@ -34,6 +34,10 @@ CommerceMultiLang.panel.Home = function(config) {
                     html: '<p>'+_('commercemultilang.product.variations_intro')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
+                },{
+                    xtype:'commercemultilang-grid-product-types'
+                    ,preventRender: true
+                    ,cls: 'main-wrapper'
                 }]
             }]
         }]

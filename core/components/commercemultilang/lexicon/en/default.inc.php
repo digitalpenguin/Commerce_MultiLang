@@ -18,6 +18,7 @@ $_lang['commercemultilang.product.intro_msg'] = 'Manage your products.';
 
 $_lang['commercemultilang.product.name'] = 'Name';
 $_lang['commercemultilang.product.sku'] = 'SKU';
+$_lang['commercemultilang.product.type'] = 'Type';
 $_lang['commercemultilang.product.stock'] = 'Stock';
 $_lang['commercemultilang.product.variations_intro'] = 'Specify Product Variations that are available to your products. Create a product type and then assign product variations to it.<br> For example, if your product type is clothing then you might want a "size" variation so you can have the same product with different sizes for sale.';
 $_lang['commercemultilang.product.image'] = 'Image';
@@ -26,6 +27,7 @@ $_lang['commercemultilang.product.category'] = 'Category';
 $_lang['commercemultilang.product.position'] = 'Position';
 $_lang['commercemultilang.product.weight'] = 'Weight';
 $_lang['commercemultilang.product.weight_unit'] = 'Weight Unit';
+$_lang['commercemultilang.product.unit'] = 'Unit';
 $_lang['commercemultilang.product.delivery_type'] = 'Delivery Type';
 $_lang['commercemultilang.product.price'] = 'Price';
 $_lang['commercemultilang.product.tax_group'] = 'Tax Group';
@@ -64,3 +66,34 @@ $_lang['commercemultilang.err.product_image_save'] = 'An error occurred while tr
 /* Product Variations */
 $_lang['commercemultilang.product_variation.product_variations'] = 'Product Variations';
 $_lang['commercemultilang.product_variation.intro'] = 'Product variations are complete products with their own SKU and alias however by default they are hidden from the customer when browsing product listings. Customers can select to buy a product variation (e.g. colour, size etc.) instead of the default listed product on the product detail screen.';
+
+/* Product Types */
+$_lang['commercemultilang.product_type.name'] = 'Name';
+$_lang['commercemultilang.product_type.description'] = 'Description';
+$_lang['commercemultilang.product_type.position'] = 'Position';
+$_lang['commercemultilang.product_type.create'] = 'Create Product Type';
+$_lang['commercemultilang.product_type.edit'] = 'Edit product type';
+$_lang['commercemultilang.product_type.update'] = 'Update product type';
+$_lang['commercemultilang.product_type.remove'] = 'Remove product type';
+$_lang['commercemultilang.product_type.remove_confirm'] = 'Are you sure you want to remove this product type?';
+
+$_lang['commercemultilang.err.product_type_name_ae'] = 'A product type already exists with that name.';
+$_lang['commercemultilang.err.product_type_nf'] = 'Product type not found.';
+$_lang['commercemultilang.err.product_type_name_ns'] = 'Product type name is not specified.';
+$_lang['commercemultilang.err.product_type_remove'] = 'An error occurred while trying to remove the product type.';
+$_lang['commercemultilang.err.product_type_save'] = 'An error occurred while trying to save the product type.';
+
+/* Product Type Variations */
+$_lang['commercemultilang.product_type_variation.name'] = 'Name';
+$_lang['commercemultilang.product_type_variation.language'] = 'Language';
+$_lang['commercemultilang.product_type_variation.description'] = 'Description';
+$_lang['commercemultilang.product_type_variation.position'] = 'Position';
+$_lang['commercemultilang.product_type_variation.create'] = 'Create Variation';
+$_lang['commercemultilang.product_type_variation.edit'] = 'Edit variation';
+$_lang['commercemultilang.product_type_variation.remove'] = 'Remove variation';
+$_lang['commercemultilang.product_type_variation.remove_confirm'] = 'Are you sure you want to remove this variation?';
+
+$_lang['commercemultilang.err.product_type_variation_nf'] = 'Variation not found.';
+$_lang['commercemultilang.err.product_type_variation_name_ns'] = 'Variation name is not specified.';
+$_lang['commercemultilang.err.product_type_variation_remove'] = 'An error occurred while trying to remove the variation.';
+$_lang['commercemultilang.err.product_type_variation_save'] = 'An error occurred while trying to save the variation.';

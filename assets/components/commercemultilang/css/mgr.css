@@ -4,8 +4,15 @@
 }
 
 
-#commercemultilang-window-product-update .x-grid3-scroller {
+#commercemultilang-window-product-update #commercemultilang-grid-product-images .x-grid3-scroller {
     height:356px;
     overflow-y:auto !important;
     overflow-x:hidden !important;
+}
+
+#commercemultilang-window-product-update .icon-check.green {
+    color:#4BB543;
+}
+#commercemultilang-window-product-update .icon-close.red {
+    color:#FF0000;
 }

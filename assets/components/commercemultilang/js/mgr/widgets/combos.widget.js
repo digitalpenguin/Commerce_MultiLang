@@ -1,3 +1,43 @@
+CommerceMultiLang.combo.ProductType = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        url: CommerceMultiLang.config.connectorUrl
+        ,baseParams: {
+            action: 'mgr/product-type/getlist'
+        }
+        ,fields: ['id','name']
+        ,mode: 'remote'
+        ,displayField: 'name'
+        ,valueField: 'id'
+        ,typeAhead: true
+        ,editable:true
+        ,forceSelection:true
+    });
+    CommerceMultiLang.combo.ProductType.superclass.constructor.call(this,config);
+};
+Ext.extend(CommerceMultiLang.combo.ProductType,MODx.combo.ComboBox);
+Ext.reg('commercemultilang-combo-product-type',CommerceMultiLang.combo.ProductType);
+
+CommerceMultiLang.combo.Language = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        url: CommerceMultiLang.config.connectorUrl
+        ,baseParams: {
+            action: 'mgr/product-type/variation/language/getlist'
+        }
+        ,fields: ['lang_key','name']
+        ,mode: 'remote'
+        ,displayField: 'name'
+        ,valueField: 'lang_key'
+        ,typeAhead: true
+        ,editable:true
+        ,forceSelection:true
+    });
+    CommerceMultiLang.combo.Language.superclass.constructor.call(this,config);
+};
+Ext.extend(CommerceMultiLang.combo.Language,MODx.combo.ComboBox);
+Ext.reg('commercemultilang-combo-language',CommerceMultiLang.combo.Language);
+
 CommerceMultiLang.combo.WeightUnit = function(config) {
     config = config || {};
     Ext.applyIf(config,{

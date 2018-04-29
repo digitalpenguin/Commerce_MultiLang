@@ -2,7 +2,7 @@
 /**
  * @package commercemultilang
  */
-$xpdo_meta_map['CommerceMultiLangProductVariationType']= array (
+$xpdo_meta_map['CommerceMultiLangProductType']= array (
   'package' => 'commercemultilang',
   'version' => '0.1',
   'table' => 'commercemultilang_product_types',
@@ -14,6 +14,7 @@ $xpdo_meta_map['CommerceMultiLangProductVariationType']= array (
   'fields' => 
   array (
     'name' => '',
+    'description' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -24,6 +25,12 @@ $xpdo_meta_map['CommerceMultiLangProductVariationType']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+    ),
+    'description' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => true,
     ),
   ),
   'composites' => 

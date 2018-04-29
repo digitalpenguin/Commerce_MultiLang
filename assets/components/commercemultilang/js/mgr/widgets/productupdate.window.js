@@ -45,6 +45,12 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                             ,name: 'sku'
                             ,anchor: '100%'
                         },{
+                            xtype: 'commercemultilang-combo-product-type'
+                            ,fieldLabel: _('commercemultilang.product.type')
+                            ,name: 'type'
+                            ,hiddenName: 'type'
+                            ,anchor: '100%'
+                        },{
                             xtype: 'textfield'
                             ,fieldLabel: _('commercemultilang.product.price')
                             ,name: 'price'
@@ -98,7 +104,9 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                     html:'<h2>'+_('commercemultilang.product_variation.product_variations')+'</h2>' +
                     '<p>'+_('commercemultilang.product_variation.intro')+'</p>'
 
-                }]
+                }/*,{
+                    xtype:'commercemultilang-grid-product-update-variations'
+                }*/]
             }]
         }]
     });
@@ -155,7 +163,6 @@ CommerceMultiLang.grid.ProductImages = function(config) {
     Ext.applyIf(config,{
         id: 'commercemultilang-grid-product-images'
         ,url: CommerceMultiLang.config.connectorUrl
-
         ,save_action: 'mgr/product/image/updatefromgrid'
         ,autosave: true
         ,fields: ['id','image','product_id','title','description','languages','alt','main','position']
@@ -183,17 +190,21 @@ CommerceMultiLang.grid.ProductImages = function(config) {
             header: _('commercemultilang.product_image.title')
             ,dataIndex: 'title'
             ,width: 100
-            ,editor: { xtype: 'textfield' }
         },{
             header: _('commercemultilang.product_image.description')
             ,dataIndex: 'description'
             ,width: 200
-            ,editor: { xtype: 'textfield' }
         },{
             header: _('commercemultilang.product_image.main')
             ,dataIndex: 'main'
             ,width: 40
-            ,editor: { xtype: 'textfield' }
+            ,renderer: function(value) {
+                if(value) {
+                    return '<i class="icon green icon-check"></i>';
+                } else {
+                    return '<i class="icon red icon-close">';
+                }
+            }
         },{
             header: _('commercemultilang.product_image.position')
             ,dataIndex: 'position'
@@ -280,7 +291,10 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
                 ,id: this.menu.record.id
             }
             ,listeners: {
-                'success': {fn:function(r) { this.refresh(); },scope:this}
+                'success': {fn:function(r) {
+                        this.refresh();
+                        Ext.getCmp('commercemultilang-grid-products').refresh();
+                    },scope:this}
             }
         });
     }

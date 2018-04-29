@@ -8,7 +8,7 @@ CommerceMultiLang.grid.Products = function(config) {
         }
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','sku','main_image','name','category','category_id','description','price','price_formatted',
+        ,fields: ['id','sku','main_image','name','category','category_id','type','description','price','price_formatted',
             'stock','weight_formatted','weight','weight_unit','target',
             'properties','images','delivery_type','tax_group','langs']
         ,autoHeight: true
@@ -45,6 +45,13 @@ CommerceMultiLang.grid.Products = function(config) {
             ,width: 200
             ,renderer: function(value, meta, record) {
                 return value + ' <span style="color:#888;">(Category ID:' +record.data['category_id']+')</span>';
+            }
+        },{
+            header: _('commercemultilang.product.type')
+            ,dataIndex: 'type'
+            ,width: 200
+            ,renderer: function(value) {
+                return value;
             }
         },{
             header: _('commercemultilang.product.stock')
@@ -188,6 +195,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
         ,width:600
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product/create'
+        ,keys: []
         ,fields: [{
             style:'padding:15px 0'
             ,html:'<h4>Add Product</h4><p>Images and translations can only be added after the product has been created.</p>'
@@ -259,6 +267,16 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         columnWidth: .33
                         ,layout: 'form'
                         ,items: [{
+                            xtype: 'commercemultilang-combo-product-type'
+                            ,fieldLabel: _('commercemultilang.product.type')
+                            ,name: 'type'
+                            ,hiddenName: 'type'
+                            ,anchor: '100%'
+                        }]
+                    },{
+                        columnWidth: .33
+                        ,layout: 'form'
+                        ,items: [{
                             xtype: 'textfield'
                             ,fieldLabel: _('commercemultilang.product.stock')
                             ,name: 'stock'
@@ -266,7 +284,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             ,value: 1
                         }]
                     },{
-                        columnWidth: .33
+                        columnWidth: .20
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
@@ -276,11 +294,11 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                             ,value: 1
                         }]
                     },{
-                        columnWidth: .33
+                        columnWidth: .13
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'commercemultilang-combo-weightunit'
-                            ,fieldLabel: _('commercemultilang.product.weight_unit')
+                            ,fieldLabel: _('commercemultilang.product.unit')
                             ,name: 'weight_unit'
                             ,hiddenName: 'weight_unit'
                             ,anchor: '100%'
