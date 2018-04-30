@@ -121,13 +121,13 @@ CommerceMultiLang.combo.Category = function(config) {
 Ext.extend(CommerceMultiLang.combo.Category,MODx.combo.ComboBox);
 Ext.reg('commercemultilang-combo-category',CommerceMultiLang.combo.Category);
 
-CommerceMultiLang.combo.RelatedProducts = function (config, getStore) {
+CommerceMultiLang.combo.Categories = function (config, getStore) {
     config = config || {};
     Ext.applyIf(config, {
-        name:'products[]'
-        ,displayField: 'name'
+        name:'categories[]'
+        ,displayField: 'pagetitle'
         ,valueField: 'id'
-        ,fields: ['name', 'id']
+        ,fields: ['pagetitle', 'id']
         ,mode: 'remote'
         ,triggerAction: 'all'
         ,forceSelection: true
@@ -137,7 +137,7 @@ CommerceMultiLang.combo.RelatedProducts = function (config, getStore) {
         ,pageSize: 20
         ,url: CommerceMultiLang.config.connectorUrl
         ,baseParams:{
-            action: 'mgr/product/getList'
+            action: 'mgr/product/category/getList'
         }
         ,minChars:0
         ,lazyInit: false
@@ -165,11 +165,11 @@ CommerceMultiLang.combo.RelatedProducts = function (config, getStore) {
         return config.store;
     }
 
-    CommerceMultiLang.combo.RelatedProducts.superclass.constructor.call(this, config);
+    CommerceMultiLang.combo.Categories.superclass.constructor.call(this, config);
     this.config = config;
     return this;
 };
-Ext.extend(CommerceMultiLang.combo.RelatedProducts, Ext.ux.form.SuperBoxSelect,{
+Ext.extend(CommerceMultiLang.combo.Categories, Ext.ux.form.SuperBoxSelect,{
     addItemBox : function(itemVal,itemDisplay,itemCaption, itemClass, itemStyle) {
         var hConfig, parseStyle = function(s){
             var ret = '';
@@ -248,4 +248,4 @@ Ext.extend(CommerceMultiLang.combo.RelatedProducts, Ext.ux.form.SuperBoxSelect,{
         this.applyEmptyText().autoSize().manageClearBtn().validateValue();
     }
 });
-Ext.reg('commercemultilang-combo-relatedproducts', CommerceMultiLang.combo.RelatedProducts);
+Ext.reg('commercemultilang-combo-categories', CommerceMultiLang.combo.Categories);

@@ -19,6 +19,7 @@ $_lang['commercemultilang.product.intro_msg'] = 'Manage your products.';
 $_lang['commercemultilang.product.name'] = 'Name';
 $_lang['commercemultilang.product.sku'] = 'SKU';
 $_lang['commercemultilang.product.type'] = 'Type';
+$_lang['commercemultilang.product.alias'] = 'Alias';
 $_lang['commercemultilang.product.stock'] = 'Stock';
 $_lang['commercemultilang.product.variations_intro'] = 'Specify Product Variations that are available to your products. Create a product type and then assign product variations to it.<br> For example, if your product type is clothing then you might want a "size" variation so you can have the same product with different sizes for sale.';
 $_lang['commercemultilang.product.image'] = 'Image';

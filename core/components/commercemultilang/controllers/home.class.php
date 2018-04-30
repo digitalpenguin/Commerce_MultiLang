@@ -7,8 +7,24 @@ require_once dirname(dirname(__FILE__)) . '/index.class.php';
  * @subpackage controllers
  */
 class CommerceMultiLangHomeManagerController extends CommerceMultiLangBaseManagerController {
-    public function process(array $scriptProperties = array()) {
+    public function loadRichTextEditor() {
+        $useEditor = $this->modx->getOption('use_editor');
+        $whichEditor = $this->modx->getOption('which_editor');
+        if ($useEditor && !empty($whichEditor)) {
+            // invoke the OnRichTextEditorInit event
+            $onRichTextEditorInit = $this->modx->invokeEvent('OnRichTextEditorInit',array(
+                'editor' => $whichEditor, // Not necessary for Redactor
+                'elements' => array('foo'), // Not necessary for Redactor
+            ));
+            if (is_array($onRichTextEditorInit)) {
+                $onRichTextEditorInit = implode('', $onRichTextEditorInit);
+            }
+            $this->setPlaceholder('onRichTextEditorInit', $onRichTextEditorInit);
+        }
+    }
 
+    public function process(array $scriptProperties = array()) {
+        $this->loadRichTextEditor();
     }
     public function getPageTitle() { return $this->modx->lexicon('commercemultilang'); }
     public function loadCustomCssJs() {

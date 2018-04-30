@@ -9,7 +9,7 @@ CommerceMultiLang.grid.Products = function(config) {
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
         ,fields: ['id','sku','main_image','name','category','category_id','type','description','price','price_formatted',
-            'stock','weight_formatted','weight','weight_unit','target',
+            'stock','weight_formatted','weight','weight_unit','target','size','color', 'product_listing','alias',
             'properties','images','delivery_type','tax_group','langs']
         ,autoHeight: true
         ,paging: true
@@ -50,9 +50,11 @@ CommerceMultiLang.grid.Products = function(config) {
             header: _('commercemultilang.product.type')
             ,dataIndex: 'type'
             ,width: 200
-            ,renderer: function(value) {
-                return value;
-            }
+
+        },{
+            header: _('commercemultilang.product.alias')
+            ,dataIndex: 'alias'
+            ,width: 160
         },{
             header: _('commercemultilang.product.stock')
             ,dataIndex: 'stock'
@@ -114,51 +116,66 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
     }
     
     ,createProduct: function(btn,e) {
-
-        var createProduct = MODx.load({
-            xtype: 'commercemultilang-window-product-create'
-            ,listeners: {
-                'success': {fn:function() { this.refresh(); },scope:this}
-            }
-        });
-        //createProduct.addLanguageTabs(this.store.reader.jsonData.languages);
-        createProduct.addCategoryLanguage(this.store.reader.jsonData.default_language,this.store.reader.jsonData.default_context);
-        createProduct.show(e.target);
+        var win = Ext.getCmp('commercemultilang-window-product-create');
+        if(win) {
+            win.show(e.target);
+        } else {
+            var createProduct = MODx.load({
+                xtype: 'commercemultilang-window-product-create'
+                ,id:'commercemultilang-window-product-create'
+                ,listeners: {
+                    'success': {fn:function() { this.refresh(); },scope:this}
+                }
+            });
+            //createProduct.addLanguageTabs(this.store.reader.jsonData.languages);
+            createProduct.addCategoryLanguage(this.store.reader.jsonData.default_language,this.store.reader.jsonData.default_context);
+            createProduct.show(e.target);
+        }
     }
 
     ,updateProduct: function(btn,e,isUpdate) {
         if (!this.menu.record || !this.menu.record.id) return false;
-
-        var updateProduct = MODx.load({
-            xtype: 'commercemultilang-window-product-update'
-            ,title: _('commercemultilang.product.update')
-            ,action: 'mgr/product/update'
-            ,record: this.menu.record
-            ,listeners: {
-                'success': {fn:function() { this.refresh(); },scope:this}
-            }
-        });
-
-        updateProduct.fp.getForm().reset();
-        updateProduct.record.languages = this.store.reader.jsonData.languages;
-        updateProduct.record.product_id = this.menu.record.id;
-        updateProduct.fp.getForm().setValues(this.menu.record);
-
-        updateProduct.show(e.target);
-        var record = this.menu.record;
-        var langTabs = this.store.reader.jsonData.languages;
-        langTabs.forEach(function(langTab,index) {
-            record.langs.forEach(function(lang,index) {
-                if(langTab.lang_key === lang.lang_key) {
-                    //console.log(lang);
-                    langTab['fields'] = lang;
+        var win = Ext.getCmp('commercemultilang-window-product-update');
+        if(win) {
+            win.show(e.target);
+        } else {
+            var updateProduct = MODx.load({
+                xtype: 'commercemultilang-window-product-update'
+                , title: _('commercemultilang.product.update')
+                ,id: 'commercemultilang-window-product-update'
+                , action: 'mgr/product/update'
+                , record: this.menu.record
+                , listeners: {
+                    'success': {
+                        fn: function () {
+                            this.refresh();
+                        }, scope: this
+                    }
                 }
             });
-            //console.log(langTabs);
-        });
 
-        updateProduct.addLanguageTabs(langTabs);
-        updateProduct.doLayout();
+            updateProduct.fp.getForm().reset();
+            updateProduct.record.languages = this.store.reader.jsonData.languages;
+            updateProduct.record.product_id = this.menu.record.id;
+            updateProduct.fp.getForm().setValues(this.menu.record);
+
+
+            var record = this.menu.record;
+            var langTabs = this.store.reader.jsonData.languages;
+            langTabs.forEach(function (langTab, index) {
+                record.langs.forEach(function (lang, index) {
+                    if (langTab.lang_key === lang.lang_key) {
+                        //console.log(lang);
+                        langTab['fields'] = lang;
+                    }
+                });
+                //console.log(langTabs);
+            });
+
+            updateProduct.addLanguageTabs(langTabs);
+            updateProduct.show(e.target);
+            updateProduct.doLayout();
+        }
     }
     
     ,removeProduct: function(btn,e) {
@@ -219,7 +236,15 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                     ,items: [{
                         columnWidth: .66
                         ,layout: 'form'
-                        ,items: [{
+                        ,items: [/*{
+                            xtype:'commercemultilang-combo-categories'
+                            ,fieldLabel: 'Categories'
+                            ,anchor: '100%'
+                            ,id: 'commercemultilang-combo-categories'
+
+                            ,name: 'categories'
+                            ,hiddenName: 'categories[]'
+                        },*/{
                             xtype: 'textfield'
                             ,fieldLabel: _('name')
                             ,name: 'name'

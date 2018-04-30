@@ -26,13 +26,10 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
         $productData = $this->modx->getObject('CommerceMultiLangProductData',array(
             'product_id' => $this->object->get('id')
         ));
-        $productDataArray = $productData->toArray();
-        $this->modx->log(1,print_r($productDataArray,true));
         foreach($this->getProperties() as $key => $value) {
             if($key == 'id') continue; // don't use comProduct id as data id
             $productData->set($key,$value);
         }
-        $this->modx->log(1,print_r($productData->toArray(),true));
         $productData->save();
 
         // Grabs related language table

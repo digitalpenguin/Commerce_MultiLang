@@ -87,12 +87,15 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
         ));
         $c->select('CommerceMultiLangProduct.*,
                     ProductData.type,
+                    ProductData.product_listing,
+                    ProductData.alias,
                     ProductImageLanguage.image AS main_image,
                     Category.pagetitle AS category,
                     Category.id AS category_id');
         $c->where(array(
-            'removed:='=>0,
-            'AND:CommerceMultiLangProduct.class_key:!='=>'comProduct'
+            'removed:=' =>  0,
+            'AND:CommerceMultiLangProduct.class_key:!='=>'comProduct',
+            'AND:ProductData.product_listing:=' =>  1
         ));
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());

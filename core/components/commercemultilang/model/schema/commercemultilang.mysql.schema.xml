@@ -11,7 +11,10 @@
     <object class="CommerceMultiLangProductData" table="commercemultilang_product_data" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="alias" dbtype="varchar" precision="190" phptype="string" null="false" default="" index="index" />
+        <field key="product_listing" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false"/>
         <field key="type" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" />
+        <field key="size" dbtype="varchar" precision="190" phptype="string" null="true" />
+        <field key="color" dbtype="varchar" precision="190" phptype="string" null="true" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
@@ -51,7 +54,6 @@
         <field key="type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
         <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" index="index" />
-        <field key="value" dbtype="text" phptype="string" null="true" />
         <aggregate alias="ProductType" class="CommerceMultiLangProductType" local="product_type_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
     <!--<object class="CommerceMultiLangFlatRow" table="commercemultilang_flat_rows" extends="xPDOSimpleObject">

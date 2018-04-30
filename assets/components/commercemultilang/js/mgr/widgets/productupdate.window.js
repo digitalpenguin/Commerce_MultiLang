@@ -61,16 +61,28 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                             ,name: 'stock'
                             ,anchor: '100%'
                         },{
-                            xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.weight')
-                            ,name: 'weight'
-                            ,anchor: '100%'
-                        },{
-                            xtype: 'commercemultilang-combo-weightunit'
-                            ,fieldLabel: _('commercemultilang.product.weight_unit')
-                            ,name: 'weight_unit'
-                            ,hiddenName: 'weight_unit'
-                            ,anchor: '100%'
+                            layout: 'column'
+                            ,border: false
+                            ,items: [{
+                                columnWidth: .66
+                                ,layout: 'form'
+                                ,items: [{
+                                    xtype: 'textfield'
+                                    ,fieldLabel: _('commercemultilang.product.weight')
+                                    ,name: 'weight'
+                                    ,anchor: '100%'
+                                }]
+                            },{
+                                columnWidth: .33
+                                ,layout: 'form'
+                                ,items: [{
+                                    xtype: 'commercemultilang-combo-weightunit'
+                                    ,fieldLabel: _('commercemultilang.product.weight_unit')
+                                    ,name: 'weight_unit'
+                                    ,hiddenName: 'weight_unit'
+                                    ,anchor: '100%'
+                                }]
+                            }]
                         },{
                             xtype: 'commercemultilang-combo-deliverytype'
                             ,fieldLabel: _('commercemultilang.product.delivery_type')
@@ -104,13 +116,24 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                     html:'<h2>'+_('commercemultilang.product_variation.product_variations')+'</h2>' +
                     '<p>'+_('commercemultilang.product_variation.intro')+'</p>'
 
-                }/*,{
+                },{
                     xtype:'commercemultilang-grid-product-update-variations'
-                }*/]
+                    ,preventRender: true
+                    ,cls: 'main-wrapper'
+                }]
             }]
         }]
     });
     CommerceMultiLang.window.ProductUpdate.superclass.constructor.call(this,config);
+    this.on('afterrender', function() {
+        var languages = this.config.record.languages;
+        languages.forEach(function (language, index) {
+            if (MODx.loadRTE) {
+                MODx.loadRTE('product-description-'+language.lang_key);
+            }
+        });
+
+    });
 };
 Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
     addLanguageTabs: function(langTabs) {
@@ -126,7 +149,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                     ,fieldLabel: _('name')
                     ,name: 'name_'+langTab['lang_key']
                     ,value: langTab.fields ? langTab.fields['name']: ''
-                    ,anchor: '100%'
+                    ,anchor: '50%'
                 },{
                     xtype: 'commercemultilang-combo-category'
                     ,fieldLabel: _('commercemultilang.product.category')
@@ -134,10 +157,37 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                     ,name: 'category_'+langTab['lang_key']
                     ,hiddenName: 'category_'+langTab['lang_key']
                     ,value: langTab.fields ? langTab.fields['category']: ''
-                    ,anchor: '100%'
+                    ,anchor: '50%'
+                },{
+                    layout: 'column'
+                    ,forceLayout:true // important! if not added new tabs will not submit.
+                    ,border: false
+                    ,anchor:'50%'
+                    ,items: [{
+                        columnWidth: .5
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,fieldLabel: 'Size'
+                            ,name: 'size_'+langTab['lang_key']
+                            ,value: langTab.fields ? langTab.fields['size']: ''
+                            ,anchor: '100%'
+                        }]
+                    },{
+                        columnWidth: .5
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,fieldLabel: 'Colour'
+                            ,name: 'color_'+langTab['lang_key']
+                            ,value: langTab.fields ? langTab.fields['color']: ''
+                            ,anchor: '100%'
+                        }]
+                    }]
                 },{
                     xtype: 'textarea'
                     ,fieldLabel: _('description')
+                    ,id:'product-description-'+langTab['lang_key']
                     ,name: 'description_'+langTab['lang_key']
                     ,value: langTab.fields ? langTab.fields['description']: ''
                     ,anchor: '100%'
@@ -145,6 +195,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             }];
 
             tabs.add(tab);
+
             // Set the current language on the category combo
             var comboStore = Ext.getCmp('product-update-category-combo'+langTab['lang_key']).getStore();
             comboStore.setBaseParam('lang_key',langTab['lang_key']);

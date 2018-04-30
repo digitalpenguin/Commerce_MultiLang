@@ -9,9 +9,9 @@ CommerceMultiLang.grid.ProductUpdateVariations = function(config) {
         id: 'commercemultilang-grid-product-update-variations'
         ,url: CommerceMultiLang.config.connectorUrl
         ,baseParams:{
-            action: 'mgr/product/variation/getlist'
+            action: 'mgr/product-type/variation/getlist'
         }
-        ,save_action: 'mgr/product/variation/updatefromgrid'
+        ,save_action: 'mgr/product-type/variation/updatefromgrid'
         ,autosave: true
         ,fields: ['id','image','product_id','title','description','languages','alt','main','position']
         ,autoHeight: true
@@ -130,3 +130,33 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
     }
 });
 Ext.reg('commercemultilang-grid-product-update-variations',CommerceMultiLang.grid.ProductUpdateVariations);
+
+CommerceMultiLang.window.ProductVariation = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('commercemultilang.product_type.create')
+        ,id:'commercemultilang-window-product-variation'
+        ,closeAction: 'close'
+        ,url: CommerceMultiLang.config.connectorUrl
+        ,action: 'mgr/product-type/variation/create'
+        ,keys: []
+        ,fields: [{
+            xtype: 'textfield'
+            ,name: 'id'
+            ,hidden: true
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('commercemultilang.product_type.name')
+            ,name: 'name'
+            ,anchor: '100%'
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('description')
+            ,name: 'description'
+            ,anchor: '100%'
+        }]
+    });
+    CommerceMultiLang.window.ProductVariation.superclass.constructor.call(this,config);
+};
+Ext.extend(CommerceMultiLang.window.ProductVariation,MODx.Window);
+Ext.reg('commercemultilang-window-product-variation',CommerceMultiLang.window.ProductVariation);

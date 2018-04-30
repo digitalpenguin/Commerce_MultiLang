@@ -15,7 +15,10 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
   array (
     'product_id' => NULL,
     'alias' => '',
+    'product_listing' => NULL,
     'type' => NULL,
+    'size' => NULL,
+    'color' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -37,12 +40,34 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
       'default' => '',
       'index' => 'index',
     ),
+    'product_listing' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+    ),
     'type' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
+      'null' => true,
+    ),
+    'size' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '190',
+      'phptype' => 'string',
+      'null' => true,
+    ),
+    'color' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '190',
+      'phptype' => 'string',
       'null' => true,
     ),
   ),

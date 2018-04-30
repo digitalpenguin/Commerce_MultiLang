@@ -39,10 +39,6 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
     }
 
     public function beforeSave() {
-        $name = $this->getProperty('name');
-        if (empty($name)) {
-            $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_name_ns'));
-        }
         $this->generateProductAlias($this->object->get('name'));
         return parent::beforeSave();
     }
@@ -92,6 +88,7 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
         $productData = $this->modx->newObject('CommerceMultiLangProductData');
         $productData->set('product_id',$this->object->get('id'));
         $productData->set('alias', $this->alias);
+        $productData->set('product_listing',1);
         foreach($this->getProperties() as $key => $value) {
             $productData->set($key,$value);
         }
