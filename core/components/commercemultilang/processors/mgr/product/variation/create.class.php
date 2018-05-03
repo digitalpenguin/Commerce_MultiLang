@@ -1,63 +1,47 @@
 <?php
+require dirname(dirname(__FILE__)).'/create.class.php';
 /**
  * Create a Product
  * 
  * @package commercemultilang
  * @subpackage processors
  */
-class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
-    public $classKey = 'CommerceMultiLangProduct';
-    public $languageTopics = array('commercemultilang:default');
-    public $objectType = 'commercemultilang.product';
-    protected $langKeys = array();
-    protected $alias;
-    //protected $flatRowData = array();
-
-    protected function getLanguages() {
-        $c = $this->modx->newQuery('modContext');
-        $c->leftJoin('modContextSetting','ContextSettings','modContext.key=ContextSettings.context_key');
-        $c->select('modContext.key,ContextSettings.key as setting_key,ContextSettings.value as lang_key');
-        $c->where(array(
-            'modContext.key:!=' => 'mgr',
-            'AND:ContextSettings.key:=' => 'cultureKey'
-        ));
-        $contexts = $this->modx->getCollection('modContext',$c);
-        foreach ($contexts as $context) {
-            $contextArray = $context->toArray();
-            //$this->modx->log(1,print_r($contextArray,true));
-            $lang = array();
-            $lang['context_key'] = $contextArray['key'];
-            $lang['lang_key'] = $contextArray['lang_key'];
-            $lang['name'] = $contextArray['name'];
-            array_push($this->langKeys,$lang);
-        }
-    }
+class CommerceMultiLangProductChildCreateProcessor extends CommerceMultiLangProductCreateProcessor {
+    protected $parentObj = null;
+    protected $variationData = array();
 
     public function initialize() {
         $this->getLanguages();
+        $this->loadParentProduct();
         return parent::initialize();
     }
 
-    public function beforeSave() {
-        $this->generateProductAlias($this->object->get('name'));
-        return parent::beforeSave();
+    protected function loadParentProduct() {
+        $this->parentObj = $this->modx->getObject($this->classKey, array('id' => $this->getProperty('parent')));
     }
 
-    protected function generateProductAlias($text) {
-        $letters = array(
-            '–', '"','\'', '«', '»', '&', '÷', '>','<', '$', '/'
-        );
-        $text = str_replace($letters, " ", $text);
-        $text = str_replace("&", "and", $text);
-        $text = str_replace("?", "", $text);
-        $alias = strtolower(str_replace(" ", "-", $text));
-        $count = $this->modx->getCount('CommerceMultiLangProductData',array(
-            'alias' => $alias
-        ));
-        if ($count) {
-            $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_alias_ae'));
-        }
-        $this->alias = $alias;
+    public function beforeSet() {
+        // Make sure we've got the parent.
+        if(!$this->parentObj) return $this->failure('Unable to load parent product.');
+
+        //TODO: Duplicate parent values into new object.
+        //TODO: Read variation fields for this product type, then set those values.
+
+        return parent::beforeSet();
+    }
+
+    protected function getVariationFields() {
+        //$this->modx->log(1,$this->getProperty('parent_id'));
+    }
+
+    public function beforeSave() {
+
+        $variations = $this->getVariationFields();
+
+        //$aliasText = $this->object->get('name').'-'.$this->object->''
+        $this->generateProductAlias($this->object->get('name'));
+        //return parent::beforeSave();
+        return false;
     }
 
     public function afterSave() {
@@ -99,22 +83,21 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
         return parent::afterSave();
     }
 
-
     public function setProductListing($productData) {
-        $productData->set('product_listing',1);
+        $productData->set('product_listing',0);
+        $productData->set('parent',$this->getProperty('parent_id'));
         return $productData;
     }
 
     /**
-     * EXPERIMENTAL - experimental function for creating a flat row on save. Not yet functional and not decided yet
-     * if it's a good way to go. Also requires the included plugin loadFlatRow which should be loaded at the onMODXInit
-     * system event. It will load the table into xpdo when modx initialises.
+     * Creates a new column directly on the DB table to represent the new variation.
      */
-    /*protected function createFlatRow() {
-        $class = 'CommerceMultiLangFlatRow';
+    protected function createVariationColumns() {
+        $class = 'CommerceMultiLangProductLanguage';
         $tableName = $this->modx->escape($this->modx->getTableName($class));
-        $productArray = $this->flatRowData['product']->toArray();
-        $productDataArray = $this->flatRowData['productData']->toArray();
+
+        $productArray = $this->variationData['product']->toArray();
+        $productDataArray = $this->variationData['productData']->toArray();
         $fieldRow = array();
         $fieldRow['product_id'] = $productArray['id'];
         foreach($productArray as $k=>$v) {
@@ -164,7 +147,7 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
             $newRow->set($k,$field);
         }
         $newRow->save();
-    }*/
+    }
 
     /**
      * loadXpdoField - required by the experimental function loadFlatRow
@@ -175,7 +158,7 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
      * @param bool $index
      *
      */
-    /*protected function loadXpdoField($class,$field,$dbType,$phpType,$index=false) {
+    protected function loadXpdoField($class,$field,$dbType,$phpType,$index=false) {
         if (!isset($this->modx->map[$class]['fieldMeta'][$field])) {
             $this->modx->map[$class]['fields'][$field] = 0;
             $this->modx->map[$class]['fieldMeta'][$field] = array(
@@ -191,8 +174,8 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
                 $this->modx->map[$class]['fieldMeta'][$field]['precision'] = 190;
             }
         }
-    }*/
+    }
 
 
 }
-return 'CommerceMultiLangProductCreateProcessor';
+return 'CommerceMultiLangProductChildCreateProcessor';

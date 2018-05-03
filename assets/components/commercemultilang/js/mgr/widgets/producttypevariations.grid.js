@@ -13,7 +13,7 @@ CommerceMultiLang.grid.ProductTypeVariations = function(config) {
         }
         ,save_action: 'mgr/product-type/variation/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','name','lang_key','position']
+        ,fields: ['id','name','position']
         ,autoHeight: true
         ,paging: true
         ,pageSize: 10
@@ -27,11 +27,6 @@ CommerceMultiLang.grid.ProductTypeVariations = function(config) {
             ,dataIndex: 'name'
             ,width: 200
             ,editor: { xtype: 'textfield' }
-        },{
-            header: _('commercemultilang.product_type_variation.language')
-            ,dataIndex: 'lang_key'
-            ,width: 100
-            ,editor: { xtype: 'textarea' }
         },{
             header: _('commercemultilang.product_type_variation.position')
             ,dataIndex: 'position'
@@ -152,12 +147,6 @@ CommerceMultiLang.window.ProductTypeVariationCreate = function(config) {
             xtype: 'textfield'
             ,name: 'id'
             ,hidden: true
-        },{
-            xtype: 'commercemultilang-combo-language'
-            ,fieldLabel: 'Language'//_('commercemultilang.product_type_variation.language')
-            ,name: 'lang_key'
-            ,hiddenName: 'lang_key'
-            ,anchor: '100%'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('commercemultilang.product_type_variation.name')

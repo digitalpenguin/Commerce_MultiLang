@@ -6,15 +6,15 @@
         <composite alias="ProductImage" class="CommerceMultiLangProductImage" local="id" foreign="product_id" cardinality="many" owner="local" />
         <!--<composite alias="Flat Row" class="CommerceMultiLangFlatRow" local="id" foreign="product_id" cardinality="many" owner="local" />-->
         <composite alias="ProductData" local="id" class="CommerceMultiLangProductData" foreign="product_id" cardinality="one" owner="local" />
+        <composite alias="AssignedVariation" class="CommerceMultiLangAssignedVariation" local="id" foreign="variation_id" cardinality="many" owner="local" />
     </object>
 
     <object class="CommerceMultiLangProductData" table="commercemultilang_product_data" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="alias" dbtype="varchar" precision="190" phptype="string" null="false" default="" index="index" />
         <field key="product_listing" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false"/>
-        <field key="type" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" />
-        <field key="size" dbtype="varchar" precision="190" phptype="string" null="true" />
-        <field key="color" dbtype="varchar" precision="190" phptype="string" null="true" />
+        <field key="type" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" index="index" />
+        <field key="parent" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
@@ -53,9 +53,21 @@
     <object class="CommerceMultiLangProductVariation" table="commercemultilang_product_variations" extends="xPDOSimpleObject">
         <field key="type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
-        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" index="index" />
-        <aggregate alias="ProductType" class="CommerceMultiLangProductType" local="product_type_id" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="ProductType" class="CommerceMultiLangProductType" local="type_id" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="AssignedVariation" class="CommerceMultiLangAssignedVariation" local="id" foreign="variation_id" cardinality="many" owner="local" />
     </object>
+
+    <!-- This is a many to many between the variation and the product-->
+    <object class="CommerceMultiLangAssignedVariation" table="commercemultilang_assigned_product_variations" extends="xPDOSimpleObject">
+        <field key="variation_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" index="index" />
+        <field key="value" dbtype="text" phptype="string" null="true" />
+        <aggregate alias="ProductVariation" class="CommerceMultiLangProductVariation" local="variation_id" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+
     <!--<object class="CommerceMultiLangFlatRow" table="commercemultilang_flat_rows" extends="xPDOSimpleObject">
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />

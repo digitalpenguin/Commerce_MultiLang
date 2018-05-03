@@ -182,23 +182,33 @@ CommerceMultiLang.window.ProductTypeUpdate = function(config) {
             ,name: 'id'
             ,hidden: true
         },{
-            xtype: 'textfield'
-            ,fieldLabel: _('commercemultilang.product_type.name')
-            ,name: 'name'
-            ,anchor: '100%'
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('description')
-            ,name: 'description'
-            ,anchor: '100%'
-        },{
-            xtype: 'commercemultilang-grid-product-type-variations'
-            ,preventRender: true
-            ,baseParams:{
-                action: 'mgr/product-type/variation/getlist'
-                ,type_id: config.record.id
-            }
-
+            layout:'column'
+            ,items:[{
+                columnWidth: .5
+                ,layout:'form'
+                ,items:[{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('commercemultilang.product_type.name')
+                    ,name: 'name'
+                    ,anchor: '100%'
+                },{
+                    xtype: 'textarea'
+                    ,fieldLabel: _('description')
+                    ,name: 'description'
+                    ,anchor: '100%'
+                }]
+            },{
+                columnWidth: .5
+                ,layout:'form'
+                ,items:[{
+                    xtype: 'commercemultilang-grid-product-type-variations'
+                    ,preventRender: true
+                    ,baseParams:{
+                        action: 'mgr/product-type/variation/getlist'
+                        ,type_id: config.record.id
+                    }
+                }]
+            }]
         }]
     });
     CommerceMultiLang.window.ProductTypeUpdate.superclass.constructor.call(this,config);

@@ -2,10 +2,10 @@
 /**
  * @package commercemultilang
  */
-$xpdo_meta_map['CommerceMultiLangProductData']= array (
+$xpdo_meta_map['CommerceMultiLangAssignedVariation']= array (
   'package' => 'commercemultilang',
   'version' => '0.1',
-  'table' => 'commercemultilang_product_data',
+  'table' => 'commercemultilang_assigned_product_variations',
   'extends' => 'xPDOSimpleObject',
   'tableMeta' => 
   array (
@@ -13,14 +13,23 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
   ),
   'fields' => 
   array (
+    'variation_id' => NULL,
     'product_id' => NULL,
-    'alias' => '',
-    'product_listing' => NULL,
-    'type' => NULL,
-    'parent' => 0,
+    'name' => '',
+    'lang_key' => NULL,
+    'value' => NULL,
   ),
   'fieldMeta' => 
   array (
+    'variation_id' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'index' => 'index',
+    ),
     'product_id' => 
     array (
       'dbtype' => 'int',
@@ -30,45 +39,39 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
       'null' => false,
       'index' => 'index',
     ),
-    'alias' => 
+    'name' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '190',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+    ),
+    'lang_key' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '10',
+      'phptype' => 'string',
+      'null' => false,
       'index' => 'index',
     ),
-    'product_listing' => 
+    'value' => 
     array (
-      'dbtype' => 'tinyint',
-      'precision' => '1',
-      'attributes' => 'unsigned',
-      'phptype' => 'integer',
-      'null' => false,
-    ),
-    'type' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'attributes' => 'unsigned',
-      'phptype' => 'integer',
+      'dbtype' => 'text',
+      'phptype' => 'string',
       'null' => true,
-      'index' => 'index',
-    ),
-    'parent' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'attributes' => 'unsigned',
-      'phptype' => 'integer',
-      'null' => false,
-      'default' => 0,
-      'index' => 'index',
     ),
   ),
   'aggregates' => 
   array (
+    'ProductVariation' => 
+    array (
+      'class' => 'CommerceMultiLangProductVariation',
+      'local' => 'variation_id',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
     'Product' => 
     array (
       'class' => 'CommerceMultiLangProduct',

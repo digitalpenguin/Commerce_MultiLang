@@ -7,6 +7,7 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
         ,id:'commercemultilang-window-product-update'
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product/update'
+        ,keys:[]
         ,fields: [{
             xtype: 'modx-tabs'
             ,style:'padding:15px 0 0 0'
@@ -19,6 +20,7 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
             ,items: [{
                 title:'General'
                 ,layout:'form'
+                ,cls: 'main-wrapper'
                 ,items:[{
                     xtype: 'textfield'
                     ,name: 'id'
@@ -112,14 +114,13 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
             },{
                 title:'Variations'
                 ,layout:'form'
+                ,id:'variation-tab'
+                ,cls: 'main-wrapper'
                 ,items:[{
                     html:'<h2>'+_('commercemultilang.product_variation.product_variations')+'</h2>' +
                     '<p>'+_('commercemultilang.product_variation.intro')+'</p>'
 
-                },{
-                    xtype:'commercemultilang-grid-product-update-variations'
-                    ,preventRender: true
-                    ,cls: 'main-wrapper'
+
                 }]
             }]
         }]
@@ -203,6 +204,58 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             comboStore.setBaseParam('lang_name',langTab['name']);
             comboStore.setBaseParam('action','mgr/product/category/getlist');
         });
+    }
+
+    ,createVariationGrid: function(variations) {
+        var grid = new CommerceMultiLang.grid.ProductUpdateVariations({
+            baseParams:{
+                action: 'mgr/product/variation/getlist'
+                ,product_id: this.config.record.id
+            }
+            ,fields: this.getVariationFields(variations)
+            ,columns: this.getVariationColumns(variations)
+        });
+        Ext.getCmp('variation-tab').add(grid);
+    }
+
+    ,getVariationFields: function(variations) {
+        var fields = ['id','image','product_id','name']
+        variations.forEach(function(variation) {
+            fields.push(variation['name']);
+        });
+        return fields;
+    }
+
+    ,getVariationColumns: function(variations) {
+        var columns = [{
+            header: _('id')
+            ,dataIndex: 'id'
+            ,width: 40
+        },{
+            header: _('commercemultilang.product.image')
+            ,dataIndex: 'image'
+            ,fixed:true
+            ,width: 100
+            ,renderer: function(value, meta, record) {
+                if(value) {
+                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="/' + value + '" />';
+                } else {
+                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
+                }
+            }
+        },{
+            header: _('commercemultilang.product.name')
+            ,dataIndex: 'name'
+        }];
+        variations.forEach(function(variation) {
+            var newCol = {
+                header: variation['name'],
+                dataIndex: variation['name'],
+            };
+            columns.push(newCol);
+        });
+
+        return columns;
     }
 });
 Ext.reg('commercemultilang-window-product-update',CommerceMultiLang.window.ProductUpdate);

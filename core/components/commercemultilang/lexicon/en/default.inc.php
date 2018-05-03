@@ -21,6 +21,8 @@ $_lang['commercemultilang.product.sku'] = 'SKU';
 $_lang['commercemultilang.product.type'] = 'Type';
 $_lang['commercemultilang.product.alias'] = 'Alias';
 $_lang['commercemultilang.product.stock'] = 'Stock';
+$_lang['commercemultilang.product.colour'] = 'Colour';
+$_lang['commercemultilang.product.size'] = 'Size';
 $_lang['commercemultilang.product.variations_intro'] = 'Specify Product Variations that are available to your products. Create a product type and then assign product variations to it.<br> For example, if your product type is clothing then you might want a "size" variation so you can have the same product with different sizes for sale.';
 $_lang['commercemultilang.product.image'] = 'Image';
 $_lang['commercemultilang.product.description'] = 'Description';
@@ -86,6 +88,7 @@ $_lang['commercemultilang.err.product_type_save'] = 'An error occurred while try
 
 /* Product Type Variations */
 $_lang['commercemultilang.product_type_variation.name'] = 'Name';
+$_lang['commercemultilang.product_type_variation.value'] = 'Value';
 $_lang['commercemultilang.product_type_variation.language'] = 'Language';
 $_lang['commercemultilang.product_type_variation.description'] = 'Description';
 $_lang['commercemultilang.product_type_variation.position'] = 'Position';

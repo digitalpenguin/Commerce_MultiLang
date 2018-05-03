@@ -165,16 +165,30 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
             langTabs.forEach(function (langTab, index) {
                 record.langs.forEach(function (lang, index) {
                     if (langTab.lang_key === lang.lang_key) {
-                        //console.log(lang);
                         langTab['fields'] = lang;
                     }
                 });
-                //console.log(langTabs);
+            });
+
+            // Grab variation names for this product
+            var variations = null;
+            MODx.Ajax.request({
+                url: this.config.url
+                ,params: {
+                    action: 'mgr/product/variation/getcolumns'
+                    ,product_id: this.menu.record.id
+                }
+                ,listeners: {
+                    'success': {fn:function(r) {
+                            variations = r.results;
+                            updateProduct.createVariationGrid(variations);
+                            updateProduct.doLayout();
+                        },scope:this}
+                }
             });
 
             updateProduct.addLanguageTabs(langTabs);
             updateProduct.show(e.target);
-            updateProduct.doLayout();
         }
     }
     

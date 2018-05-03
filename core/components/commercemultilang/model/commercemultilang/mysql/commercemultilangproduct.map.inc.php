@@ -43,5 +43,13 @@ $xpdo_meta_map['CommerceMultiLangProduct']= array (
       'cardinality' => 'one',
       'owner' => 'local',
     ),
+    'AssignedVariation' => 
+    array (
+      'class' => 'CommerceMultiLangAssignedVariation',
+      'local' => 'id',
+      'foreign' => 'variation_id',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
   ),
 );
