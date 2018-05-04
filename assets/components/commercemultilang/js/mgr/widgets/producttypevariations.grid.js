@@ -42,6 +42,8 @@ CommerceMultiLang.grid.ProductTypeVariations = function(config) {
         ,listeners: {
             'render': function(grid) {
                 grid.type_id = Ext.getCmp('commercemultilang-window-product-type-update').config.record.type_id;
+                grid.store.setBaseParam('action','mgr/product-type/variation/getlist');
+                grid.store.setBaseParam('type_id',grid.type_id);
             }
         }
     });

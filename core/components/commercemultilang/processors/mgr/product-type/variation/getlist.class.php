@@ -11,5 +11,10 @@ class CommerceMultiLangProductVariationGetListProcessor extends modObjectGetList
     public $defaultSortField = 'id';
     public $defaultSortDirection = 'ASC';
     public $objectType = 'commercemultilang.productvariation';
+
+    public function prepareQueryBeforeCount(xPDOQuery $c) {
+        $c->where(array('type_id'=>$this->getProperty('type_id')));
+        return parent::prepareQueryBeforeCount($c);
+    }
 }
 return 'CommerceMultiLangProductVariationGetListProcessor';
