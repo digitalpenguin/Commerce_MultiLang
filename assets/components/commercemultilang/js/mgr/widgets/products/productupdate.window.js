@@ -7,6 +7,7 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
         ,id:'commercemultilang-window-product-update'
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product/update'
+        ,allowDrop:false // Must be turned off to prevent vtabs error!
         ,keys:[]
         ,fields: [{
             xtype: 'modx-tabs'
@@ -137,64 +138,78 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
     });
 };
 Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
-    addLanguageTabs: function(langTabs) {
+
+    /**
+     * This function generates each language tab in the update window.
+     * It needs to be run before the window is shown so everything is rendered correctly.
+     * @param langTabs
+     * @param variations
+     */
+    addLanguageTabs: function(langTabs,variations) {
         var tabs = Ext.getCmp('product-update-window-tabs');
-        //console.log(langTabs);
         langTabs.forEach(function(langTab) {
+            var fields = [];
+            variations.forEach(function(variation){
+                var field = new Ext.form.TextField({
+                    fieldLabel: variation['name']
+                    ,id: variation['name']+'_' + langTab['lang_key']
+                    ,name: variation['name'] + '_' + langTab['lang_key']
+                    ,value: langTab.fields ? langTab.fields[variation['name'] + '_' + langTab['lang_key']] : ''
+                    ,anchor: '80%'
+                });
+                fields.push(field);
+            });
+
             var tab = [{
                 title: langTab['name']+' ('+langTab['lang_key']+')'
                 ,layout:'form'
+                ,cls:'language-tab'
                 ,forceLayout:true // important! if not added new tabs will not submit.
                 ,items:[{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('name')
-                    ,name: 'name_'+langTab['lang_key']
-                    ,value: langTab.fields ? langTab.fields['name']: ''
-                    ,anchor: '50%'
+                    html:'<h2 style="margin:20px 15px">'+ langTab['name']+' ('+langTab['lang_key']+')' +'</h2>'
                 },{
-                    xtype: 'commercemultilang-combo-category'
-                    ,fieldLabel: _('commercemultilang.product.category')
-                    ,id: 'product-update-category-combo'+langTab['lang_key']
-                    ,name: 'category_'+langTab['lang_key']
-                    ,hiddenName: 'category_'+langTab['lang_key']
-                    ,value: langTab.fields ? langTab.fields['category']: ''
-                    ,anchor: '50%'
-                },{
-                    layout: 'column'
-                    ,forceLayout:true // important! if not added new tabs will not submit.
-                    ,border: false
-                    ,anchor:'50%'
-                    ,items: [{
-                        columnWidth: .5
-                        ,layout: 'form'
-                        ,items: [{
+                    xtype: 'modx-vtabs'
+                    ,defaults: { border: false ,autoHeight: true }
+                    ,border: true
+
+                    ,items:[{
+                        title: 'Main'
+                        ,layout:'form'
+                        ,forceLayout:true
+                        ,cls: 'main-wrapper'
+                        ,items:[{
                             xtype: 'textfield'
-                            ,fieldLabel: 'Size'
-                            ,name: 'size_'+langTab['lang_key']
-                            ,value: langTab.fields ? langTab.fields['size']: ''
+                            ,fieldLabel: _('name')
+                            ,name: 'name_'+langTab['lang_key']
+                            ,value: langTab.fields ? langTab.fields['name']: ''
+                            ,anchor: '60%'
+                        },{
+                            xtype: 'commercemultilang-combo-category'
+                            ,fieldLabel: _('commercemultilang.product.category')
+                            ,id: 'product-update-category-combo'+langTab['lang_key']
+                            ,name: 'category_'+langTab['lang_key']
+                            ,hiddenName: 'category_'+langTab['lang_key']
+                            ,value: langTab.fields ? langTab.fields['category']: ''
+                            ,anchor: '60%'
+                        },{
+                            xtype: 'textarea'
+                            ,fieldLabel: _('description')
+                            ,id:'product-description-'+langTab['lang_key']
+                            ,name: 'description_'+langTab['lang_key']
+                            ,value: langTab.fields ? langTab.fields['description']: ''
                             ,anchor: '100%'
                         }]
                     },{
-                        columnWidth: .5
-                        ,layout: 'form'
-                        ,items: [{
-                            xtype: 'textfield'
-                            ,fieldLabel: 'Colour'
-                            ,name: 'color_'+langTab['lang_key']
-                            ,value: langTab.fields ? langTab.fields['color']: ''
-                            ,anchor: '100%'
-                        }]
+                        title: 'Variations'
+                        ,id: 'language-variation-vtab-'+langTab['lang_key']
+                        ,layout:'form'
+                        ,forceLayout:true
+                        ,cls: 'main-wrapper'
+                        ,items: fields
                     }]
-                },{
-                    xtype: 'textarea'
-                    ,fieldLabel: _('description')
-                    ,id:'product-description-'+langTab['lang_key']
-                    ,name: 'description_'+langTab['lang_key']
-                    ,value: langTab.fields ? langTab.fields['description']: ''
-                    ,anchor: '100%'
                 }]
             }];
-
+            //console.log(tab);
             tabs.add(tab);
 
             // Set the current language on the category combo
@@ -212,14 +227,15 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                 action: 'mgr/product/variation/getlist'
                 ,product_id: this.config.record.id
             }
-            ,fields: this.getVariationFields(variations)
+            ,fields: this.getVariationGridFields(variations)
             ,columns: this.getVariationColumns(variations)
         });
         Ext.getCmp('variation-tab').add(grid);
+        return true;
     }
 
-    ,getVariationFields: function(variations) {
-        var fields = ['id','image','product_id','name']
+    ,getVariationGridFields: function(variations) {
+        var fields = ['id','image','product_id','name'];
         variations.forEach(function(variation) {
             fields.push(variation['name']);
         });
@@ -238,7 +254,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             ,width: 100
             ,renderer: function(value, meta, record) {
                 if(value) {
-                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="/' + value + '" />';
+                    return '<img style="max-width:100%;" title="'+record['name']+'"  src=' + value + '"/" />';
                 } else {
                     return '<img style="max-width:100%;" title="'+record['name']+'"  src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }
@@ -285,7 +301,7 @@ CommerceMultiLang.grid.ProductImages = function(config) {
             ,width: 100
             ,renderer: function(value){
                 if(value) {
-                    return '<img style="max-width:100%;" src="/' + value + '" />';
+                    return '<img style="max-width:100%;" src=' + value + '"/" />';
                 } else {
                     return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }
@@ -314,7 +330,7 @@ CommerceMultiLang.grid.ProductImages = function(config) {
             ,dataIndex: 'position'
             ,width: 60
             ,hidden:true
-            ,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
+            //,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
         }]
         ,tbar: ['->',{
             text: _('commercemultilang.product_image.add')

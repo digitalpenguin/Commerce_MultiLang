@@ -32,11 +32,11 @@ class CommerceMultiLangHomeManagerController extends CommerceMultiLangBaseManage
     
         $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/extras/griddraganddrop.js');
         $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/combos.widget.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/productupdatevariations.grid.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/productupdate.window.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/producttypevariations.grid.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/producttypes.grid.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/products.grid.js');
+        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/products/productupdatevariations.grid.js');
+        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/products/productupdate.window.js');
+        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/variations/producttypevariations.grid.js');
+        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/variations/producttypes.grid.js');
+        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/products/products.grid.js');
         $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/home.panel.js');
         $this->addLastJavascript($this->commercemultilang->getOption('jsUrl').'mgr/sections/home.js');
     

@@ -29,7 +29,7 @@ CommerceMultiLang.grid.ProductUpdateVariations = function(config) {
             ,width: 100
             ,renderer: function(value, meta, record) {
                 if(value) {
-                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="/' + value + '" />';
+                    return '<img style="max-width:100%;" title="'+record['name']+'"  src=' + value + '"/" />';
                 } else {
                     return '<img style="max-width:100%;" title="'+record['name']+'"  src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }

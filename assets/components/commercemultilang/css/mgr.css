@@ -17,6 +17,14 @@
     color:#FF0000;
 }
 
+#product-update-window-tabs .x-tab-panel-bwrap {
+    padding:0 !important;
+}
+#product-update-window-tabs .language-tab .x-panel-body.x-panel-body-noheader.x-panel-body-noborder,
+#product-update-window-tabs .language-tab .x-panel.main-wrapper.x-panel-noborder.x-form-label-top{
+    max-width:96% !important;
+}
+
 /*Super Select*/
 .x-superboxselect {
     position: relative;

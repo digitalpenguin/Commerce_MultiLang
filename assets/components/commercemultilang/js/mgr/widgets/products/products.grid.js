@@ -8,9 +8,9 @@ CommerceMultiLang.grid.Products = function(config) {
         }
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','sku','main_image','name','category','category_id','type','description','price','price_formatted',
-            'stock','weight_formatted','weight','weight_unit','target','size','color', 'product_listing','alias',
-            'properties','images','delivery_type','tax_group','langs']
+        ,fields: ['id','sku','main_image','name','category','category_id','type_id','type','type_variations','description','price'
+            ,'price_formatted', 'stock','weight_formatted','weight','weight_unit','target','size','color',
+            'product_listing','alias','properties','images','delivery_type','tax_group','langs']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -25,7 +25,7 @@ CommerceMultiLang.grid.Products = function(config) {
             ,width: 140
             ,renderer: function(value){
                 if(value) {
-                    return '<img style="max-width:100%;" src="/' + value + '" />';
+                    return '<img style="max-width:100%;" src=' + value + '"/" />';
                 } else {
                     return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }
@@ -44,13 +44,15 @@ CommerceMultiLang.grid.Products = function(config) {
             ,dataIndex: 'category'
             ,width: 200
             ,renderer: function(value, meta, record) {
-                return value + ' <span style="color:#888;">(Category ID:' +record.data['category_id']+')</span>';
+                return value + ' <br><span style="color:#888;">(Category ID:' +record.data['category_id']+')</span>';
             }
         },{
             header: _('commercemultilang.product.type')
             ,dataIndex: 'type'
             ,width: 200
-
+            /*,renderer: function(value, meta, record) {
+                return value + ' <br><span style="color:#888;">'+record.data['type_variations']+'</span>';
+            }*/
         },{
             header: _('commercemultilang.product.alias')
             ,dataIndex: 'alias'
@@ -139,6 +141,9 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         if(win) {
             win.show(e.target);
         } else {
+            var mask = new Ext.LoadMask(Ext.get(this.el), {msg:'Loading product...'});
+            mask.show();
+
             var updateProduct = MODx.load({
                 xtype: 'commercemultilang-window-product-update'
                 , title: _('commercemultilang.product.update')
@@ -158,7 +163,6 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
             updateProduct.record.languages = this.store.reader.jsonData.languages;
             updateProduct.record.product_id = this.menu.record.id;
             updateProduct.fp.getForm().setValues(this.menu.record);
-
 
             var record = this.menu.record;
             var langTabs = this.store.reader.jsonData.languages;
@@ -181,14 +185,15 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
                 ,listeners: {
                     'success': {fn:function(r) {
                             variations = r.results;
-                            updateProduct.createVariationGrid(variations);
+                            updateProduct.createVariationGrid(langTabs,variations);
+                            updateProduct.addLanguageTabs(langTabs,variations);
                             updateProduct.doLayout();
+                            mask.hide();
+                            updateProduct.show(e.target);
+
                         },scope:this}
                 }
             });
-
-            updateProduct.addLanguageTabs(langTabs);
-            updateProduct.show(e.target);
         }
     }
     
@@ -215,6 +220,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         this.getBottomToolbar().changePage(1);
         this.refresh();
     }
+
 });
 Ext.reg('commercemultilang-grid-products',CommerceMultiLang.grid.Products);
 

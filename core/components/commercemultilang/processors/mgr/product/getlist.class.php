@@ -120,6 +120,35 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
             array_push($langs,$langArray);
         }
         $row['langs'] = $langs;
+
+        // Display name of product type and associated variations instead of just id
+        /*if($row['type']) {
+            $type = $this->modx->getObject('CommerceMultiLangProductType',array(
+                'id'    =>  $row['type']
+            ));
+            if($type) {
+                $row['type'] = $type->get('name');
+                $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
+                    'type_id'   =>  $type->get('id')
+                ));
+                if($variations) {
+                    $row['type_variations'] .= '<p style="color:#888;">';
+                    $idx=1;
+                    foreach ($variations as $variation) {
+                        if(count($variations) === $idx) {
+                            $row['type_variations'] .= $variation->get('name');
+                        } else {
+                            $row['type_variations'] .= $variation->get('name') . ', ';
+                        }
+                        $idx++;
+                    }
+                    $row['type_variations'] .= '</p>';
+                }
+            }
+
+        } else {
+            //$row['type'] = 'None';
+        }*/
         return $row;
     }
 
