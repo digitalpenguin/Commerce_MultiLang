@@ -30,16 +30,46 @@ class CommerceMultiLangProductChildCreateProcessor extends CommerceMultiLangProd
         return parent::beforeSet();
     }
 
-    protected function getVariationFields() {
-        //$this->modx->log(1,$this->getProperty('parent_id'));
+    protected function loadVariationFields() {
+        //$this->modx->log(1,$this->getProperty('parent'));
+        $productData = $this->modx->getObject('CommerceMultiLangProductData',array(
+            'product_id'    =>  $this->getProperty('parent')
+        ));
+        if(!$productData) {
+            $this->modx->log(1,'Unable to load productData object of parent product.');
+            return false;
+        }
+        $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
+            'type_id'   =>  $productData->get('type')
+        ));
+        if(!$variations) return false;
+
+        foreach($variations as $variation) {
+            array_push($this->variationData,$variation->toArray());
+        }
+        return true;
+
     }
 
     public function beforeSave() {
 
-        $variations = $this->getVariationFields();
+        // Grab new submitted values and overwrite any that were set previously.
+        foreach($this->getProperties() as $key => $value) {
+            $this->object->set($key,$value);
+            $this->modx->log(1,$key.' '.$value);
+        }
 
-        //$aliasText = $this->object->get('name').'-'.$this->object->''
-        $this->generateProductAlias($this->object->get('name'));
+        // Add a count on the end of the new alias
+        $count = $this->modx->getCount('CommerceMultiLangProductData',array(
+            'parent' => $this->getProperty('parent')
+        ));
+        if($count) {
+            $count = $count+1;
+        } else {
+            $count = $count+2;
+        }
+        $this->generateProductAlias($this->object->get('name').$count);
+        //$this->modx->log(1,$count);
         //return parent::beforeSave();
         return false;
     }
