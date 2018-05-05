@@ -103,7 +103,7 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
                     'success': {fn:function() { this.refresh(); },scope:this}
                 }
             });
-            createProduct.addVariationFields();
+            createProduct.addVariationFields(this.config);
             createProduct.show(e.target);
         }
     }
@@ -197,8 +197,23 @@ CommerceMultiLang.window.ProductVariationCreate = function(config) {
             layout: 'column'
             ,border: false
             ,items: [{
-                columnWidth: .5
+                columnWidth: .35
                 ,id:'product-variation-create-left-col'
+                ,layout: 'form'
+                ,items: [{
+                    xtype: 'modx-combo-browser'
+                    ,id: 'update-product-image-select-' + Ext.id()
+                    ,fieldLabel: 'Select Image'
+                    ,name: 'image'
+                    ,anchor:'100%'
+                    ,rootId: '/'
+                    ,rootVisible:true
+                    ,hideSourceCombo: true
+                },{
+                    html:'<img style="max-width:100%; margin-top:10px;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />'
+                }]
+            },{
+                columnWidth: .3
                 ,layout: 'form'
                 ,items: [{
                     xtype: 'textfield'
@@ -222,9 +237,10 @@ CommerceMultiLang.window.ProductVariationCreate = function(config) {
                     ,anchor: '100%'
                 }]
             },{
-                columnWidth: .5
+                columnWidth: .35
                 ,layout: 'form'
-                ,items: []
+                ,id:'product-variation-create-right-col'
+                ,items:[]
             }]
         }]
 
@@ -233,20 +249,23 @@ CommerceMultiLang.window.ProductVariationCreate = function(config) {
 };
 Ext.extend(CommerceMultiLang.window.ProductVariationCreate,MODx.Window,{
 
-    addVariationFields: function() {
-        //TODO: load selected variable fields and dynamically add them to the window.
-        var fields = [{
-            xtype: 'textfield'
-            ,fieldLabel: 'Colour'
-            ,name: 'color'
-            ,anchor: '100%'
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: 'Size'
-            ,name: 'size'
-            ,anchor: '100%'
-        }];
-        Ext.getCmp('product-variation-create-left-col').add(fields);
+    /**
+     * Takes variations for this product type and injects the fields into the tab.
+     * @param config
+     */
+    addVariationFields: function(config) {
+        var fields = [];
+        config.variations.forEach(function(variation){
+            var lcName = variation['name'].toLowerCase();
+            fields.push({
+                xtype: 'textfield'
+                ,fieldLabel: variation['name']
+                ,name: lcName
+                ,anchor: '100%'
+            });
+        });
+
+        Ext.getCmp('product-variation-create-right-col').add(fields);
 
     }
 

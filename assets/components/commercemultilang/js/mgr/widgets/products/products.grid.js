@@ -185,7 +185,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
                 ,listeners: {
                     'success': {fn:function(r) {
                             variations = r.results;
-                            updateProduct.createVariationGrid(langTabs,variations);
+                            updateProduct.createVariationGrid(variations);
                             updateProduct.addLanguageTabs(langTabs,variations);
                             updateProduct.doLayout();
                             mask.hide();

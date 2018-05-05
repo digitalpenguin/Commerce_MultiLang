@@ -142,6 +142,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
     /**
      * This function generates each language tab in the update window.
      * It needs to be run before the window is shown so everything is rendered correctly.
+     * Also adds vertical tabs which include any variation fields.
      * @param langTabs
      * @param variations
      */
@@ -227,6 +228,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                 action: 'mgr/product/variation/getlist'
                 ,product_id: this.config.record.id
             }
+            ,variations: variations
             ,fields: this.getVariationGridFields(variations)
             ,columns: this.getVariationColumns(variations)
         });
@@ -264,9 +266,10 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             ,dataIndex: 'name'
         }];
         variations.forEach(function(variation) {
+            var lcName = variation['name'].toLowerCase();
             var newCol = {
                 header: variation['name'],
-                dataIndex: variation['name'],
+                dataIndex: lcName,
             };
             columns.push(newCol);
         });
