@@ -237,9 +237,10 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
     }
 
     ,getVariationGridFields: function(variations) {
-        var fields = ['id','image','product_id','name'];
+        var fields = ['id','image','product_id','name','alias'];
         variations.forEach(function(variation) {
-            fields.push(variation['name']);
+            var lcName = variation['name'].toLowerCase();
+            fields.push(lcName);
         });
         return fields;
     }
@@ -248,7 +249,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
         var columns = [{
             header: _('id')
             ,dataIndex: 'id'
-            ,width: 40
+            ,width: 10
         },{
             header: _('commercemultilang.product.image')
             ,dataIndex: 'image'
@@ -256,14 +257,14 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             ,width: 100
             ,renderer: function(value, meta, record) {
                 if(value) {
-                    return '<img style="max-width:100%;" title="'+record['name']+'"  src=' + value + '"/" />';
+                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="/' + value + '">';
                 } else {
-                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
+                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg">';
                 }
             }
         },{
-            header: _('commercemultilang.product.name')
-            ,dataIndex: 'name'
+            header: _('commercemultilang.product.alias')
+            ,dataIndex: 'alias'
         }];
         variations.forEach(function(variation) {
             var lcName = variation['name'].toLowerCase();

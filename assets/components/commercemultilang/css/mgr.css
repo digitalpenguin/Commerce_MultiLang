@@ -9,6 +9,11 @@
     overflow-y:auto !important;
     overflow-x:hidden !important;
 }
+#commercemultilang-window-product-update #commercemultilang-grid-product-update-variations .x-grid3-scroller {
+    height:322px;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+}
 
 #commercemultilang-window-product-update .icon-check.green {
     color:#4BB543;

@@ -13,60 +13,15 @@ CommerceMultiLang.grid.ProductUpdateVariations = function(config) {
         }
         ,save_action: 'mgr/product/variation/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','image','product_id','name','description','variations','position']
         ,autoHeight: true
         ,paging: true
         ,pageSize: 10
         ,remoteSort: true
-        ,columns: [{
-            header: _('id')
-            ,dataIndex: 'id'
-            ,width: 40
-        },{
-            header: _('commercemultilang.product.image')
-            ,dataIndex: 'image'
-            ,fixed:true
-            ,width: 100
-            ,renderer: function(value, meta, record) {
-                if(value) {
-                    return '<img style="max-width:100%;" title="'+record['name']+'"  src=' + value + '"/" />';
-                } else {
-                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
-                }
-            }
-        },{
-            header: _('commercemultilang.product.name')
-            ,dataIndex: 'name'
-            ,width: 200
-        }]
         ,tbar: [{
             text: _('commercemultilang.product.create')
             ,handler: this.createProductUpdateVariation
             ,scope: this
         }]
-        /*,listeners: {
-            'render': function(grid) {
-                if (grid.store.getCount() === 0) {
-                    grid.store.on('load', function() {
-                        var extraCols = grid.store.reader.jsonData.extra_cols;
-                        var colModel = grid.getColumnModel();
-
-                        extraCols.forEach(function(col) {
-                            var newCol = new Ext.grid.Column({
-                                id: colModel.config.length,
-                                header: col,
-                                width: 200,
-                                dataIndex: col,
-                            });
-                            colModel.config.push(newCol);
-                        });
-                        grid.reconfigure(grid.store,colModel);
-                        grid.doLayout();
-                        console.log(colModel);
-                    },grid,{single: true});
-                }
-            }
-        }*/
     });
     CommerceMultiLang.grid.ProductUpdateVariations.superclass.constructor.call(this,config);
 };
