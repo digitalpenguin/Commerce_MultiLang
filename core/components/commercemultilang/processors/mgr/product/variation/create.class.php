@@ -109,11 +109,11 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
                 $varField = $this->modx->newObject('CommerceMultiLangAssignedVariation');
                 $varField->set('variation_id',$variation->get('id'));
                 $varField->set('product_id',$this->object->get('id'));
-                $varField->set('name',$variation->get('name'));
+                $varField->set('name',strtolower($variation->get('name')));
                 $varField->set('lang_key',$lang->get('lang_key'));
                 $varField->set('value',$this->getProperty(strtolower($variation->get('name'))));
                 $varField->save();
-                $this->modx->log(1,print_r($varField->toArray(),true));
+                //$this->modx->log(1,print_r($varField->toArray(),true));
             }
 
         }

@@ -139,10 +139,11 @@ class CommerceMultiLangProductChildGetListProcessor extends modObjectGetListProc
 
         // Gets variation fields assigned to this product type.
         $variations = $this->modx->getCollection('CommerceMultiLangAssignedVariation',array(
-            'product_id'    =>  $this->getProperty('product_id'),
+            'product_id'    =>  $row['id'],
             'lang_key'      =>  $this->defaultLanguage
         ));
         foreach($variations as $variation) {
+            //$this->modx->log(1,print_r($variation->toArray(),true));
             $row[$variation->name] = $variation->value;
         }
         return $row;
