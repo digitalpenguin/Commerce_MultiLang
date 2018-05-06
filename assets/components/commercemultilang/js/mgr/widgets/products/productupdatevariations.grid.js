@@ -18,7 +18,7 @@ CommerceMultiLang.grid.ProductUpdateVariations = function(config) {
         ,pageSize: 10
         ,remoteSort: true
         ,tbar: [{
-            text: _('commercemultilang.product.create')
+            text: _('commercemultilang.product.variation_create')
             ,handler: this.createProductUpdateVariation
             ,scope: this
         }]
@@ -59,6 +59,13 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
                 }
             });
             createProduct.addVariationFields(this.config);
+            var parentWin = Ext.getCmp('commercemultilang-window-product-update');
+            //console.log(parentWin.record);
+            parentWin.record['image'] = parentWin.record['main_image'];
+            createProduct.fp.getForm().setValues(parentWin.record);
+            if(parentWin.record['main_image']) {
+                createProduct.renderImageOnLoad();
+            }
             createProduct.show(e.target);
         }
     }
@@ -157,12 +164,10 @@ CommerceMultiLang.window.ProductVariationCreate = function(config) {
                 ,layout: 'form'
                 ,items: [{
                     xtype: 'modx-combo-browser'
-                    ,id: 'update-product-image-select-' + Ext.id()
+                    ,id: 'update-product-image-select'
                     ,fieldLabel: 'Select Image'
                     ,name: 'image'
                     ,anchor:'100%'
-                    ,rootId: '/'
-                    ,rootVisible:true
                     ,hideSourceCombo: true
                     ,listeners: {
                         'select' : this.renderImage
@@ -230,7 +235,20 @@ Ext.extend(CommerceMultiLang.window.ProductVariationCreate,MODx.Window,{
     ,renderImage:function(value) {
         var leftCol = Ext.getCmp('product-variation-create-left-col');
         var url = value.fullRelativeUrl;
-        //console.log(value);
+        console.log(value);
+        if(url.charAt(0) !== '/') {
+            url = '/'+url;
+        }
+        leftCol.remove('create-product-variation-image-preview');
+        leftCol.add({
+            html: '<img style="width:100%; margin-top:10px;" src="' + url + '" />'
+            ,id: 'create-product-variation-image-preview'
+        });
+        leftCol.doLayout();
+    }
+    ,renderImageOnLoad:function() {
+        var leftCol = Ext.getCmp('product-variation-create-left-col');
+        var url = Ext.getCmp('update-product-image-select').getValue();
         if(url.charAt(0) !== '/') {
             url = '/'+url;
         }

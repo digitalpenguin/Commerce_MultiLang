@@ -25,7 +25,7 @@ CommerceMultiLang.grid.Products = function(config) {
             ,width: 140
             ,renderer: function(value){
                 if(value) {
-                    return '<img style="max-width:100%;" src=' + value + '"/" />';
+                    return '<img style="max-width:100%;" src="/' + value + '" />';
                 } else {
                     return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }

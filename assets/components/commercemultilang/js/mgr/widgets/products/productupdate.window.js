@@ -120,8 +120,6 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                 ,items:[{
                     html:'<h2>'+_('commercemultilang.product_variation.product_variations')+'</h2>' +
                     '<p>'+_('commercemultilang.product_variation.intro')+'</p>'
-
-
                 }]
             }]
         }]
@@ -305,7 +303,7 @@ CommerceMultiLang.grid.ProductImages = function(config) {
             ,width: 100
             ,renderer: function(value){
                 if(value) {
-                    return '<img style="max-width:100%;" src=' + value + '"/" />';
+                    return '<img style="max-width:100%;" src="/' + value + '" />';
                 } else {
                     return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }

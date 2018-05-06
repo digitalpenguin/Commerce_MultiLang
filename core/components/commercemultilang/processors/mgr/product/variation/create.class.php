@@ -79,8 +79,6 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
 
     public function afterSave() {
         $this->loadVariationFields();
-
-        //$this->modx->log(1,print_r($this->parentObj->toArray(),true));
         $productData = $this->modx->newObject('CommerceMultiLangProductData');
         $productData->set('product_id',$this->object->get('id'));
         $productData->set('alias', $this->alias);
@@ -90,7 +88,6 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
         $productData->save();
 
         foreach($this->parentLangs as $lang) {
-            //$this->modx->log(1,print_r($this->parentObj->toArray(),true));
             $productLang = $this->modx->newObject('CommerceMultiLangProductLanguage');
             $productLang->set('product_id', $this->object->get('id'));
             $productLang->set('name', $lang->get('name'));
@@ -99,13 +96,8 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
             $productLang->set('category',$lang->get('category'));
             $productLang->save();
 
-            /*if($this->variationData) {
-                $this->modx->log(1,print_r($this->variationData->toArray(),true));
-            }*/
-
             // Set the variation field values by creating new many-to-many records for each one.
             foreach($this->variationData as $variation) {
-                $this->modx->log(1,'here');
                 $varField = $this->modx->newObject('CommerceMultiLangAssignedVariation');
                 $varField->set('variation_id',$variation->get('id'));
                 $varField->set('product_id',$this->object->get('id'));
@@ -113,7 +105,6 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
                 $varField->set('lang_key',$lang->get('lang_key'));
                 $varField->set('value',$this->getProperty(strtolower($variation->get('name'))));
                 $varField->save();
-                //$this->modx->log(1,print_r($varField->toArray(),true));
             }
 
         }
