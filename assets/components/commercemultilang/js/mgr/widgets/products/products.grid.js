@@ -9,7 +9,7 @@ CommerceMultiLang.grid.Products = function(config) {
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
         ,fields: ['id','sku','main_image','name','category','category_id','type_id','type','type_variations','description','price'
-            ,'price_formatted', 'stock','weight_formatted','weight','weight_unit','target','size','color',
+            ,'price_formatted', 'stock','weight_formatted','weight','weight_unit','target', 'variation_fields',
             'product_listing','alias','properties','images','delivery_type','tax_group','langs']
         ,autoHeight: true
         ,paging: true
@@ -144,12 +144,24 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
             var mask = new Ext.LoadMask(Ext.get(this.el), {msg:'Loading product...'});
             mask.show();
 
+            //console.log(this.store.reader.jsonData.results);
+            //console.log(this.menu.record);
+            var record = this.menu.record;
+            var results = this.store.reader.jsonData.results;
+            results.forEach(function(row,index) {
+                if(row.id === record.id) {
+                    record = row;
+                }
+            });
+            this.menu.record = record;
+            //console.log(record);
+
             var updateProduct = MODx.load({
                 xtype: 'commercemultilang-window-product-update'
                 , title: _('commercemultilang.product.update')
                 ,id: 'commercemultilang-window-product-update'
                 , action: 'mgr/product/update'
-                , record: this.menu.record
+                , record: record
                 , listeners: {
                     'success': {
                         fn: function () {
@@ -161,10 +173,10 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
 
             updateProduct.fp.getForm().reset();
             updateProduct.record.languages = this.store.reader.jsonData.languages;
-            updateProduct.record.product_id = this.menu.record.id;
+            updateProduct.record.product_id = record.id;
             updateProduct.fp.getForm().setValues(this.menu.record);
 
-            var record = this.menu.record;
+
             var langTabs = this.store.reader.jsonData.languages;
             langTabs.forEach(function (langTab, index) {
                 record.langs.forEach(function (lang, index) {
@@ -173,21 +185,21 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
                     }
                 });
             });
-
             // Grab variation names for this product
             var variations = null;
             MODx.Ajax.request({
                 url: this.config.url
                 ,params: {
                     action: 'mgr/product/variation/getcolumns'
-                    ,product_id: this.menu.record.id
+                    ,product_id: record.id
                 }
                 ,listeners: {
                     'success': {fn:function(r) {
                             variations = r.results;
                             updateProduct.createVariationGrid(variations);
-                            updateProduct.addLanguageTabs(langTabs,variations);
+                            updateProduct.addLanguageTabs(langTabs,variations,record);
                             updateProduct.doLayout();
+                            //console.log(record);
                             mask.hide();
                             updateProduct.show(e.target);
 

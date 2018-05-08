@@ -31,12 +31,12 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
     ,getMenu: function() {
         var m = [];
         m.push({
-            text: _('commercemultilang.product_variation.edit')
+            text: _('commercemultilang.product.variation_edit')
             ,handler: this.updateProductUpdateVariation
         });
         m.push('-');
         m.push({
-            text: _('commercemultilang.product_variation.remove')
+            text: _('commercemultilang.product.variation_remove')
             ,handler: this.removeProductUpdateVariation
         });
         this.addContextMenuItem(m);
@@ -60,9 +60,9 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
             });
             createProduct.addVariationFields(this.config);
             var parentWin = Ext.getCmp('commercemultilang-window-product-update');
-            //console.log(parentWin.record);
             parentWin.record['image'] = parentWin.record['main_image'];
             createProduct.fp.getForm().setValues(parentWin.record);
+            // If parent product has a main image, render it on window load
             if(parentWin.record['main_image']) {
                 createProduct.renderImageOnLoad();
             }
@@ -73,19 +73,32 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
     ,updateProductUpdateVariation: function(btn,e,isUpdate) {
         if (!this.menu.record || !this.menu.record.id) return false;
 
-        var updateProductImage = MODx.load({
-            xtype: 'commercemultilang-window-product-variation'
-            ,title: _('commercemultilang.product_image.update')
+        var updateProductVariation = new CommerceMultiLang.window.ProductUpdate({
+            id: 'commercemultilang-window-product-variation-update'
+            ,title: _('commercemultilang.product.variation_edit')
             ,action: 'mgr/product/variation/update'
             ,record: this.menu.record
             ,listeners: {
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
+        updateProductVariation.record.languages = this.store.reader.jsonData.languages;
 
-        updateProductImage.fp.getForm().reset();
-        updateProductImage.fp.getForm().setValues(this.menu.record);
-        updateProductImage.show(e.target);
+        updateProductVariation.record.product_id = this.menu.record.id;
+        updateProductVariation.fp.getForm().reset();
+        updateProductVariation.fp.getForm().setValues(this.menu.record);
+
+        var record = this.menu.record;
+        var langTabs = this.store.reader.jsonData.languages;
+        langTabs.forEach(function (langTab, index) {
+            record.langs.forEach(function (lang, index) {
+                if (langTab.lang_key === lang.lang_key) {
+                    langTab['fields'] = lang;
+                }
+            });
+        });
+
+        updateProductVariation.show(e.target);
     }
 
     ,removeProductUpdateVariation: function(btn,e) {

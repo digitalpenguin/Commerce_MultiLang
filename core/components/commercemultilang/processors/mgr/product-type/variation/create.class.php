@@ -12,7 +12,8 @@ class CommerceMultiLangProductVariationCreateProcessor extends modObjectCreatePr
     protected $languages = array();
 
     public function beforeSave() {
-        $name = $this->getProperty('name');
+        $name = strtolower($this->getProperty('name'));
+        $this->object->set('name',$name);
         if (empty($name)) {
             $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_type_variation_name_ns'));
         }

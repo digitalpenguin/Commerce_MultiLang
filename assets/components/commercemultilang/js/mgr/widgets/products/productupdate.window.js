@@ -143,18 +143,29 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
      * Also adds vertical tabs which include any variation fields.
      * @param langTabs
      * @param variations
+     * @param record
      */
-    addLanguageTabs: function(langTabs,variations) {
+    addLanguageTabs: function(langTabs,variations,record) {
         var tabs = Ext.getCmp('product-update-window-tabs');
         langTabs.forEach(function(langTab) {
             var fields = [];
             variations.forEach(function(variation){
+                // Make a capitalised version of the field name for the label.
+                var name = variation['name'].charAt(0).toUpperCase() + variation['name'].slice(1);
                 var field = new Ext.form.TextField({
-                    fieldLabel: variation['name']
+                    fieldLabel: name
                     ,id: variation['name']+'_' + langTab['lang_key']
                     ,name: variation['name'] + '_' + langTab['lang_key']
                     ,value: langTab.fields ? langTab.fields[variation['name'] + '_' + langTab['lang_key']] : ''
                     ,anchor: '80%'
+                });
+
+                // Manually set the variation values after creation.
+                Object.keys(record).forEach(function(key) {
+                    //console.log(key, record[key]);
+                    if(key === field.name) {
+                        field.setValue(record[key]);
+                    }
                 });
                 fields.push(field);
             });
@@ -235,7 +246,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
     }
 
     ,getVariationGridFields: function(variations) {
-        var fields = ['id','image','product_id','name','alias'];
+        var fields = ['id','image','product_id','name','alias','langs'];
         variations.forEach(function(variation) {
             var lcName = variation['name'].toLowerCase();
             fields.push(lcName);
