@@ -136,7 +136,6 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
     });
 };
 Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
-
     /**
      * This function generates each language tab in the update window.
      * It needs to be run before the window is shown so everything is rendered correctly.
@@ -246,7 +245,8 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
     }
 
     ,getVariationGridFields: function(variations) {
-        var fields = ['id','image','product_id','name','alias','langs'];
+        var fields = ['id','image','product_id','name','alias','langs',
+            'sku','weight','weight_formatted','weight_unit','price','price_formatted','stock'];
         variations.forEach(function(variation) {
             var lcName = variation['name'].toLowerCase();
             fields.push(lcName);
@@ -272,8 +272,17 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                 }
             }
         },{
-            header: _('commercemultilang.product.alias')
-            ,dataIndex: 'alias'
+            header: _('commercemultilang.product.sku')
+            ,dataIndex: 'sku'
+        },{
+            header: _('commercemultilang.product.price')
+            ,dataIndex: 'price_formatted'
+        },{
+            header: _('commercemultilang.product.stock')
+            ,dataIndex: 'stock'
+        },{
+            header: _('commercemultilang.product.weight')
+            ,dataIndex: 'weight_formatted'
         }];
         variations.forEach(function(variation) {
             var lcName = variation['name'].toLowerCase();

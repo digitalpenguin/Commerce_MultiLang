@@ -6,30 +6,39 @@
  * @subpackage processors
  */
 
-class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
+class CommerceMultiLangProductChildUpdateProcessor extends modObjectUpdateProcessor {
     public $classKey = 'CommerceMultiLangProduct';
     public $languageTopics = array('commercemultilang:default');
     public $objectType = 'commercemultilang.product';
+    protected $variationData = array();
 
-    public function beforeSet() {
-        $name = $this->getProperty('name');
-        if (empty($name)) {
-            $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_name_ns'));
-        } else if ($this->modx->getCount($this->classKey, array('name' => $name)) && ($this->object->name != $name)) {
-            $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_name_ae'));
+    public function beforeSave() {
+        $sku = $this->getProperty('sku');
+        if (empty($sku)) {
+            $this->addFieldError('sku',$this->modx->lexicon('commercemultilang.err.product_type_sku_ns'));
         }
-        return parent::beforeSet();
+        $price = $this->getProperty('price');
+        if (empty($price)) {
+            $this->addFieldError('price',$this->modx->lexicon('commercemultilang.err.product_type_price_ns'));
+        }
+        $stock = $this->getProperty('stock');
+        if (empty($stock)) {
+            $this->addFieldError('stock',$this->modx->lexicon('commercemultilang.err.product_type_stock_ns'));
+        }
+        $weight = $this->getProperty('weight');
+        if (empty($weight)) {
+            $this->addFieldError('weight',$this->modx->lexicon('commercemultilang.err.product_type_weight_ns'));
+        }
+        return parent::beforeSave();
     }
 
     public function afterSave() {
-        // Grabs related data table
+        $this->loadVariationFields();
         $productData = $this->modx->getObject('CommerceMultiLangProductData',array(
             'product_id' => $this->object->get('id')
         ));
-        foreach($this->getProperties() as $key => $value) {
-            if($key == 'id') continue; // don't use comProduct id as data id
-            $productData->set($key,$value);
-        }
+        $productData->set('product_id',$this->object->get('id'));
+        $productData->set('alias', $this->object->get('alias'));
         $productData->save();
 
         // Grabs related language table
@@ -38,6 +47,13 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
         ));
         foreach($productLanguages as $productLanguage) {
             $langKey = $productLanguage->get('lang_key');
+
+            // Grab all the assigned variation values for this product
+            $assignedVariations = $this->modx->getCollection('CommerceMultiLangAssignedVariation',array(
+                'product_id'    =>  $this->object->get('id'),
+                'lang_key'      =>  $langKey
+            ));
+
             $lkLength = strlen($langKey);
             foreach($this->getProperties() as $key => $value) {
                 // Get the lang_key from the submitted field name and check if it matches current language row
@@ -49,6 +65,14 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
                     // Set the new value
                     //$this->modx->log(1,'field name: '.$fieldName);
                     $productLanguage->set($fieldName,$value);
+
+                    // Insert variation values into each field.
+                    foreach($assignedVariations as $assignedVariation) {
+                        if($fieldName == $assignedVariation->get('name')) {
+                            $assignedVariation->set('value', $value);
+                            $assignedVariation->save();
+                        }
+                    }
                 }
             }
             // After going through all fields, save this language.
@@ -66,5 +90,21 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
         return parent::afterSave();
     }
 
+    protected function loadVariationFields() {
+        $productData = $this->modx->getObject('CommerceMultiLangProductData',array(
+            'product_id'    =>  $this->getProperty('id')
+        ));
+        if($productData) {
+            $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
+                'type_id'   =>  $productData->get('type')
+            ));
+
+            foreach($variations as $variation) {
+                array_push($this->variationData,$variation);
+            }
+        }
+
+    }
+
 }
-return 'CommerceMultiLangProductUpdateProcessor';
+return 'CommerceMultiLangProductChildUpdateProcessor';

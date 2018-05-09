@@ -8,7 +8,7 @@ CommerceMultiLang.grid.Products = function(config) {
         }
         ,save_action: 'mgr/product/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','sku','main_image','name','category','category_id','type_id','type','type_variations','description','price'
+        ,fields: ['id','sku','main_image','name','category','category_id','type_id','type','type_name','type_variations','description','price'
             ,'price_formatted', 'stock','weight_formatted','weight','weight_unit','target', 'variation_fields',
             'product_listing','alias','properties','images','delivery_type','tax_group','langs']
         ,autoHeight: true
@@ -50,9 +50,9 @@ CommerceMultiLang.grid.Products = function(config) {
             header: _('commercemultilang.product.type')
             ,dataIndex: 'type'
             ,width: 200
-            /*,renderer: function(value, meta, record) {
-                return value + ' <br><span style="color:#888;">'+record.data['type_variations']+'</span>';
-            }*/
+            ,renderer: function(value, meta, record) {
+                return record.data['type_name'] + '<br><span style="color:#888;">'+record.data['type_variations']+'</span>';
+            }
         },{
             header: _('commercemultilang.product.alias')
             ,dataIndex: 'alias'
@@ -144,17 +144,16 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
             var mask = new Ext.LoadMask(Ext.get(this.el), {msg:'Loading product...'});
             mask.show();
 
-            //console.log(this.store.reader.jsonData.results);
-            //console.log(this.menu.record);
+            // Local var so it's usable throughout whole function.
             var record = this.menu.record;
+
+            // match the records to grab variation values
             var results = this.store.reader.jsonData.results;
             results.forEach(function(row,index) {
                 if(row.id === record.id) {
                     record = row;
                 }
             });
-            this.menu.record = record;
-            //console.log(record);
 
             var updateProduct = MODx.load({
                 xtype: 'commercemultilang-window-product-update'

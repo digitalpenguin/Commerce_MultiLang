@@ -9,8 +9,8 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
     public $classKey = 'CommerceMultiLangProduct';
     public $languageTopics = array('commercemultilang:default');
     public $objectType = 'commercemultilang.product';
-    protected $alias;
     protected $parentObj = null;
+    protected $parentProductData = null;
     protected $parentLangs = array();
     protected $variationData = array();
 
@@ -43,47 +43,40 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
 
     public function beforeSave() {
 
-        // Grab new submitted values and overwrite any that were set previously.
-        /*foreach($this->getProperties() as $key => $value) {
-            $this->object->set($key,$value);
-            //$this->modx->log(1,$key.' '.$value);
-        }*/
-
-        //$this->modx->log(1,print_r($this->object->toArray(),true));
-
-        // Add a count on the end of the new alias
-        $count = $this->modx->getCount('CommerceMultiLangProductData',array(
-            'parent' => $this->getProperty('parent')
-        ));
-        if($count) {
-            $count = $count+1;
-        } else {
-            $count = $count+2;
+        $sku = $this->getProperty('sku');
+        if (empty($sku)) {
+            $this->addFieldError('sku',$this->modx->lexicon('commercemultilang.err.product_type_sku_ns'));
+        } else if ($this->doesAlreadyExist(array(
+            'sku' => $sku,
+            'removed' => 0
+        ))) {
+            $this->addFieldError('sku',$this->modx->lexicon('commercemultilang.err.product_type_sku_ae'));
         }
-        $this->generateProductAlias($this->object->get('name').$count);
+
+        $price = $this->getProperty('price');
+        if (empty($price)) {
+            $this->addFieldError('price',$this->modx->lexicon('commercemultilang.err.product_type_price_ns'));
+        }
+        $stock = $this->getProperty('stock');
+        if (empty($stock)) {
+            $this->addFieldError('stock',$this->modx->lexicon('commercemultilang.err.product_type_stock_ns'));
+        }
+        $weight = $this->getProperty('weight');
+        if (empty($weight)) {
+            $this->addFieldError('weight',$this->modx->lexicon('commercemultilang.err.product_type_weight_ns'));
+        }
+
         return parent::beforeSave();
 
-    }
-
-    protected function generateProductAlias($text) {
-        $letters = array(
-            '–', '"','\'', '«', '»', '&', '÷', '>','<', '$', '/'
-        );
-        $text = str_replace($letters, " ", $text);
-        $text = str_replace("&", "and", $text);
-        $text = str_replace("?", "", $text);
-        $alias = strtolower(str_replace(" ", "-", $text));
-
-        $this->alias = $alias;
     }
 
     public function afterSave() {
         $this->loadVariationFields();
         $productData = $this->modx->newObject('CommerceMultiLangProductData');
         $productData->set('product_id',$this->object->get('id'));
-        $productData->set('alias', $this->alias);
+        $productData->set('alias', 0);
         $productData->set('parent', $this->parentObj->get('id'));
-        $productData->set('type', $this->parentObj->get('type'));
+        $productData->set('type', $this->parentProductData->get('type'));
         $productData->set('product_listing',0);
         $productData->save();
 
@@ -112,12 +105,12 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
     }
 
     protected function loadVariationFields() {
-        $productData = $this->modx->getObject('CommerceMultiLangProductData',array(
+        $this->parentProductData = $this->modx->getObject('CommerceMultiLangProductData',array(
             'product_id'    =>  $this->getProperty('parent')
         ));
-        if($productData) {
+        if($this->parentProductData) {
             $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
-                'type_id'   =>  $productData->get('type')
+                'type_id'   =>  $this->parentProductData->get('type')
             ));
 
             foreach($variations as $variation) {

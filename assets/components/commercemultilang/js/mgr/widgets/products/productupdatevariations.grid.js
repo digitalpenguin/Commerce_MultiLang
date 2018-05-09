@@ -47,7 +47,7 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
         if(win) {
             win.show(e.target);
         } else {
-            var createProduct = MODx.load({
+            var createProductVariation = MODx.load({
                 xtype: 'commercemultilang-window-product-variation-create'
                 ,id:'commercemultilang-window-product-variation-create'
                 ,baseParams:{
@@ -58,47 +58,87 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
                     'success': {fn:function() { this.refresh(); },scope:this}
                 }
             });
-            createProduct.addVariationFields(this.config);
+            createProductVariation.addVariationFields(this.config);
             var parentWin = Ext.getCmp('commercemultilang-window-product-update');
             parentWin.record['image'] = parentWin.record['main_image'];
-            createProduct.fp.getForm().setValues(parentWin.record);
+            createProductVariation.fp.getForm().setValues(parentWin.record);
             // If parent product has a main image, render it on window load
             if(parentWin.record['main_image']) {
-                createProduct.renderImageOnLoad();
+                createProductVariation.renderImageOnLoad();
             }
-            createProduct.show(e.target);
+            createProductVariation.show(e.target);
         }
     }
 
     ,updateProductUpdateVariation: function(btn,e,isUpdate) {
         if (!this.menu.record || !this.menu.record.id) return false;
 
-        var updateProductVariation = new CommerceMultiLang.window.ProductUpdate({
-            id: 'commercemultilang-window-product-variation-update'
-            ,title: _('commercemultilang.product.variation_edit')
-            ,action: 'mgr/product/variation/update'
-            ,record: this.menu.record
-            ,listeners: {
-                'success': {fn:function() { this.refresh(); },scope:this}
-            }
-        });
-        updateProductVariation.record.languages = this.store.reader.jsonData.languages;
+        var win = Ext.getCmp('commercemultilang-window-product-variation-update');
+        if(win) {
+            win.show(e.target);
+        } else {
 
-        updateProductVariation.record.product_id = this.menu.record.id;
-        updateProductVariation.fp.getForm().reset();
-        updateProductVariation.fp.getForm().setValues(this.menu.record);
-
-        var record = this.menu.record;
-        var langTabs = this.store.reader.jsonData.languages;
-        langTabs.forEach(function (langTab, index) {
-            record.langs.forEach(function (lang, index) {
-                if (langTab.lang_key === lang.lang_key) {
-                    langTab['fields'] = lang;
+            var record = this.menu.record;
+            // match the records to grab variation values
+            var results = this.store.reader.jsonData.results;
+            results.forEach(function(row,index) {
+                if(row.id === record.id) {
+                    record = row;
                 }
             });
-        });
 
-        updateProductVariation.show(e.target);
+            var updateProductVariation = MODx.load({
+                xtype: 'commercemultilang-window-product-variation-update'
+                , id: 'commercemultilang-window-product-variation-update'
+                , title: _('commercemultilang.product.variation_edit')
+                , action: 'mgr/product/variation/update'
+                , record: record
+                , listeners: {
+                    'success': {
+                        fn: function () {
+                            this.refresh();
+                        }, scope: this
+                    }
+                }
+            });
+
+
+            updateProductVariation.fp.getForm().reset();
+            updateProductVariation.record.languages = this.store.reader.jsonData.languages;
+            updateProductVariation.record.product_id = record.id;
+            updateProductVariation.fp.getForm().setValues(record);
+
+            var langTabs = this.store.reader.jsonData.languages;
+            langTabs.forEach(function (langTab, index) {
+                record.langs.forEach(function (lang, index) {
+                    if (langTab.lang_key === lang.lang_key) {
+                        langTab['fields'] = lang;
+                    }
+                });
+            });
+
+            // Grab variation names for this product
+            var variations = null;
+            MODx.Ajax.request({
+                url: this.config.url
+                ,params: {
+                    action: 'mgr/product/variation/getcolumns'
+                    ,product_id: record.id
+                }
+                ,listeners: {
+                    'success': {fn:function(r) {
+                            variations = r.results;
+                            updateProductVariation.addLanguageTabs(langTabs,variations,record);
+
+                            updateProductVariation.renderImageOnLoad();
+                            updateProductVariation.doLayout();
+                            updateProductVariation.show(e.target);
+
+                        },scope:this}
+                }
+            });
+            updateProductVariation.show(e.target);
+        }
     }
 
     ,removeProductUpdateVariation: function(btn,e) {
@@ -120,36 +160,6 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
 });
 Ext.reg('commercemultilang-grid-product-update-variations',CommerceMultiLang.grid.ProductUpdateVariations);
 
-CommerceMultiLang.window.ProductVariation = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        title: _('commercemultilang.product_type.create')
-        ,id:'commercemultilang-window-product-variation'
-        ,closeAction: 'close'
-        ,url: CommerceMultiLang.config.connectorUrl
-        ,action: 'mgr/product-type/variation/create'
-        ,keys: []
-        ,fields: [{
-            xtype: 'textfield'
-            ,name: 'id'
-            ,hidden: true
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('commercemultilang.product_type.name')
-            ,name: 'name'
-            ,anchor: '100%'
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('description')
-            ,name: 'description'
-            ,anchor: '100%'
-        }]
-    });
-    CommerceMultiLang.window.ProductVariation.superclass.constructor.call(this,config);
-};
-Ext.extend(CommerceMultiLang.window.ProductVariation,MODx.Window);
-Ext.reg('commercemultilang-window-product-variation',CommerceMultiLang.window.ProductVariation);
-
 
 
 CommerceMultiLang.window.ProductVariationCreate = function(config) {
@@ -160,6 +170,7 @@ CommerceMultiLang.window.ProductVariationCreate = function(config) {
         ,width:600
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product/variation/create'
+        ,allowDrop: false // Must be turned off to prevent tabs error!
         ,keys: []
         ,fields: [{
             style:'padding:15px 0'
@@ -276,4 +287,152 @@ Ext.extend(CommerceMultiLang.window.ProductVariationCreate,MODx.Window,{
 });
 Ext.reg('commercemultilang-window-product-variation-create',CommerceMultiLang.window.ProductVariationCreate);
 
+
+CommerceMultiLang.window.ProductVariationUpdate = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('commercemultilang.product_type.update')
+        ,id:'commercemultilang-window-product-variation'
+        ,closeAction: 'close'
+        ,url: CommerceMultiLang.config.connectorUrl
+        ,action: 'mgr/product-type/variation/update'
+        ,allowDrop: false // Must be turned off to prevent tabs error!
+        ,keys: []
+        ,fields: [{
+            xtype: 'textfield'
+            ,name: 'id'
+            ,hidden: true
+        },{
+            xtype: 'modx-tabs'
+            ,id: 'product-variation-update-window-tabs'
+            ,defaults: { border: false ,autoHeight: true }
+            ,style:'margin-top:15px;'
+            ,deferredRender: false
+            ,forceLayout:true
+            ,border: true
+            ,items: [{
+                title:'General'
+                ,layout:'form'
+                ,items:[{
+                    layout: 'column'
+                    ,border: false
+                    ,items: [{
+                        columnWidth: .4
+                        ,id:'product-variation-update-left-col'
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'modx-combo-browser'
+                            ,id: 'update-product-image-select'
+                            ,fieldLabel: 'Select Image'
+                            ,name: 'image'
+                            ,anchor:'100%'
+                            ,hideSourceCombo: true
+                            ,listeners: {
+                                'select' : this.renderImage
+                            }
+                        },{
+                            html:'<img style="max-width:100%; margin-top:10px;" ' +
+                            'src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />'
+                            ,id:'update-product-variation-image-preview'
+                        }]
+                    },{
+                        columnWidth: .6
+                        ,layout: 'form'
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.sku')
+                            ,name: 'sku'
+                            ,anchor: '100%'
+                        },{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.price')
+                            ,name: 'price'
+                            ,anchor: '100%'
+                        },{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.stock')
+                            ,name: 'stock'
+                            ,anchor: '100%'
+                        },{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product.weight')
+                            ,name: 'weight'
+                            ,anchor: '100%'
+                        }]
+                    }]
+                }]
+            }]
+        }]
+    });
+    CommerceMultiLang.window.ProductVariationUpdate.superclass.constructor.call(this,config);
+};
+Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
+
+    addLanguageTabs: function(langTabs,variations,record) {
+        //console.log(record);
+        var tabs = Ext.getCmp('product-variation-update-window-tabs');
+        langTabs.forEach(function(langTab) {
+            var fields = [];
+            variations.forEach(function(variation){
+                // Make a capitalised version of the field name for the label.
+                var name = variation['name'].charAt(0).toUpperCase() + variation['name'].slice(1);
+                var field = new Ext.form.TextField({
+                    fieldLabel: name
+                    ,id: 'var_'+variation['name']+'_' + langTab['lang_key']
+                    ,name: variation['name'] + '_' + langTab['lang_key']
+                    ,value: langTab.fields ? langTab.fields[variation['name'] + '_' + langTab['lang_key']] : ''
+                    ,anchor: '60%'
+                });
+
+                // Manually set the variation values after creation.
+                Object.keys(record).forEach(function(key) {
+                    if(key === field.name) {
+                        field.setValue(record[key]);
+                    }
+                });
+                fields.push(field);
+            });
+
+            var tab = [{
+                title: langTab['name']+' ('+langTab['lang_key']+')'
+                ,layout:'form'
+                ,id: 'variation-update-language-tab-'+langTab['lang_key']
+                ,cls:'language-tab'
+                ,forceLayout: true // important! if not added new tabs will not submit.
+                ,items:fields
+            }];
+            //console.log(tab);
+            tabs.add(tab);
+        });
+    }
+
+    ,renderImage:function(value) {
+        var leftCol = Ext.getCmp('product-variation-update-left-col');
+        var url = value.fullRelativeUrl;
+        console.log(value);
+        if(url.charAt(0) !== '/') {
+            url = '/'+url;
+        }
+        leftCol.remove('update-product-variation-image-preview');
+        leftCol.add({
+            html: '<img style="width:100%; margin-top:10px;" src="' + url + '" />'
+            ,id: 'update-product-variation-image-preview'
+        });
+        leftCol.doLayout();
+    }
+    ,renderImageOnLoad:function() {
+        var leftCol = Ext.getCmp('product-variation-update-left-col');
+        var url = Ext.getCmp('update-product-image-select').getValue();
+        if(url.charAt(0) !== '/') {
+            url = '/'+url;
+        }
+        leftCol.remove('update-product-variation-image-preview');
+        leftCol.add({
+            html: '<img style="width:100%; margin-top:10px;" src="' + url + '" />'
+            ,id: 'update-product-variation-image-preview'
+        });
+        leftCol.doLayout();
+    }
+});
+Ext.reg('commercemultilang-window-product-variation-update',CommerceMultiLang.window.ProductVariationUpdate);
 

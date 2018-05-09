@@ -137,6 +137,13 @@ class CommerceMultiLangProductChildGetListProcessor extends modObjectGetListProc
         }
         $row['langs'] = $langs;
 
+        $assignedVariations = $this->modx->getCollection('CommerceMultiLangAssignedVariation',array(
+            'product_id'    =>  $row['id']
+        ));
+        foreach($assignedVariations as $variation) {
+            $row[$variation->get('name').'_'.$variation->get('lang_key')] = $variation->get('value');
+        }
+
         // Gets variation fields assigned to this product type.
         $variations = $this->modx->getCollection('CommerceMultiLangAssignedVariation',array(
             'product_id'    =>  $row['id'],

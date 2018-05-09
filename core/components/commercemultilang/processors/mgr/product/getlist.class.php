@@ -130,12 +130,12 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
         }
 
         // Display name of product type and associated variations instead of just id
-        /*if($row['type']) {
+        if($row['type']) {
             $type = $this->modx->getObject('CommerceMultiLangProductType',array(
                 'id'    =>  $row['type']
             ));
             if($type) {
-                $row['type'] = $type->get('name');
+                $row['type_name'] = $type->get('name');
                 $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
                     'type_id'   =>  $type->get('id')
                 ));
@@ -156,7 +156,7 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
 
         } else {
             //$row['type'] = 'None';
-        }*/
+        }
         return $row;
     }
 
