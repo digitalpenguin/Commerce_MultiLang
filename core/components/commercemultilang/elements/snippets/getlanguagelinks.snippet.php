@@ -66,7 +66,8 @@ if($productDetailId) {
     $count = count($languages);
     $idx = 1;
     foreach($languages as $language) {
-        $url = $modx->makeUrl($language['category'],$language['context_key']);
+        $url = $modx->makeUrl($language['category'],$language['context_key'],'','full');
+
 
         if ($extension) {
             $alias = str_replace($extension, '', $alias);

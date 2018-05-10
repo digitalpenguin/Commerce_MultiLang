@@ -137,7 +137,12 @@ class CommerceMultiLang {
 
 
     public function getProductDetail() {
-        return '';
+
+        $product = $this->modx->sanitize($_GET['product']);
+        $id = $product['id'];
+        $alias = $product['alias'];
+        $this->modx->log(1,print_r($product,true));
+        return $id. ' '.$alias;
     }
 
     /**
