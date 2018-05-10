@@ -1,1 +1,1 @@
-<a href="[[+link]]">[[+name]]</a> [[+seperator]]
+<a href="[[+link]]">[[+name]]</a>[[+separator]]

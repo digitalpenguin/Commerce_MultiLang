@@ -135,6 +135,11 @@ class CommerceMultiLang {
         return '';
     }
 
+
+    public function getProductDetail() {
+        return '';
+    }
+
     /**
      * Returns array of active context keys with associated languages
      * @return array
