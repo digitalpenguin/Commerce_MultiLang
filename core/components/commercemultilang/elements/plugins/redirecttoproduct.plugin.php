@@ -11,15 +11,20 @@ if (!($commerceMultiLang instanceof CommerceMultiLang))
     return '';
 $xpdo = &$commerceMultiLang->modx;
 
+$contextKey = $modx->context->get('key');
+$errorUrl = $modx->makeUrl($modx->getOption('error_page'),$contextKey);
+
 // Grabs request
 $path = $_REQUEST['q'];
 $requestArray = explode('/', $path);
 $requestArray = array_reverse($requestArray);
 $alias = $requestArray[0];
+
 // If the request ends in a slash, it can't be a product.
 if($alias == '') {
-    return;
+    $modx->sendRedirect($errorUrl);
 };
+
 
 // Gets id of the product resource viewport
 $productDetailId = $modx->getOption('commercemultilang.product_detail_page');
@@ -36,28 +41,21 @@ if($productDetailId) {
     }
 
     //Comment this out if using experimental flat rows
-    $c = $xpdo->newQuery('comProduct');
-    $c->leftJoin('CommerceMultiLangProductData','ProductData','comProduct.id=ProductData.product_id');
+    $c = $xpdo->newQuery('CommerceMultiLangProduct');
+    $c->leftJoin('CommerceMultiLangProductData','ProductData','CommerceMultiLangProduct.id=ProductData.product_id');
     $c->leftJoin('CommerceMultiLangProductLanguage','ProductLanguage',array(
-        'comProduct.id=ProductLanguage.product_id',
+        'CommerceMultiLangProduct.id=ProductLanguage.product_id',
         'ProductLanguage.lang_key'  =>  $modx->getOption('cultureKey')
     ));
     $c->where(array('ProductData.alias'=>$alias));
-    $c->select('comProduct.id,ProductData.alias,ProductLanguage.name,ProductLanguage.description');
+    $c->select('CommerceMultiLangProduct.id,ProductData.alias,ProductLanguage.name,ProductLanguage.description');
     if ($c->prepare() && $c->stmt->execute()) {
         $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
-
-        $q = $xpdo->newQuery('CommerceMultiLangProductImage');
-        $q->where(array('product_id'=>$product['id']));
-        if ($q->prepare() && $q->stmt->execute()) {
-            $product['images'] = $q->stmt->fetch(PDO::FETCH_ASSOC);
-        }
-
         if($product) {
             $_GET['product'] = $product;
             $modx->sendForward($productDetailId);
         } else {
-            return;
+            $modx->sendRedirect($errorUrl);
         }
     }
 
@@ -73,5 +71,5 @@ if($productDetailId) {
     }*/
 
 } else {
-    return;
+    $modx->sendRedirect($errorUrl);
 }

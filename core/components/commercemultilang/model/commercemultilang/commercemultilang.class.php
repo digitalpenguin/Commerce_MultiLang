@@ -83,41 +83,91 @@ class CommerceMultiLang {
         $c = $this->commerce->modx->newQuery('CommerceMultiLangProduct');
         $c->leftJoin('CommerceMultiLangProductData', 'ProductData', 'CommerceMultiLangProduct.id=ProductData.product_id');
         $c->leftJoin('CommerceMultiLangProductLanguage', 'ProductLanguage', 'CommerceMultiLangProduct.id=ProductLanguage.product_id');
+        $c->innerJoin('CommerceMultiLangProductImage', 'ProductImage', array(
+            'CommerceMultiLangProduct.id=ProductImage.product_id',
+            'ProductImage.main' => 1
+        ));
+        $c->innerJoin('CommerceMultiLangProductImageLanguage', 'ProductImageLanguage', array(
+            'ProductImage.id=ProductImageLanguage.product_image_id',
+            'ProductImageLanguage.lang_key' =>  $this->modx->getOption('cultureKey')
+        ));
+
         //$c->leftJoin('modResource','Category','ProductLanguage.category=Category.id');
         $c->where(array(
-            'CommerceMultiLangProduct.removed'    =>  0,
-            'ProductLanguage.lang_key'  =>  $this->modx->getOption('cultureKey'),
-            'ProductLanguage.category'  =>  $this->modx->resource->get('id') // only show products on the correct resource
+            'CommerceMultiLangProduct.removed'  => 0,
+            'ProductData.product_listing'       => 1,
+            'ProductLanguage.lang_key'          => $this->modx->getOption('cultureKey'),
+            'ProductLanguage.category'          => $this->modx->resource->get('id'), // only show products on the correct resource
         ));
-        $c->select('CommerceMultiLangProduct.id,ProductData.alias,ProductLanguage.*');
+        $c->select('CommerceMultiLangProduct.id,ProductData.alias,ProductLanguage.*,ProductImageLanguage.image');
+        //$c->prepare();
+        //echo $c->toSQL();
         if ($c->prepare() && $c->stmt->execute()) {
             $products = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $output = '';
-            foreach ($products as $product) {
-                //Add current document extension to product
-                $product['extension'] = $extension;
-                // Grab images related to the product
-                $q = $this->modx->newQuery('CommerceMultiLangProductImage');
-                $q->where(array('product_id' => $product['id']));
-                $q->select('CommerceMultiLangProductImage.*');
-                if ($q->prepare() && $q->stmt->execute()) {
-                    $product['images'] = $q->stmt->fetchAll(PDO::FETCH_ASSOC);
-                }
-                //$this->modx->log(1,print_r($product,true));
-                if($scriptProperties['tpl']) {
-                    $output .= $this->modx->getChunk($scriptProperties['tpl'],$product);
-                } else {
-                    $output .= $this->modx->getChunk('product_preview_tpl',$product);
-                }
+            if($products) {
+                foreach ($products as $product) {
+                    //Add current document extension to product
+                    $product['extension'] = $extension;
 
+                    $currentId = $this->modx->resource->get('id');
+                    $url = $this->modx->makeUrl($currentId);
+                    $product['product_link'] = $url . $product['alias'] . $extension;
+                    $product['image'] = '/' . $product['image'];
+                    if ($scriptProperties['tpl']) {
+                        $output .= $this->modx->getChunk($scriptProperties['tpl'], $product);
+                    } else {
+                        $output .= $this->modx->getChunk('product_preview_tpl', $product);
+                    }
+
+                }
+                if ($scriptProperties['debug']) {
+                    return '<pre>' . print_r($products, true) . '</pre>';
+                }
+                return $output;
+            } else {
+                // If nothing found
+                return '<p>There are no products listed in this category yet.</p>';
             }
-            if($scriptProperties['debug']) {
-                return '<pre>'.print_r($products, true).'</pre>';
-            }
-            return $output;
 
         }
         return '';
+    }
+
+    /**
+     * Returns array of active context keys with associated languages
+     * @return array
+     */
+    public function getLanguages() {
+        $languages = array();
+        $c = $this->modx->newQuery('modContext');
+        $c->leftJoin('modContextSetting','ContextSettings','modContext.key=ContextSettings.context_key');
+        $c->select('modContext.key,modContext.name,ContextSettings.key as setting_key,ContextSettings.value as lang_key');
+        $c->where(array(
+            'modContext.key:!=' => 'mgr',
+            'AND:ContextSettings.key:=' => 'cultureKey'
+        ));
+        if ($c->prepare() && $c->stmt->execute()) {
+            $contexts = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($contexts as $context) {
+                $v = $this->modx->newQuery('modContextSetting');
+                $v->where(array(
+                    'context_key:='   =>  $context['key'],
+                    'AND:key:='       =>  'commercemultilang.product_detail_page'
+                ));
+                $v->select('modContextSetting.key,modContextSetting.value');
+                if ($v->prepare() && $v->stmt->execute()) {
+                    $setting = $v->stmt->fetch(PDO::FETCH_ASSOC);
+                    $lang = array();
+                    $lang['context_key'] = $context['key'];
+                    $lang['lang_key'] = $context['lang_key'];
+                    $lang['name'] = $context['name'];
+                    $lang['viewport'] = $setting['value'];
+                    array_push($languages, $lang);
+                }
+            }
+        }
+        return $languages;
     }
 }
