@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The main CommerceMultiLang service class.
  *
@@ -38,13 +37,10 @@ class CommerceMultiLang {
 
         $this->commerce = $this->modx->getService('commerce','Commerce',MODX_CORE_PATH.'components/commerce/model/commerce/');
         if (!($this->commerce instanceof Commerce)) $this->modx->log(1,'Couldn\'t load commerce');
+        $this->commerce->adapter->loadLexicon('commerce:default');
 
-        $this->modx->lexicon->load('commerce:default');
         $this->commerce->adapter->loadPackage('commercemultilang', $this->getOption('modelPath'));
         $this->commerce->adapter->loadLexicon('commercemultilang:default');
-
-        $directory = $this->options['corePath'].'src/Modules/';
-        $this->commerce->loadModulesFromDirectory($directory,'ThirdParty\CommerceMultiLang\Modules\\',$directory);
     }
 
     /**
