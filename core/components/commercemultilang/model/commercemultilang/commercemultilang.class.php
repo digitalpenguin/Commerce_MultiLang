@@ -12,6 +12,7 @@ class CommerceMultiLang {
     public $cache = null;
     public $options = array();
 
+
     public function __construct(modX &$modx, array $options = array()) {
         $this->modx =& $modx;
         $this->namespace = $this->getOption('namespace', $options, 'commercemultilang');
@@ -38,11 +39,12 @@ class CommerceMultiLang {
         $this->commerce = $this->modx->getService('commerce','Commerce',MODX_CORE_PATH.'components/commerce/model/commerce/');
         if (!($this->commerce instanceof Commerce)) $this->modx->log(1,'Couldn\'t load commerce');
 
-        //$url = $this->commerce->adapter->makeResourceUrl(1);
-        //$this->modx->log(1,$url);
         $this->modx->lexicon->load('commerce:default');
-        $this->modx->addPackage('commercemultilang', $this->getOption('modelPath'));
-        $this->modx->lexicon->load('commercemultilang:default');
+        $this->commerce->adapter->loadPackage('commercemultilang', $this->getOption('modelPath'));
+        $this->commerce->adapter->loadLexicon('commercemultilang:default');
+
+        $directory = $this->options['corePath'].'src/Modules/';
+        $this->commerce->loadModulesFromDirectory($directory,'ThirdParty\CommerceMultiLang\Modules\\',$directory);
     }
 
     /**
@@ -120,7 +122,6 @@ class CommerceMultiLang {
                     } else {
                         $output .= $this->modx->getChunk('product_preview_tpl', $product);
                     }
-
                 }
                 if ($scriptProperties['debug']) {
                     return '<pre>' . print_r($products, true) . '</pre>';
@@ -135,14 +136,46 @@ class CommerceMultiLang {
         return '';
     }
 
-
-    public function getProductDetail() {
-
-        $product = $this->modx->sanitize($_GET['product']);
-        $id = $product['id'];
-        $alias = $product['alias'];
-        $this->modx->log(1,print_r($product,true));
-        return $id. ' '.$alias;
+    /**
+     * Retrieves product information
+     *
+     * @param array $scriptProperties
+     * @return bool|string
+     */
+    public function getProductDetail($scriptProperties = array()) {
+        $output = '';
+        if(!$productId = intval($_GET['product']['id'])) {
+            return false;
+        }
+        $c = $this->modx->newQuery('CommerceMultiLangProduct');
+        $c->leftJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
+        $c->leftJoin('CommerceMultiLangProductLanguage','ProductLanguage',array(
+            'ProductLanguage.product_id=CommerceMultiLangProduct.id',
+            'ProductLanguage.lang_key'=>$this->modx->getOption('cultureKey')
+        ));
+        $c->leftJoin('CommerceMultiLangProductImage','ProductImage',array(
+            'ProductImage.product_id=CommerceMultiLangProduct.id'
+        ));
+        $c->leftJoin('CommerceMultiLangProductImageLanguage','ProductImageLanguage',array(
+            'ProductImageLanguage.product_image_id=ProductImage.id'
+        ));
+        $c->where(array('CommerceMultiLangProduct.id'=>$productId));
+        $c->select(
+            'CommerceMultiLangProduct.*,
+                    ProductData.alias,
+                    ProductLanguage.name,
+                    ProductLanguage.description,
+                    ProductImageLanguage.title,
+                    ProductImageLanguage.alt,
+                    ProductImageLanguage.image'
+        );
+        //$c->prepare();
+        //$this->modx->log(1,$c->toSQL());
+        if ($c->prepare() && $c->stmt->execute()) {
+            $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
+            $output .=  $this->modx->getChunk('product_detail_tpl',$product);
+        }
+        return $output;
     }
 
     /**
