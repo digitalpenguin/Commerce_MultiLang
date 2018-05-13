@@ -18,10 +18,9 @@ class CommerceMultiLang extends \modmore\Commerce\Modules\BaseModule {
     }
 
     public function initialize(EventDispatcher $dispatcher) {
-        $root = dirname(dirname(__DIR__));
-        //$this->adapter->log(1,$root.'/model/');
-        $this->adapter->loadPackage('CommerceMultiLang',$root.'/model/');
+        $root = dirname(dirname(__DIR__)).'/model/';
+        if(!$this->adapter->loadPackage('commercemultilang',$root)) {
+            $this->adapter->log(1, 'Unable to load the CommerceMultiLang package.');
+        }
     }
-
-
 }

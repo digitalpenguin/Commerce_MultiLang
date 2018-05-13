@@ -3,10 +3,10 @@
 <p>[[+description]]</p>
 
 <form method="post" action="[[~[[++commerce.cart_resource]]]]">
-    <input type="hidden" name="add_to_cart" value="[[+id]]">
+    <input type="hidden" name="add_to_cart" value="1">
 
     <label for="add-quantity">Quantity</label>
-    <input id="add-quantity" type="number" name="products[1][quantity]" value="1">
+    <input id="add-quantity" type="number" name="products[ [[+id]] ][quantity]" value="1">
 
     <input type="submit" value="Add to Cart">
 </form>

@@ -73,12 +73,12 @@ class CommerceMultiLang {
      * @return string
      */
     public function getProductList(array $scriptProperties = array()) {
-        $contentType = $this->modx->getObject('modContentType',array(
+        $contentType = $this->commerce->adapter->getObject('modContentType',array(
             'mime_type' => 'text/html'
         ));
         $extension = $contentType->get('file_extensions');
 
-        $c = $this->commerce->modx->newQuery('CommerceMultiLangProduct');
+        $c = $this->commerce->adapter->newQuery('CommerceMultiLangProduct');
         $c->leftJoin('CommerceMultiLangProductData', 'ProductData', 'CommerceMultiLangProduct.id=ProductData.product_id');
         $c->leftJoin('CommerceMultiLangProductLanguage', 'ProductLanguage', 'CommerceMultiLangProduct.id=ProductLanguage.product_id');
         $c->innerJoin('CommerceMultiLangProductImage', 'ProductImage', array(
@@ -94,10 +94,10 @@ class CommerceMultiLang {
         $c->where(array(
             'CommerceMultiLangProduct.removed'  => 0,
             'ProductData.product_listing'       => 1,
-            'ProductLanguage.lang_key'          => $this->modx->getOption('cultureKey'),
+            'ProductLanguage.lang_key'          => $this->commerce->adapter->getOption('cultureKey'),
             'ProductLanguage.category'          => $this->modx->resource->get('id'), // only show products on the correct resource
         ));
-        $c->select('CommerceMultiLangProduct.id,ProductData.alias,ProductLanguage.*,ProductImageLanguage.image');
+        $c->select('CommerceMultiLangProduct.*,ProductData.alias,ProductLanguage.*,ProductImageLanguage.image');
         //$c->prepare();
         //echo $c->toSQL();
         if ($c->prepare() && $c->stmt->execute()) {
@@ -113,6 +113,7 @@ class CommerceMultiLang {
                     $url = $this->modx->makeUrl($currentId);
                     $product['product_link'] = $url . $product['alias'] . $extension;
                     $product['image'] = '/' . $product['image'];
+                    $this->modx->log(1,print_r($product,true));
                     if ($scriptProperties['tpl']) {
                         $output .= $this->modx->getChunk($scriptProperties['tpl'], $product);
                     } else {
