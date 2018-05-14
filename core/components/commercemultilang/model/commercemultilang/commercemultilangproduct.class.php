@@ -45,7 +45,6 @@ class CommerceMultiLangProduct extends comProduct {
         if(!$this->extendedData) {
             $this->loadExtendedData();
         }
-
         return $this->extendedData['name'];
     }
 
@@ -53,7 +52,6 @@ class CommerceMultiLangProduct extends comProduct {
         if(!$this->extendedData) {
             $this->loadExtendedData();
         }
-        $this->adapter->log(1,$this->extendedData['description']);
         return $this->extendedData['description'];
     }
 
