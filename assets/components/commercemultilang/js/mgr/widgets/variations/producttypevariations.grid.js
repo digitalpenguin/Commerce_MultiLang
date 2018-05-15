@@ -100,7 +100,7 @@ Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
             var updateProductType = MODx.load({
                 xtype: 'commercemultilang-window-product-type-variation-update'
                 ,title: _('commercemultilang.product_type_variation.update')
-                ,action: 'mgr/product-type/update'
+                ,action: 'mgr/product-type/variation/update'
                 ,id:'commercemultilang-window-product-type-'+this.menu.record['id']
                 ,record: this.menu.record
                 ,listeners: {
@@ -125,7 +125,7 @@ Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
             ,text: _('commercemultilang.product_type_variation.remove_confirm')
             ,url: this.config.url
             ,params: {
-                action: 'mgr/product-type/remove'
+                action: 'mgr/product-type/variation/remove'
                 ,id: this.menu.record.id
             }
             ,listeners: {

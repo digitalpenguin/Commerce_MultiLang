@@ -38,10 +38,53 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
         }
         $productData->save();
 
+
         // Grabs related language table
         $productLanguages = $this->modx->getCollection('CommerceMultiLangProductLanguage',array(
             'product_id'    => $this->object->get('id')
         ));
+
+        // Check that all variation products match the product type. It may have changed!
+        $count = $this->modx->getCount('CommerceMultiLangProductData',array(
+            'type:!='      =>  $this->object->get('type'),
+            'AND:parent:='    =>  $this->object->get('id')
+        ));
+        // If children product exist that have a different type, loop through and update them to be the same as the parent.
+        if($count) {
+            $children = $this->modx->getCollection('CommerceMultiLangProductData',array(
+                'type:!='      =>  $this->object->get('type'),
+                'AND:parent:='    =>  $this->object->get('id')
+            ));
+            foreach($children as $child) {
+                $child->set('type',$this->object->get('type'));
+                $child->save();
+            }
+        }
+
+        // In case the product type has changed, check if correct variation assignments exist. If not, create them.
+        $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
+            'type_id'   =>  $this->object->get('type')
+        ));
+        foreach($variations as $variation) {
+            $assignments = $this->modx->getCollection('CommerceMultiLangAssignedVariation',array(
+                'product_id'    =>  $this->object->get('id'),
+                'variation_id'  =>  $variation->get('id')
+            ));
+            $names = [];
+            foreach($assignments as $assignment) {
+                $names[] = $assignment->get('name');
+            }
+            if(!in_array($variation->get('name'),$names)) {
+                foreach($productLanguages as $language) {
+                    $newAssignment = $this->modx->newObject('CommerceMultiLangAssignedVariation');
+                    $newAssignment->set('name', $variation->get('name'));
+                    $newAssignment->set('product_id', $this->object->get('id'));
+                    $newAssignment->set('variation_id', $variation->get('id'));
+                    $newAssignment->set('lang_key',$language->get('lang_key'));
+                    $newAssignment->save();
+                }
+            }
+        }
 
 
         foreach($productLanguages as $productLanguage) {
@@ -86,6 +129,9 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
                     $this->object->save();
                 }
             }
+
+
+
         }
         return parent::afterSave();
     }

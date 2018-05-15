@@ -185,7 +185,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                         title: 'Main'
                         ,layout:'form'
                         ,forceLayout:true
-                        ,cls: 'main-wrapper'
+                        ,style:'margin:0 5px 0 30px;'
                         ,items:[{
                             xtype: 'textfield'
                             ,fieldLabel: _('name')

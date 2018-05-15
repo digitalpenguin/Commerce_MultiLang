@@ -10,7 +10,7 @@
     overflow-x:hidden !important;
 }
 #commercemultilang-window-product-update #commercemultilang-grid-product-update-variations .x-grid3-scroller {
-    height:322px;
+    height:310px;
     overflow-y:auto !important;
     overflow-x:hidden !important;
 }
@@ -26,7 +26,7 @@
     padding:0 !important;
 }
 #product-update-window-tabs .language-tab .x-panel-body.x-panel-body-noheader.x-panel-body-noborder,
-#product-update-window-tabs .language-tab .x-panel.main-wrapper.x-panel-noborder.x-form-label-top{
+#product-update-window-tabs .language-tab .x-panel.x-panel-noborder.x-form-label-top{
     max-width:96% !important;
 }
 
