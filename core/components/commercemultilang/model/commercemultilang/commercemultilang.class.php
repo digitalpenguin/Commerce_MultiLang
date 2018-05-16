@@ -185,6 +185,13 @@ class CommerceMultiLang {
         return $output;
     }
 
+
+    public function getProductVariationFields($parentProductId = 1) {
+        $output = '';
+
+        return $output;
+    }
+
     /**
      * Returns array of active context keys with associated languages
      * @return array

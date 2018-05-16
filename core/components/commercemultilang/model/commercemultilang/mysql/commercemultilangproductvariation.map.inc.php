@@ -4,7 +4,7 @@
  */
 $xpdo_meta_map['CommerceMultiLangProductVariation']= array (
   'package' => 'commercemultilang',
-  'version' => '0.1',
+  'version' => '1.1',
   'table' => 'commercemultilang_product_variations',
   'extends' => 'xPDOSimpleObject',
   'tableMeta' => 
@@ -15,6 +15,8 @@ $xpdo_meta_map['CommerceMultiLangProductVariation']= array (
   array (
     'type_id' => NULL,
     'name' => '',
+    'display_name' => '',
+    'description' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -25,7 +27,6 @@ $xpdo_meta_map['CommerceMultiLangProductVariation']= array (
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
-      'index' => 'index',
     ),
     'name' => 
     array (
@@ -34,6 +35,55 @@ $xpdo_meta_map['CommerceMultiLangProductVariation']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+    ),
+    'display_name' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '190',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'description' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => true,
+    ),
+  ),
+  'indexes' => 
+  array (
+    'type_id' => 
+    array (
+      'alias' => 'type_id',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'type_id' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'name' => 
+    array (
+      'alias' => 'name',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'name' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'composites' => 

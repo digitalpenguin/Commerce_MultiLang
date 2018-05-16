@@ -74,7 +74,7 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
         $this->loadVariationFields();
         $productData = $this->modx->newObject('CommerceMultiLangProductData');
         $productData->set('product_id',$this->object->get('id'));
-        $productData->set('alias', 0);
+        $productData->set('alias', '');
         $productData->set('parent', $this->parentObj->get('id'));
         $productData->set('type', $this->parentProductData->get('type'));
         $productData->set('product_listing',0);

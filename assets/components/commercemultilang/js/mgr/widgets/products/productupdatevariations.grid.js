@@ -423,15 +423,17 @@ Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
     ,renderImageOnLoad:function() {
         var leftCol = Ext.getCmp('product-variation-update-left-col');
         var url = Ext.getCmp('update-product-image-select').getValue();
-        if(url.charAt(0) !== '/') {
-            url = '/'+url;
+        if(url) {
+            if (url.charAt(0) !== '/') {
+                url = '/' + url;
+            }
+            leftCol.remove('update-product-variation-image-preview');
+            leftCol.add({
+                html: '<img style="width:100%; margin-top:10px;" src="' + url + '" />'
+                , id: 'update-product-variation-image-preview'
+            });
+            leftCol.doLayout();
         }
-        leftCol.remove('update-product-variation-image-preview');
-        leftCol.add({
-            html: '<img style="width:100%; margin-top:10px;" src="' + url + '" />'
-            ,id: 'update-product-variation-image-preview'
-        });
-        leftCol.doLayout();
     }
 });
 Ext.reg('commercemultilang-window-product-variation-update',CommerceMultiLang.window.ProductVariationUpdate);

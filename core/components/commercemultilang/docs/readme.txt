@@ -9,7 +9,6 @@ Company: Digital Penguin Ltd (Hong Kong)
 WORK IN PROGRESS
 
 TODO:
-- Don't allow variation products to generate an alias. They shouldn't be directly accessible.
 - Make a more functional update window for image languages.
 - Allow an initial image for product create form.
 - Cache everything!

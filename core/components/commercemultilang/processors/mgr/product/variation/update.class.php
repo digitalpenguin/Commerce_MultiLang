@@ -38,7 +38,7 @@ class CommerceMultiLangProductChildUpdateProcessor extends modObjectUpdateProces
             'product_id' => $this->object->get('id')
         ));
         $productData->set('product_id',$this->object->get('id'));
-        $productData->set('alias', $this->object->get('alias'));
+        $productData->set('alias', ''); // Children products shouldn't have an alias.
         $productData->save();
 
         // Grabs related language table

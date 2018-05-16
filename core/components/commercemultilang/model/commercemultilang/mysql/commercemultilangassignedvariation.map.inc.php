@@ -4,7 +4,7 @@
  */
 $xpdo_meta_map['CommerceMultiLangAssignedVariation']= array (
   'package' => 'commercemultilang',
-  'version' => '0.1',
+  'version' => '1.1',
   'table' => 'commercemultilang_assigned_product_variations',
   'extends' => 'xPDOSimpleObject',
   'tableMeta' => 
@@ -28,7 +28,6 @@ $xpdo_meta_map['CommerceMultiLangAssignedVariation']= array (
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
-      'index' => 'index',
     ),
     'product_id' => 
     array (
@@ -37,7 +36,6 @@ $xpdo_meta_map['CommerceMultiLangAssignedVariation']= array (
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
-      'index' => 'index',
     ),
     'name' => 
     array (
@@ -53,13 +51,63 @@ $xpdo_meta_map['CommerceMultiLangAssignedVariation']= array (
       'precision' => '10',
       'phptype' => 'string',
       'null' => false,
-      'index' => 'index',
     ),
     'value' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
       'null' => true,
+    ),
+  ),
+  'indexes' => 
+  array (
+    'variation_id' => 
+    array (
+      'alias' => 'variation_id',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'variation_id' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'product_id' => 
+    array (
+      'alias' => 'product_id',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'product_id' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'lang_key' => 
+    array (
+      'alias' => 'lang_key',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'lang_key' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'aggregates' => 

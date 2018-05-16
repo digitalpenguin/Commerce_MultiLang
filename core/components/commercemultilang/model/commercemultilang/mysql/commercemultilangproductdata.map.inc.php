@@ -4,7 +4,7 @@
  */
 $xpdo_meta_map['CommerceMultiLangProductData']= array (
   'package' => 'commercemultilang',
-  'version' => '0.1',
+  'version' => '1.1',
   'table' => 'commercemultilang_product_data',
   'extends' => 'xPDOSimpleObject',
   'tableMeta' => 
@@ -28,7 +28,6 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
-      'index' => 'index',
     ),
     'alias' => 
     array (
@@ -37,7 +36,6 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '',
-      'index' => 'index',
     ),
     'product_listing' => 
     array (
@@ -54,7 +52,6 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => true,
-      'index' => 'index',
     ),
     'parent' => 
     array (
@@ -64,7 +61,73 @@ $xpdo_meta_map['CommerceMultiLangProductData']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
-      'index' => 'index',
+    ),
+  ),
+  'indexes' => 
+  array (
+    'product_id' => 
+    array (
+      'alias' => 'product_id',
+      'primary' => false,
+      'unique' => true,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'product_id' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'alias' => 
+    array (
+      'alias' => 'alias',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'alias' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'type' => 
+    array (
+      'alias' => 'type',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'type' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'parent' => 
+    array (
+      'alias' => 'parent',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'parent' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'aggregates' => 

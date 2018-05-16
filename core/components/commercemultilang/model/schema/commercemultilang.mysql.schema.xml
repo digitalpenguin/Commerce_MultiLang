@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="commercemultilang" baseClass="comSimpleObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="commercemultilang" version="0.1">
+<model package="commercemultilang" baseClass="comSimpleObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="commercemultilang" version="1.1">
 
     <object class="CommerceMultiLangProduct" extends="comProduct" inherit="single">
         <composite alias="ProductLanguage" class="CommerceMultiLangProductLanguage" local="id" foreign="product_id" cardinality="many" owner="local" />
@@ -10,38 +10,75 @@
     </object>
 
     <object class="CommerceMultiLangProductData" table="commercemultilang_product_data" extends="xPDOSimpleObject">
-        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
-        <field key="alias" dbtype="varchar" precision="190" phptype="string" null="false" default="" index="index" />
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="alias" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
         <field key="product_listing" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false"/>
-        <field key="type" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" index="index" />
-        <field key="parent" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+        <field key="type" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" />
+        <field key="parent" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="product_id" name="product_id" primary="false" unique="true" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="alias" name="alias" primary="false" unique="false" type="BTREE">
+            <column key="alias" length="" collation="A" null="false" />
+        </index>
+        <index alias="type" name="type" primary="false" unique="false" type="BTREE">
+            <column key="type" length="" collation="A" null="false" />
+        </index>
+        <index alias="parent" name="parent" primary="false" unique="false" type="BTREE">
+            <column key="parent" length="" collation="A" null="false" />
+        </index>
     </object>
 
     <object class="CommerceMultiLangProductLanguage" table="commercemultilang_product_languages" extends="xPDOSimpleObject">
-        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
-        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" index="index" />
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
         <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
-        <field key="category" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index" />
+        <field key="category" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
         <field key="description" dbtype="text" phptype="string" null="true" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="product_id" name="product_id" primary="false" unique="false" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="lang_key" name="lang_key" primary="false" unique="false" type="BTREE">
+            <column key="lang_key" length="" collation="A" null="false" />
+        </index>
+        <index alias="category" name="category" primary="false" unique="false" type="BTREE">
+            <column key="category" length="" collation="A" null="false" />
+        </index>
     </object>
 
     <object class="CommerceMultiLangProductImage" table="commercemultilang_product_images" extends="xPDOSimpleObject">
-        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
         <field key="main" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false"/>
         <composite alias="ProductImageLanguage" class="CommerceMultiLangProductImageLanguage" local="id" foreign="product_image_id" cardinality="many" owner="local" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="product_id" name="product_id" primary="false" unique="false" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="main" name="main" primary="false" unique="false" type="BTREE">
+            <column key="main" length="" collation="A" null="false" />
+        </index>
     </object>
 
     <object class="CommerceMultiLangProductImageLanguage" table="commercemultilang_product_image_languages" extends="xPDOSimpleObject">
-        <field key="product_image_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
-        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" index="index" />
+        <field key="product_image_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
         <field key="title" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
         <field key="alt" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
         <field key="image" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
         <field key="description" dbtype="text" phptype="string" null="true" />
         <aggregate alias="ProductImage" class="CommerceMultiLangProductImage" local="product_image_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="product_image_id" name="product_image_id" primary="false" unique="false" type="BTREE">
+            <column key="product_image_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="lang_key" name="lang_key" primary="false" unique="false" type="BTREE">
+            <column key="lang_key" length="" collation="A" null="false" />
+        </index>
     </object>
 
     <object class="CommerceMultiLangProductType" table="commercemultilang_product_types" extends="xPDOSimpleObject">
@@ -51,21 +88,40 @@
     </object>
 
     <object class="CommerceMultiLangProductVariation" table="commercemultilang_product_variations" extends="xPDOSimpleObject">
-        <field key="type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
         <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="display_name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="description" dbtype="text" phptype="string" null="true" />
         <aggregate alias="ProductType" class="CommerceMultiLangProductType" local="type_id" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="AssignedVariation" class="CommerceMultiLangAssignedVariation" local="id" foreign="variation_id" cardinality="many" owner="local" />
+
+        <index alias="type_id" name="type_id" primary="false" unique="false" type="BTREE">
+            <column key="type_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="name" name="name" primary="false" unique="false" type="BTREE">
+            <column key="name" length="" collation="A" null="false" />
+        </index>
     </object>
 
     <!-- This is a many to many between the variation and the product-->
     <object class="CommerceMultiLangAssignedVariation" table="commercemultilang_assigned_product_variations" extends="xPDOSimpleObject">
-        <field key="variation_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
-        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="index"/>
+        <field key="variation_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
         <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
-        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" index="index" />
+        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
         <field key="value" dbtype="text" phptype="string" null="true" />
         <aggregate alias="ProductVariation" class="CommerceMultiLangProductVariation" local="variation_id" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Product" class="CommerceMultiLangProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="variation_id" name="variation_id" primary="false" unique="false" type="BTREE">
+            <column key="variation_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="product_id" name="product_id" primary="false" unique="false" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="lang_key" name="lang_key" primary="false" unique="false" type="BTREE">
+            <column key="lang_key" length="" collation="A" null="false" />
+        </index>
     </object>
 
     <!--<object class="CommerceMultiLangFlatRow" table="commercemultilang_flat_rows" extends="xPDOSimpleObject">

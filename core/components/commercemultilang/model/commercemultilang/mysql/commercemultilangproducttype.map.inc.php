@@ -4,7 +4,7 @@
  */
 $xpdo_meta_map['CommerceMultiLangProductType']= array (
   'package' => 'commercemultilang',
-  'version' => '0.1',
+  'version' => '1.1',
   'table' => 'commercemultilang_product_types',
   'extends' => 'xPDOSimpleObject',
   'tableMeta' => 
