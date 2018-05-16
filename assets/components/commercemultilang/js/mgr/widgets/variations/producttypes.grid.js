@@ -142,7 +142,6 @@ CommerceMultiLang.window.ProductTypeCreate = function(config) {
         title: _('commercemultilang.product_type.create')
         ,id:'commercemultilang-window-product-type-create'
         ,closeAction: 'close'
-        ,width:600
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product-type/create'
         ,keys: []
@@ -186,7 +185,7 @@ CommerceMultiLang.window.ProductTypeUpdate = function(config) {
         },{
             layout:'column'
             ,items:[{
-                columnWidth: .5
+                columnWidth: .35
                 ,layout:'form'
                 ,items:[{
                     xtype: 'textfield'
@@ -200,7 +199,7 @@ CommerceMultiLang.window.ProductTypeUpdate = function(config) {
                     ,anchor: '100%'
                 }]
             },{
-                columnWidth: .5
+                columnWidth: .65
                 ,layout:'form'
                 ,items:[{
                     xtype: 'commercemultilang-grid-product-type-variations'

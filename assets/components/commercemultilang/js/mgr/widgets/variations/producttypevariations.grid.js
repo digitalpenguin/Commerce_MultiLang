@@ -13,7 +13,7 @@ CommerceMultiLang.grid.ProductTypeVariations = function(config) {
         }
         ,save_action: 'mgr/product-type/variation/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','name','position']
+        ,fields: ['id','name','display_name','description','position']
         ,autoHeight: true
         ,paging: true
         ,pageSize: 10
@@ -22,9 +22,19 @@ CommerceMultiLang.grid.ProductTypeVariations = function(config) {
             header: _('id')
             ,dataIndex: 'id'
             ,width: 40
+            ,hidden: true
         },{
             header: _('commercemultilang.product_type_variation.name')
             ,dataIndex: 'name'
+            ,width: 100
+        },{
+            header: _('commercemultilang.product_type_variation.display_name')
+            ,dataIndex: 'display_name'
+            ,width: 120
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('commercemultilang.product_type_variation.description')
+            ,dataIndex: 'description'
             ,width: 200
             ,editor: { xtype: 'textfield' }
         },{
@@ -154,6 +164,11 @@ CommerceMultiLang.window.ProductTypeVariationCreate = function(config) {
             ,fieldLabel: _('commercemultilang.product_type_variation.name')
             ,name: 'name'
             ,anchor: '100%'
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('description')
+            ,name: 'description'
+            ,anchor: '100%'
         }]
     });
     CommerceMultiLang.window.ProductTypeVariationCreate.superclass.constructor.call(this,config);
@@ -180,6 +195,12 @@ CommerceMultiLang.window.ProductTypeVariationUpdate = function(config) {
             xtype: 'textfield'
             ,fieldLabel: _('commercemultilang.product_type_variation.name')
             ,name: 'name'
+            ,disabled: true
+            ,anchor: '100%'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('commercemultilang.product_type_variation.display_name')
+            ,name: 'display_name'
             ,anchor: '100%'
         },{
             xtype: 'textarea'

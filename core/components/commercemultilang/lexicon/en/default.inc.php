@@ -91,6 +91,7 @@ $_lang['commercemultilang.err.product_type_save'] = 'An error occurred while try
 
 /* Product Type Variations */
 $_lang['commercemultilang.product_type_variation.name'] = 'Name';
+$_lang['commercemultilang.product_type_variation.display_name'] = 'Display Name';
 $_lang['commercemultilang.product_type_variation.value'] = 'Value';
 $_lang['commercemultilang.product_type_variation.language'] = 'Language';
 $_lang['commercemultilang.product_type_variation.description'] = 'Description';

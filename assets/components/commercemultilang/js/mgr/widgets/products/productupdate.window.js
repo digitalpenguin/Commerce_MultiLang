@@ -285,10 +285,10 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             ,dataIndex: 'weight_formatted'
         }];
         variations.forEach(function(variation) {
-            var lcName = variation['name'].toLowerCase();
+
             var newCol = {
-                header: variation['name'],
-                dataIndex: lcName,
+                header: variation['display_name'],
+                dataIndex: variation['name']
             };
             columns.push(newCol);
         });

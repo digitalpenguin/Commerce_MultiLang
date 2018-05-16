@@ -245,11 +245,10 @@ Ext.extend(CommerceMultiLang.window.ProductVariationCreate,MODx.Window,{
     addVariationFields: function(config) {
         var fields = [];
         config.variations.forEach(function(variation){
-            var lcName = variation['name'].toLowerCase();
             fields.push({
                 xtype: 'textfield'
-                ,fieldLabel: variation['name']
-                ,name: lcName
+                ,fieldLabel: variation['display_name']
+                ,name: variation['name']
                 ,anchor: '100%'
             });
         });
@@ -375,9 +374,8 @@ Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
             var fields = [];
             variations.forEach(function(variation){
                 // Make a capitalised version of the field name for the label.
-                var name = variation['name'].charAt(0).toUpperCase() + variation['name'].slice(1);
                 var field = new Ext.form.TextField({
-                    fieldLabel: name
+                    fieldLabel: variation['display_name']
                     ,id: 'var_'+variation['name']+'_' + langTab['lang_key']
                     ,name: variation['name'] + '_' + langTab['lang_key']
                     ,value: langTab.fields ? langTab.fields[variation['name'] + '_' + langTab['lang_key']] : ''

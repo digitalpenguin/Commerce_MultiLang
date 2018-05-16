@@ -36,10 +36,18 @@ class CommerceMultiLangProductVariationCreateProcessor extends modObjectCreatePr
     }
 
     public function beforeSave() {
-        $name = strtolower($this->getProperty('name'));
-        $this->object->set('name',$name);
+        $name = $this->getProperty('name');
         if (empty($name)) {
             $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_type_variation_name_ns'));
+        } else {
+            // Set display name to what the user entered.
+            $this->object->set('display_name',$name);
+
+            // For the field name remove all non-alphanumeric chars and convert spaces to underscores.
+            $name = preg_replace('!\s+!', '_', $name);
+            $name = preg_replace('/[^a-z0-9]/i', '', $name);
+            $name = strtolower($name);
+            $this->object->set('name',$name);
         }
         return parent::beforeSave();
     }
