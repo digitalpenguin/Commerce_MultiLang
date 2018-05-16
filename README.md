@@ -1,7 +1,7 @@
 ---------------------------------------
 CommerceMultiLang
 ---------------------------------------
-Version: 0.0.1
+Version: 0.1.1
 
 WORK IN PROGRESS
 
@@ -14,6 +14,7 @@ TODO:
 - Build a product bundle grid.
 - Allow products to belong to multiple categories. A default category can replace the current singular category.
 
+There is now a package which can be used to install the extra via the MODX package manager.
 
 This is a wrapper for Modmore's excellent MODX extra called Commerce. https://www.modmore.com/commerce/
 Commerce doesn't come with multi-lingual products out of the box so CommerceMultiLang adds this for websites with more than one language.
@@ -23,7 +24,7 @@ Commerce is a a premium extra for MODX and using CommerceMultiLang requires a va
 https://www.modmore.com/commerce/pricing/
 
 Even though Commerce is HTML-first, this extra has been built with the UI framework the rest of MODX currently uses in the manager: ExtJS. (Sorry Mark! :) )
-Special thanks to @dimmy (Dimitri Hilverda) for advice given about some functionality such as loading with the resource viewport.
+Special thanks to @dimmy for advice given about some functionality such as loading with the resource viewport.
 
 Requirements:
 - MODX (of course!)
@@ -37,12 +38,27 @@ Dependencies
 - You'll need different contexts for each language. These should have been set up when you were installing Babel and LangRouter.
 - Make sure friendly URLs and friendly alias paths are turned on.
 
-Settings
+System Settings
 ---------------
-- Each of these contexts should have a cultureKey setting and the value should be a language key such as en/zh/fr/de etc.
-- make a system setting (not context setting) called commercemultilang.default_lang and set it to your default language. Example: en
-- On each context, add a resource that will be the parent for all your categories (we use resources for categories but not products). You could name it 'Shop' for example.
-- Then add a context setting to each context called commercemultilang.category_root_id and set the id of your parent category for that context.
-- Add another resource to each context (NOT as a child to the parent category resource) and call it something like "Product Detail". This is the viewport that will have the resource data loaded into it.
-- Add a context setting to each context called commercemultilang.product_detail_page and set the value to the idea of your product detail resource for that context.
-- Add the redirectToProduct plugin and have it fire on the onPageNotFound system event.
+- A system setting called commercemultilang.default_lang needs to be set with your default language code. (e.g. en,zh,fr etc.) This setting must be the cultureKey that is set on one of your contexts.
+
+Required Resources
+------------------
+- *Shop* - On each context add a "Shop" resource. (Of course the language of "Shop" will differ depending on the language.)
+- *Categories* - On each context, under "Shop", add a resource that will be the parent for all your categories (we use resources for categories but not products). You could name it 'Categories' for example.
+- *Cart* - On each context, under "Shop" but not under "Categories", add the "Cart" resource.
+- *Checkout* - On each context, under "Shop" but not under "Categories", add the "Checkout" resource.
+
+*Viewport* - On each context, you need to also add a blank resource to be used as a viewport. This can go anywhere (hide from menus) and will have the resource data loaded into it.
+
+
+
+Context Settings
+----------------
+Add these to each context. (In addition to the context settings required by Babel and LangRouter.)
+
+- *commercemultilang.category_root_id* - This is the id of the "Categories" resource for that context.
+- *commerce.cart_resource* - The id of your cart resource.
+- *commerce.checkout_resource* - The id of your checkout resource.
+- *commercemultilang.product_detail_page* - This is the id of your viewport resource. (Product detail page will be loaded into this resource by a plugin.)
+
