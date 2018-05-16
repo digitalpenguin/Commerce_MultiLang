@@ -81,11 +81,11 @@ class CommerceMultiLang {
         $c = $this->commerce->adapter->newQuery('CommerceMultiLangProduct');
         $c->leftJoin('CommerceMultiLangProductData', 'ProductData', 'CommerceMultiLangProduct.id=ProductData.product_id');
         $c->leftJoin('CommerceMultiLangProductLanguage', 'ProductLanguage', 'CommerceMultiLangProduct.id=ProductLanguage.product_id');
-        $c->innerJoin('CommerceMultiLangProductImage', 'ProductImage', array(
+        $c->leftJoin('CommerceMultiLangProductImage', 'ProductImage', array(
             'CommerceMultiLangProduct.id=ProductImage.product_id',
             'ProductImage.main' => 1
         ));
-        $c->innerJoin('CommerceMultiLangProductImageLanguage', 'ProductImageLanguage', array(
+        $c->leftJoin('CommerceMultiLangProductImageLanguage', 'ProductImageLanguage', array(
             'ProductImage.id=ProductImageLanguage.product_image_id',
             'ProductImageLanguage.lang_key' =>  $this->modx->getOption('cultureKey')
         ));
@@ -112,8 +112,12 @@ class CommerceMultiLang {
                     $currentId = $this->modx->resource->get('id');
                     $url = $this->modx->makeUrl($currentId);
                     $product['product_link'] = $url . $product['alias'] . $extension;
-                    $product['image'] = '/' . $product['image'];
-                    $this->modx->log(1,print_r($product,true));
+                    if($product['image']) {
+                        $product['image'] = '/' . $product['image'];
+                    } else {
+                        $product['image'] = $this->commerce->adapter->getOption('commercemultilang.assets_url').'img/placeholder.jpg';
+                    }
+                    //$this->modx->log(1,print_r($product,true));
                     if ($scriptProperties['tpl']) {
                         $output .= $this->modx->getChunk($scriptProperties['tpl'], $product);
                     } else {
@@ -170,6 +174,12 @@ class CommerceMultiLang {
         //$this->modx->log(1,$c->toSQL());
         if ($c->prepare() && $c->stmt->execute()) {
             $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
+            if($product['image']) {
+                $product['image'] = '/' . $product['image'];
+            } else {
+                $product['image'] = $this->commerce->adapter->getOption('commercemultilang.assets_url').'img/placeholder.jpg';
+
+            }
             $output .=  $this->modx->getChunk('product_detail_tpl',$product);
         }
         return $output;

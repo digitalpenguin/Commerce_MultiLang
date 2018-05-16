@@ -6,13 +6,14 @@ Version: 0.0.1
 WORK IN PROGRESS
 
 TODO:
-- Allow products to belong to multiple categories. A default category can replace the current singular category.
 - Don't allow variation products to generate an alias. They shouldn't be directly accessible.
 - Make a more functional update window for image languages.
 - Allow an initial image for product create form.
 - Cache everything!
 - Build a breadcrumbs snippet that includes categories (resources) and products.
 - Build a product bundle grid.
+- Allow products to belong to multiple categories. A default category can replace the current singular category.
+
 
 This is a wrapper for Modmore's excellent MODX extra called Commerce. https://www.modmore.com/commerce/
 Commerce doesn't come with multi-lingual products out of the box so CommerceMultiLang adds this for websites with more than one language.

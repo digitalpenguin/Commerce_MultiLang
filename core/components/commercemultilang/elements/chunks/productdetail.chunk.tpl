@@ -1,5 +1,5 @@
 <h1>[[+name]]</h1>
-<img title="[[+title]]" alt="[[+alt]]" src="/[[+image]]">
+<img title="[[+title]]" alt="[[+alt]]" src="[[+image]]">
 <p>[[+description]]</p>
 
 <form method="post" action="[[~[[++commerce.cart_resource]]]]">
