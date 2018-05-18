@@ -5,6 +5,8 @@ Version: 0.1.1
 
 You can find documentation in the wiki at [https://github.com/digitalpenguin/CommerceMultiLang/wiki](https://github.com/digitalpenguin/CommerceMultiLang/wiki)
 
+[![CommerceMultiLang Product Variations](https://github.com/digitalpenguin/CommerceMultiLang/blob/master/core/components/commercemultilang/docs/img/cml-variations.png "Click to zoom in!")](https://raw.githubusercontent.com/digitalpenguin/CommerceMultiLang/master/core/components/commercemultilang/docs/img/cml-variations.png)
+
 WORK IN PROGRESS
 
 TODO:
