@@ -1,8 +1,0 @@
-site_name: CommerceMultiLang
-docs_dir: core/components/commercemultilang/docs
-site_dir: _build/site
-repo_url: https://github.com/digitalpenguin/CommerceMultiLang
-pages:
-- [index.md, Home]
-- [gettingstarted.md, Getting Started]
-theme: jekyll-theme-architect
