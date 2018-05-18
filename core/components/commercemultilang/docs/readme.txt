@@ -6,6 +6,9 @@ Author: Murray Wood <murray@digitalpenguin.hk>
 Company: Digital Penguin Ltd (Hong Kong)
 ---------------------------------------
 
+You can find documentation in the wiki at https://github.com/digitalpenguin/CommerceMultiLang/wiki
+
+
 WORK IN PROGRESS
 
 TODO:
