@@ -172,8 +172,10 @@ class CommerceMultiLang {
         );
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
+
         if ($c->prepare() && $c->stmt->execute()) {
             $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
+            $variations = $this->getProductVariationFields($product['id']);
             if($product['image']) {
                 $product['image'] = '/' . $product['image'];
             } else {
@@ -186,9 +188,82 @@ class CommerceMultiLang {
     }
 
 
+    /**
+     * @param int $parentProductId
+     * @return string
+     */
     public function getProductVariationFields($parentProductId = 1) {
         $output = '';
+        $c = $this->commerce->adapter->newQuery('CommerceMultiLangProduct');
+        $c->leftJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
+        $c->leftJoin('CommerceMultiLangProductLanguage','ProductLanguage',array(
+            'ProductLanguage.product_id=CommerceMultiLangProduct.id',
+            'ProductLanguage.lang_key'=>$this->modx->getOption('cultureKey')
+        ));
+        $c->leftJoin('CommerceMultiLangProductImage','ProductImage',array(
+            'ProductImage.product_id=CommerceMultiLangProduct.id'
+        ));
+        $c->leftJoin('CommerceMultiLangProductImageLanguage','ProductImageLanguage',array(
+            'ProductImageLanguage.product_image_id=ProductImage.id'
+        ));
+        $c->select('CommerceMultiLangProduct.id,ProductImageLanguage.image,ProductImageLanguage.title,ProductImageLanguage.alt');
+        $c->where([
+            'ProductData.parent:='    =>  $parentProductId,
+            'OR:CommerceMultiLangProduct.id:='   =>  $parentProductId
+        ]);
+        //$c->prepare();
+        //$this->modx->log(1,$c->toSQL());
+        if ($c->prepare() && $c->stmt->execute()) {
+            $productArray = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
+            $productIds = [];
+            foreach($productArray as $product) {
+                $productIds[] = $product['id'];
+            }
+            $v = $this->commerce->adapter->newQuery('CommerceMultiLangAssignedVariation');
+            $v->select('id,product_id,variation_id,name,lang_key,value');
+            $v->where([
+                'product_id:IN'     =>  $productIds,
+                'lang_key'          =>  $this->commerce->adapter->getOption('cultureKey')
+            ]);
+            //$v->prepare();
+            //$this->modx->log(1,$v->toSQL());
+            if ($v->prepare() && $v->stmt->execute()) {
+                $variations = $v->stmt->fetchAll(PDO::FETCH_ASSOC);
+                $duplicateArr = $variations;
+                $nameKey = '';
+                $idx=0;
+                $final = [];
+                //$this->modx->log(1,print_r($variations,true));
+                foreach($variations as $variation) {
+                    if($idx===0){
+                        $nameKey = $variation['name'];
+                    }
+                    if($nameKey!=$variation['name']) {
+                        continue;
+                    }
+                    $new = [];
+                    //$this->modx->log(1,print_r($variation,true));
+                    $new['product_id']    =   $variation['product_id'];
+                    $new['variation_id']  =   $variation['variation_id'];
+                    $new['value']         =   ucfirst($variation['name']).': '.$variation['value'];
+                    $new['lang_key']      =   $variation['lang_key'];
 
+                    foreach($duplicateArr as $arr) {
+
+                        if(($variation['product_id'] === $arr['product_id']) && ($variation['variation_id'] === $arr['variation_id'])) {
+                            // do nothing
+                        } else if(($variation['product_id'] === $arr['product_id']) && ($variation['variation_id'] != $arr['variation_id'])) {
+                            $new['variation_id']  .=   ', '.$arr['variation_id'];
+                            $new['value']         .=   ', '.ucfirst($arr['name']).': '.$arr['value'];
+                            //$this->modx->log(1,print_r($variation,true));
+                        }
+                    }
+                    $final[] = $new;
+                    $idx++;
+                }
+                $this->modx->log(1,print_r($final,true));
+            }
+        }
         return $output;
     }
 
@@ -198,7 +273,7 @@ class CommerceMultiLang {
      */
     public function getLanguages() {
         $languages = array();
-        $c = $this->modx->newQuery('modContext');
+        $c = $this->commerce->adapter->newQuery('modContext');
         $c->leftJoin('modContextSetting','ContextSettings','modContext.key=ContextSettings.context_key');
         $c->select('modContext.key,modContext.name,ContextSettings.key as setting_key,ContextSettings.value as lang_key');
         $c->where(array(
@@ -208,7 +283,7 @@ class CommerceMultiLang {
         if ($c->prepare() && $c->stmt->execute()) {
             $contexts = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($contexts as $context) {
-                $v = $this->modx->newQuery('modContextSetting');
+                $v = $this->commerce->adapter->newQuery('modContextSetting');
                 $v->where(array(
                     'context_key:='   =>  $context['key'],
                     'AND:key:='       =>  'commercemultilang.product_detail_page'
