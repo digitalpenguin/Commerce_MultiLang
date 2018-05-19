@@ -15,7 +15,9 @@ $xpdo_meta_map['CommerceMultiLangAssignedVariation']= array (
   array (
     'variation_id' => NULL,
     'product_id' => NULL,
+    'type_id' => NULL,
     'name' => '',
+    'display_name' => '',
     'lang_key' => NULL,
     'value' => NULL,
   ),
@@ -37,7 +39,23 @@ $xpdo_meta_map['CommerceMultiLangAssignedVariation']= array (
       'phptype' => 'integer',
       'null' => false,
     ),
+    'type_id' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+    ),
     'name' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '190',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'display_name' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '190',

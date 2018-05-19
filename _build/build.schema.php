@@ -68,6 +68,7 @@ $manager->createObjectContainer('CommerceMultiLangProductImage');
 $manager->createObjectContainer('CommerceMultiLangProductImageLanguage');
 $manager->createObjectContainer('CommerceMultiLangProductType');
 $manager->createObjectContainer('CommerceMultiLangProductVariation');
+$manager->createObjectContainer('CommerceMultiLangProductVariationLanguage');
 $manager->createObjectContainer('CommerceMultiLangAssignedVariation');
 //$manager->createObjectContainer('CommerceMultiLangFlatRow');
 

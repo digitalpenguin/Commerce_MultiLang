@@ -1,0 +1,1 @@
+<option value="[[+variation_product_id]]">[[+variation]]</option>

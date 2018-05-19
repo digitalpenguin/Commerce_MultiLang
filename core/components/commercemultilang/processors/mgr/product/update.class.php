@@ -65,7 +65,7 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
         $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',[
             'type_id'   =>  $this->object->get('type')
         ]);
-        $this->addAssignedVariations($variations,$productLanguages,$this->object->get('id'));
+        $this->addAssignedVariations($variations,$productLanguages,$this->object);
 
         // Now we do the same thing for each child resource and make sure they also have the
         // correct assigned variations for the product type.
@@ -73,7 +73,7 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
             'parent'    =>  $this->object->get('id')
         ]);
         foreach($children as $child) {
-            $this->addAssignedVariations($variations,$productLanguages,$child->get('product_id'));
+            $this->addAssignedVariations($variations,$productLanguages,$child);
         }
 
         // Load language tab values into each product language table and assigned variation.
@@ -152,10 +152,10 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
      * @param array $productLanguages
      * @param $productId
      */
-    protected function addAssignedVariations(array $variations, array $productLanguages, $productId) {
+    protected function addAssignedVariations(array $variations, array $productLanguages, $product) {
         foreach($variations as $variation) {
             $assignments = $this->modx->getCollection('CommerceMultiLangAssignedVariation',[
-                'product_id'    =>  $productId,
+                'product_id'    =>  $product->get('id'),
                 'variation_id'  =>  $variation->get('id')
             ]);
             $names = [];
@@ -166,7 +166,8 @@ class CommerceMultiLangProductUpdateProcessor extends modObjectUpdateProcessor {
                 foreach($productLanguages as $language) {
                     $newAssignment = $this->modx->newObject('CommerceMultiLangAssignedVariation');
                     $newAssignment->set('name', $variation->get('name'));
-                    $newAssignment->set('product_id', $productId);
+                    $newAssignment->set('product_id', $product->get('id'));
+                    $newAssignment->set('type_id', $product->get('type'));
                     $newAssignment->set('variation_id', $variation->get('id'));
                     $newAssignment->set('lang_key',$language->get('lang_key'));
                     $newAssignment->save();

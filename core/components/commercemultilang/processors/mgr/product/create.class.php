@@ -103,6 +103,7 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
                 $varField = $this->modx->newObject('CommerceMultiLangAssignedVariation');
                 $varField->set('variation_id',$variation->get('id'));
                 $varField->set('product_id',$this->object->get('id'));
+                $varField->set('type_id',$this->object->get('type'));
                 $varField->set('name',$variation->get('name'));
                 $varField->set('lang_key',$langKey['lang_key']);
                 $varField->set('value','');

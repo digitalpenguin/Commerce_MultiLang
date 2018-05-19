@@ -94,6 +94,7 @@
         <field key="description" dbtype="text" phptype="string" null="true" />
         <aggregate alias="ProductType" class="CommerceMultiLangProductType" local="type_id" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="AssignedVariation" class="CommerceMultiLangAssignedVariation" local="id" foreign="variation_id" cardinality="many" owner="local" />
+        <composite alias="VariationLanguage" class="CommerceMultiLangProductVariationLanguage" local="id" foreign="variation_id" cardinality="many" owner="local" />
 
         <index alias="type_id" name="type_id" primary="false" unique="false" type="BTREE">
             <column key="type_id" length="" collation="A" null="false" />
@@ -103,11 +104,23 @@
         </index>
     </object>
 
+    <object class="CommerceMultiLangProductVariationLanguage" table="commercemultilang_product_variation_languages" extends="xPDOSimpleObject">
+        <field key="variation_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="display_name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <aggregate alias="ProductVariation" class="CommerceMultiLangProductVariation" local="variation_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="variation_id" name="variation_id" primary="false" unique="false" type="BTREE">
+            <column key="variation_id" length="" collation="A" null="false" />
+        </index>
+    </object>
+
     <!-- This is a many to many between the variation and the product-->
     <object class="CommerceMultiLangAssignedVariation" table="commercemultilang_assigned_product_variations" extends="xPDOSimpleObject">
         <field key="variation_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
         <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
         <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="display_name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
         <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
         <field key="value" dbtype="text" phptype="string" null="true" />
         <aggregate alias="ProductVariation" class="CommerceMultiLangProductVariation" local="variation_id" foreign="id" cardinality="one" owner="foreign" />

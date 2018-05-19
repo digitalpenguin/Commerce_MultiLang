@@ -34,4 +34,15 @@ $chunks[2]->fromArray(array(
 //chunks[1]->setProperties($properties);
 //unset($properties);
 
+$chunks[3] = $modx->newObject('modChunk');
+$chunks[3]->fromArray(array(
+    'id' => 0,
+    'name' => 'variation_row_tpl',
+    'description' => 'Chunk used for formatting rows with product variation output.',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/variationrow.chunk.tpl'),
+),'',true,true);
+//$properties = include $sources['data'].'properties/properties.getproductlist.php';
+//chunks[1]->setProperties($properties);
+//unset($properties);
+
 return $chunks;

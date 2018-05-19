@@ -15,6 +15,7 @@ if ($object->xpdo) {
             $manager->createObjectContainer('CommerceMultiLangProductImageLanguage');
             $manager->createObjectContainer('CommerceMultiLangProductType');
             $manager->createObjectContainer('CommerceMultiLangProductVariation');
+            $manager->createObjectContainer('CommerceMultiLangProductVariationLanguage');
             $manager->createObjectContainer('CommerceMultiLangAssignedVariation');
 
             $modx->log(modX::LOG_LEVEL_INFO, 'Loading/updating available modules...');

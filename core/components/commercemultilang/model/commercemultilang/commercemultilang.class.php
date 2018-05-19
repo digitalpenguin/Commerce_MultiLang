@@ -175,14 +175,20 @@ class CommerceMultiLang {
 
         if ($c->prepare() && $c->stmt->execute()) {
             $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
-            $variations = $this->getProductVariationFields($product['id']);
+            $variations = $this->getProductVariationFields($product['id'],$scriptProperties);
+            //$this->modx->log(1,$variations);
+            if($variations) {
+                $product['variations'] = $variations;
+            }
             if($product['image']) {
                 $product['image'] = '/' . $product['image'];
             } else {
                 $product['image'] = $this->commerce->adapter->getOption('commercemultilang.assets_url').'img/placeholder.jpg';
 
             }
-            $output .=  $this->modx->getChunk('product_detail_tpl',$product);
+            $output =  $this->modx->getChunk('product_detail_tpl',$product);
+
+            //$this->modx->log(1,$output);
         }
         return $output;
     }
@@ -190,9 +196,10 @@ class CommerceMultiLang {
 
     /**
      * @param int $parentProductId
+     * @param array $scriptProperties
      * @return string
      */
-    public function getProductVariationFields($parentProductId = 1) {
+    public function getProductVariationFields($parentProductId = 1,array $scriptProperties) {
         $output = '';
         $c = $this->commerce->adapter->newQuery('CommerceMultiLangProduct');
         $c->leftJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
@@ -200,13 +207,7 @@ class CommerceMultiLang {
             'ProductLanguage.product_id=CommerceMultiLangProduct.id',
             'ProductLanguage.lang_key'=>$this->modx->getOption('cultureKey')
         ));
-        $c->leftJoin('CommerceMultiLangProductImage','ProductImage',array(
-            'ProductImage.product_id=CommerceMultiLangProduct.id'
-        ));
-        $c->leftJoin('CommerceMultiLangProductImageLanguage','ProductImageLanguage',array(
-            'ProductImageLanguage.product_image_id=ProductImage.id'
-        ));
-        $c->select('CommerceMultiLangProduct.id,ProductImageLanguage.image,ProductImageLanguage.title,ProductImageLanguage.alt');
+        $c->select('CommerceMultiLangProduct.id,ProductData.type');
         $c->where([
             'ProductData.parent:='    =>  $parentProductId,
             'OR:CommerceMultiLangProduct.id:='   =>  $parentProductId
@@ -220,51 +221,85 @@ class CommerceMultiLang {
                 $productIds[] = $product['id'];
             }
             $v = $this->commerce->adapter->newQuery('CommerceMultiLangAssignedVariation');
-            $v->select('id,product_id,variation_id,name,lang_key,value');
+            $v->select(['id','product_id','type_id','variation_id','name','lang_key','value']);
+
             $v->where([
-                'product_id:IN'     =>  $productIds,
-                'lang_key'          =>  $this->commerce->adapter->getOption('cultureKey')
+                'product_id:IN'    =>  $productIds,
+                'lang_key'         =>  $this->commerce->adapter->getOption('cultureKey'),
+                'type_id'          =>  $productArray[0]['type']
             ]);
             //$v->prepare();
             //$this->modx->log(1,$v->toSQL());
             if ($v->prepare() && $v->stmt->execute()) {
                 $variations = $v->stmt->fetchAll(PDO::FETCH_ASSOC);
-                $duplicateArr = $variations;
-                $nameKey = '';
-                $idx=0;
-                $final = [];
-                //$this->modx->log(1,print_r($variations,true));
+                $variations = $this->mergeVariationsByProductId($variations,$scriptProperties);
                 foreach($variations as $variation) {
-                    if($idx===0){
-                        $nameKey = $variation['name'];
+                    if($scriptProperties['variationTpl']) {
+                        $output .= $this->modx->getChunk($scriptProperties['variationTpl'],$variation);
+                    } else {
+                        $output .= $this->modx->getChunk('variation_row_tpl',[
+                            'variation' =>  $variation['value'],
+                            'variation_product_id'  => $variation['product_id']
+                        ]);
                     }
-                    if($nameKey!=$variation['name']) {
-                        continue;
-                    }
-                    $new = [];
-                    //$this->modx->log(1,print_r($variation,true));
-                    $new['product_id']    =   $variation['product_id'];
-                    $new['variation_id']  =   $variation['variation_id'];
-                    $new['value']         =   ucfirst($variation['name']).': '.$variation['value'];
-                    $new['lang_key']      =   $variation['lang_key'];
-
-                    foreach($duplicateArr as $arr) {
-
-                        if(($variation['product_id'] === $arr['product_id']) && ($variation['variation_id'] === $arr['variation_id'])) {
-                            // do nothing
-                        } else if(($variation['product_id'] === $arr['product_id']) && ($variation['variation_id'] != $arr['variation_id'])) {
-                            $new['variation_id']  .=   ', '.$arr['variation_id'];
-                            $new['value']         .=   ', '.ucfirst($arr['name']).': '.$arr['value'];
-                            //$this->modx->log(1,print_r($variation,true));
-                        }
-                    }
-                    $final[] = $new;
-                    $idx++;
                 }
-                $this->modx->log(1,print_r($final,true));
             }
         }
         return $output;
+    }
+
+    /**
+     * Merge array of different variation values together by common product_id
+     * @param array $variations
+     * @param array $scriptProperties
+     * @return array
+     */
+    public function mergeVariationsByProductId(array $variations,array $scriptProperties) {
+        // Duplicate the array of variations to compare with each other.
+        //$this->modx->log(1,print_r($variations,true));
+        $duplicateArr = $variations;
+        $nameKey = '';
+        $idx = 0;
+        $final = [];
+        foreach($variations as $variation) {
+            // Set the initial name on first iteration
+            if($idx === 0) {
+                $nameKey = $variation['name'];
+            }
+            // If another name comes is first, it's a repeat so skip it.
+            if($nameKey!=$variation['name']) {
+                continue;
+            }
+            $new = [];
+            //$this->modx->log(1,print_r($variation,true));
+            $new['product_id']    =   $variation['product_id'];
+            $new['variation_id']  =   $variation['variation_id'];
+
+            // Only show variation names if it's requested in the variationNames parameter.
+            if($scriptProperties['variationNames']) {
+                $new['value'] = ucfirst($variation['name']) . ': ' . $variation['value'];
+            } else {
+                $new['value'] = $variation['value'];
+            }
+            $new['lang_key']      =   $variation['lang_key'];
+
+            foreach($duplicateArr as $arr) {
+                if(($variation['product_id'] === $arr['product_id']) && ($variation['variation_id'] != $arr['variation_id'])) {
+                    $new['variation_id']  .=   ', '.$arr['variation_id'];
+                    // Only show variation names if it's requested in the variationNames parameter.
+                    if($scriptProperties['variationNames']) {
+                        $new['value'] .= ', ' . ucfirst($arr['name']) . ': ' . $arr['value'];
+                    } else {
+                        $new['value'] .= ', ' . $arr['value'];
+                    }
+                    //$this->modx->log(1,print_r($new,true));
+                }
+            }
+            $final[] = $new;
+            $idx++;
+        }
+        //$this->modx->log(1,print_r($final,true));
+        return $final;
     }
 
     /**
@@ -302,4 +337,5 @@ class CommerceMultiLang {
         }
         return $languages;
     }
+
 }
