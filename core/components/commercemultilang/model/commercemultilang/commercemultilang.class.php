@@ -199,7 +199,7 @@ class CommerceMultiLang {
      * @param array $scriptProperties
      * @return string
      */
-    public function getProductVariationFields($parentProductId = 1,array $scriptProperties) {
+    public function getProductVariationFields($parentProductId,array $scriptProperties) {
         $output = '';
         $c = $this->commerce->adapter->newQuery('CommerceMultiLangProduct');
         $c->leftJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
@@ -209,8 +209,12 @@ class CommerceMultiLang {
         ));
         $c->select('CommerceMultiLangProduct.id,ProductData.type');
         $c->where([
-            'ProductData.parent:='    =>  $parentProductId,
-            'OR:CommerceMultiLangProduct.id:='   =>  $parentProductId
+            'CommerceMultiLangProduct.removed:!='       =>  1,
+            [
+                'AND:ProductData.parent:='              =>  $parentProductId,
+                'OR:CommerceMultiLangProduct.id:='      =>  $parentProductId
+            ]
+
         ]);
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
@@ -224,9 +228,9 @@ class CommerceMultiLang {
             $v->select(['id','product_id','type_id','variation_id','name','lang_key','value']);
 
             $v->where([
-                'product_id:IN'    =>  $productIds,
-                'lang_key'         =>  $this->commerce->adapter->getOption('cultureKey'),
-                'type_id'          =>  $productArray[0]['type']
+                'product_id:IN'     =>  $productIds,
+                'lang_key'          =>  $this->commerce->adapter->getOption('cultureKey'),
+                'type_id'           =>  $productArray[0]['type']
             ]);
             //$v->prepare();
             //$this->modx->log(1,$v->toSQL());

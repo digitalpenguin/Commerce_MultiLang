@@ -36,10 +36,9 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
         foreach($parentArray as $key => $value) {
             if($key != 'id') $this->object->set($key,$value);
         }
+
         return parent::beforeSet();
     }
-
-
 
     public function beforeSave() {
 
@@ -78,6 +77,8 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
         $productData->set('parent', $this->parentObj->get('id'));
         $productData->set('type', $this->parentProductData->get('type'));
         $productData->set('product_listing',0);
+        $items = $this->modx->getCollection($this->classKey);
+        $productData->set('position', count($items));
         $productData->save();
 
         foreach($this->parentLangs as $lang) {
@@ -94,7 +95,7 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
                 $varField = $this->modx->newObject('CommerceMultiLangAssignedVariation');
                 $varField->set('variation_id',$variation->get('id'));
                 $varField->set('product_id',$this->object->get('id'));
-                $varField->set('type_id',$this->object->get('type'));
+                $varField->set('type_id',$this->parentProductData->get('type'));
                 $varField->set('name',$variation->get('name'));
                 $varField->set('lang_key',$lang->get('lang_key'));
                 $varField->set('value',$this->getProperty($variation->get('name')));

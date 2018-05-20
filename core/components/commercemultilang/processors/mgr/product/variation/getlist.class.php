@@ -8,7 +8,6 @@
 class CommerceMultiLangProductChildGetListProcessor extends modObjectGetListProcessor {
     public $classKey = 'CommerceMultiLangProduct';
     public $languageTopics = array('commercemultilang:default');
-    public $defaultSortField = 'id';
     public $defaultSortDirection = 'ASC';
     public $objectType = 'commercemultilang.product';
     protected $langKeys = array();
@@ -115,6 +114,10 @@ class CommerceMultiLangProductChildGetListProcessor extends modObjectGetListProc
         ));
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
+
+        // Set sort field
+        $c->sortby('ProductData.position');
+
         $query = $this->getProperty('query');
         if (!empty($query)) {
             $c->where(array(

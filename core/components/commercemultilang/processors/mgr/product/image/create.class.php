@@ -16,6 +16,12 @@ class CommerceMultiLangProductImageCreateProcessor extends modObjectCreateProces
         return parent::initialize();
     }
 
+    public function beforeSet() {
+        $items = $this->modx->getCollection($this->classKey);
+        $this->setProperty('position', count($items));
+        return parent::beforeSet();
+    }
+
     public function beforeSave() {
         $title = $this->getProperty('title');
         if (empty($title)) {

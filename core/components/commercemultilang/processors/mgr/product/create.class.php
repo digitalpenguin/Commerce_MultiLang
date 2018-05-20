@@ -39,6 +39,7 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
         return parent::initialize();
     }
 
+
     public function beforeSave() {
         $this->generateProductAlias($this->object->get('name'));
         return parent::beforeSave();
@@ -70,6 +71,8 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
         $productData->set('parent', 0);
         $productData->set('product_listing',1);
         $productData->set('type',$this->object->get('type'));
+        $items = $this->modx->getCollection($this->classKey);
+        $productData->set('position', count($items));
         $productData->save();
 
         // These can only be loaded after the CommerceMultiLangProductData object exists.
