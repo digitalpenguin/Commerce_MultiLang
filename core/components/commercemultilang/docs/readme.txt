@@ -1,7 +1,7 @@
 ---------------------------------------
 CommerceMultiLang
 ---------------------------------------
-Version: 0.1.1 Alpha
+Version: 0.2.0 Alpha
 Author: Murray Wood <murray@digitalpenguin.hk>
 Company: Digital Penguin Ltd (Hong Kong)
 ---------------------------------------

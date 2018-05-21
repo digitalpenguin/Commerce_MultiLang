@@ -1,5 +1,11 @@
 Changelog for CommerceMultiLang.
 
+CommerceMultiLang 0.2.0 Alpha
+==============
+- Fully editable product images for each language with metadata
+- Added extra fields to AssignedVariations to allow easier display on product page
+- Variations are now listed in the Shopping cart description for each item.
+
 CommerceMultiLang 0.1.1 Alpha
 ==============
 - Experimental version ready for testing.

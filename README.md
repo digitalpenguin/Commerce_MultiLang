@@ -1,7 +1,7 @@
 ---------------------------------------
 CommerceMultiLang
 ---------------------------------------
-Version: 0.1.1
+Version: 0.2.0
 
 You can find documentation in the wiki at [https://github.com/digitalpenguin/CommerceMultiLang/wiki](https://github.com/digitalpenguin/CommerceMultiLang/wiki)
 
