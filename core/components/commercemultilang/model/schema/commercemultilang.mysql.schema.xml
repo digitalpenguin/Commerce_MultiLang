@@ -79,8 +79,8 @@
     <object class="CommerceMultiLangProductImageLanguage" table="commercemultilang_product_image_languages" extends="xPDOSimpleObject">
         <field key="product_image_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
         <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
-        <field key="title" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
-        <field key="alt" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="title" dbtype="varchar" precision="190" phptype="string" null="true" />
+        <field key="alt" dbtype="varchar" precision="190" phptype="string" null="true" />
         <field key="image" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
         <field key="description" dbtype="text" phptype="string" null="true" />
         <aggregate alias="ProductImage" class="CommerceMultiLangProductImage" local="product_image_id" foreign="id" cardinality="one" owner="foreign" />

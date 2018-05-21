@@ -4,6 +4,12 @@
  * within categories on other contexts.
  * Similar in concept to the language links in Babel.
  */
+
+$request = $modx->sanitizeString($_REQUEST['q']);
+if($modx->cacheManager->get('cml_language_links_'.$request, [xPDO::OPT_CACHE_KEY => 'commercemultilang'])) {
+    $modx->cacheManager->set('cml_language_links_'.$request,$output, 3600, [xPDO::OPT_CACHE_KEY => 'commercemultilang']);
+}
+
 // Grab xpdo instance with needed tables loaded
 $commerceMultiLang = $modx->getService('commercemultilang', 'CommerceMultiLang', $modx->getOption('commercemultilang.core_path', null, $modx->getOption('core_path') . 'components/commercemultilang/') . 'model/commercemultilang/', $scriptProperties);
 if (!($commerceMultiLang instanceof CommerceMultiLang))
@@ -85,16 +91,16 @@ if($productDetailId) {
                 'link' => $url,
                 'name' => $language['name']
             ));
+
         }
         $idx++;
     }
 }
-
 // Cache the output
 $options = array(
     xPDO::OPT_CACHE_KEY => 'commercemultilang',
 );
-if(!$modx->cacheManager->get('cml_language_links_'.$alias.$productId, $options)) {
-    $modx->cacheManager->set('cml_language_links_'.$alias.$productId,$output, 3600, $options);
+if(!$modx->cacheManager->get('cml_language_links_'.$request, $options)) {
+    $modx->cacheManager->set('cml_language_links_'.$request,$output, 3600, $options);
 }
-return $modx->cacheManager->get('cml_language_links_'.$alias.$productId, $options);
+return $modx->cacheManager->get('cml_language_links_'.$request, $options);

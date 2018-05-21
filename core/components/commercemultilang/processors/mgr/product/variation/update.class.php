@@ -41,12 +41,30 @@ class CommerceMultiLangProductChildUpdateProcessor extends modObjectUpdateProces
         $productData->set('alias', ''); // Children products shouldn't have an alias.
         $productData->save();
 
+        $productImages = $this->modx->getCollection('CommerceMultiLangProductImage',[
+            'product_id'    =>  $this->object->get('id')
+        ]);
+
         // Grabs related language table
         $productLanguages = $this->modx->getCollection('CommerceMultiLangProductLanguage',array(
             'product_id' => $this->object->get('id')
         ));
         foreach($productLanguages as $productLanguage) {
             $langKey = $productLanguage->get('lang_key');
+
+            foreach($productImages as $productImage) {
+                $imageLanguage = $this->modx->getObject('CommerceMultiLangProductImageLanguage',[
+                    'product_image_id'  =>  $productImage->get('id'),
+                    'lang_key'          =>  $langKey
+                ]);
+                $imageLanguage->set('image',$this->object->get('image'));
+                $imageLanguage->set('product_image_id',$productImage->get('id'));
+                $imageLanguage->set('lang_key',$langKey);
+                $imageLanguage->set('title',$this->object->get('title'));
+                $imageLanguage->set('alt',$this->object->get('alt'));
+                $imageLanguage->set('description',$this->object->get('description'));
+                $imageLanguage->save();
+            }
 
             // Grab all the assigned variation values for this product
             $assignedVariations = $this->modx->getCollection('CommerceMultiLangAssignedVariation',array(

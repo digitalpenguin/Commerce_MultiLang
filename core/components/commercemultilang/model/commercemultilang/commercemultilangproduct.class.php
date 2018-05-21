@@ -22,21 +22,33 @@ class CommerceMultiLangProduct extends comProduct {
             'ImageLanguage.lang_key'    =>  $this->adapter->getOption('cultureKey')
         ]);
         $c->where(['Product.id' =>  $this->get('id')]);
-        $c->select(array('Product.id','sku','stock','price','weight','weight_unit'));
+        $c->select(['Product.id','sku','stock','price','weight','weight_unit']);
         $c->select($this->adapter->getSelectColumns('CommerceMultiLangProductData',
-            'Data','',array('alias')));
+            'Data','',['alias']));
         $c->select($this->adapter->getSelectColumns('CommerceMultiLangProductLanguage',
-            'Language','',array('lang_key','name','description','category')));
+            'Language','',['lang_key','name','description','category']));
         $c->select($this->adapter->getSelectColumns('CommerceMultiLangProductImage',
-            'ProductImage','',array('main')));
+            'ProductImage','',['main']));
         $c->select($this->adapter->getSelectColumns('CommerceMultiLangProductImageLanguage',
-            'ImageLanguage','',array('title','image')));
+            'ImageLanguage','',['title','image']));
         //$c->prepare();
         //$this->adapter->log(1,$c->toSQL());
 
         if ($c->prepare() && $c->stmt->execute()) {
             $this->extendedData =  $c->stmt->fetch(PDO::FETCH_ASSOC);
+
+            $query = $this->commerce->adapter->newQuery('CommerceMultiLangAssignedVariation');
+            $query->where([
+                'product_id'    =>  $this->extendedData['id'],
+                'lang_key'      =>  $this->commerce->adapter->getOption('cultureKey')
+            ]);
+            $query->select('id,name,value');
+            if ($query->prepare() && $query->stmt->execute()) {
+                $this->extendedData['variations'] = $query->stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
         }
+
+
         //$this->adapter->log(1,print_r($this->extendedData,true));
 
     }
@@ -51,6 +63,19 @@ class CommerceMultiLangProduct extends comProduct {
     public function getDescription() {
         if(!$this->extendedData) {
             $this->loadExtendedData();
+        }
+        if($this->extendedData['variations']) {
+            $output = '';
+            $count = count($this->extendedData['variations']);
+            $idx = 1;
+            foreach($this->extendedData['variations'] as $variation) {
+                $output .= ucfirst($variation['name']).': '.$variation['value'];
+                if($count != $idx) {
+                    $output .= ', '; // Only add comma if not last item.
+                }
+                $idx++;
+            }
+            return $output.' | '.$this->extendedData['description'];
         }
         return $this->extendedData['description'];
     }

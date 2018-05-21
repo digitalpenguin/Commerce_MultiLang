@@ -329,7 +329,8 @@ CommerceMultiLang.grid.ProductImages = function(config) {
         ,url: CommerceMultiLang.config.connectorUrl
         ,save_action: 'mgr/product/image/updatefromgrid'
         ,autosave: true
-        ,fields: ['id','image','product_id','title','description','languages','alt','main','position']
+        ,fields: ['id','image','product_id','title','description','languages',
+            'alt','main','position','langs']
         ,autoHeight: true
         ,paging: true
         ,pageSize: 10
@@ -431,19 +432,38 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
     ,updateProductImage: function(btn,e,isUpdate) {
         if (!this.menu.record || !this.menu.record.id) return false;
 
+        // Local var so it's usable throughout whole function.
+        var record = this.menu.record;
+
         var updateProductImage = MODx.load({
             xtype: 'commercemultilang-window-product-image'
             ,title: _('commercemultilang.product_image.update')
             ,action: 'mgr/product/image/update'
-            ,record: this.menu.record
+            ,record: record
             ,listeners: {
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
 
         updateProductImage.fp.getForm().reset();
-        updateProductImage.fp.getForm().setValues(this.menu.record);
-        updateProductImage.renderImageOnLoad();
+
+
+        var langTabs = this.store.reader.jsonData.languages;
+        langTabs.forEach(function (langTab, index) {
+            record.langs.forEach(function (lang, index) {
+                if (langTab.lang_key === lang.lang_key) {
+                    langTab['fields'] = lang;
+                }
+            });
+        });
+
+        updateProductImage.addLanguageTabs(langTabs,record);
+        updateProductImage.fp.getForm().setValues(record);
+
+        langTabs.forEach(function(langTab){
+            updateProductImage.renderImageOnLoad(langTab);
+        });
+
         updateProductImage.show(e.target);
     }
 
@@ -488,6 +508,7 @@ CommerceMultiLang.window.ProductImage = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('commercemultilang.product_image.add')
+        ,id:'commercemultilang-window-product-image'
         ,closeAction: 'close'
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product/image/create'
@@ -496,79 +517,30 @@ CommerceMultiLang.window.ProductImage = function(config) {
             ,name: 'id'
             ,hidden: true
         },{
-            layout:'column',
-            items:[{
-                columnWidth:.4
-                ,id:'product-image-update-left-col'
-                ,layout:'form'
-                ,items:[{
-                    xtype: 'modx-combo-browser'
-                    ,id: 'update-product-image-select'
-                    ,fieldLabel: 'Select Image'
-                    //,source: CommerceMultiLang.config.institutionMediaSource
-                    ,name: 'image'
-                    ,anchor:'100%'
-                    ,rootId: '/'
-                    //,openTo: 'institution/'+config.record['alias']+'/'
-                    ,rootVisible:true
-                    ,hideSourceCombo: true
-                    ,listeners: {
-                        'select' : this.renderImage
-                    }
-                },{
-                    html:'<img style="max-width:100%; margin-top:10px;" ' +
-                    'src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />'
-                    ,id:'update-product-image-preview'
-                }]
-            },{
-                columnWidth:.6
-                ,layout: 'form'
-                ,items:[{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('commercemultilang.product_image.title')
-                    ,name: 'title'
-                    ,anchor: '100%'
-                    ,autocomplete:'off'
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('commercemultilang.product_image.alt')
-                    ,name: 'alt'
-                    ,anchor: '100%'
-                    ,autocomplete:'off'
-                },{
-                    xtype: 'textarea'
-                    ,fieldLabel: _('description')
-                    ,name: 'description'
-                    ,anchor: '100%'
-                }]
-            }]
+            xtype: 'modx-tabs'
+            ,style:'padding:15px 0 0 0'
+            ,id: 'product-image-update-window-tabs'
+            ,defaults: { border: false ,autoHeight: true }
+            ,border: true
+            ,activeTab: 0
+            ,hideMode: 'offsets'
+            ,deferredRender: false
         }]
     });
     CommerceMultiLang.window.ProductImage.superclass.constructor.call(this,config);
 };
 Ext.extend(CommerceMultiLang.window.ProductImage,MODx.Window,{
-    addLanguageTabs: function(langTabs,variations,record) {
+    addLanguageTabs: function(langTabs,record) {
         //console.log(record);
         var tabs = Ext.getCmp('product-image-update-window-tabs');
         langTabs.forEach(function(langTab) {
-            var fields = [];
-            variations.forEach(function(variation){
-                // Make a capitalised version of the field name for the label.
-                var field = new Ext.form.TextField({
-                    fieldLabel: variation['display_name']
-                    ,id: 'var_'+variation['name']+'_' + langTab['lang_key']
-                    ,name: variation['name'] + '_' + langTab['lang_key']
-                    ,value: langTab.fields ? langTab.fields[variation['name'] + '_' + langTab['lang_key']] : ''
-                    ,anchor: '60%'
-                });
 
-                // Manually set the variation values after creation.
-                Object.keys(record).forEach(function(key) {
-                    if(key === field.name) {
-                        field.setValue(record[key]);
-                    }
-                });
-                fields.push(field);
+            //Grab the correct record for this language.
+            var langRecord = '';
+            record.langs.forEach(function(lang) {
+                if(lang['lang_key'] === langTab['lang_key']) {
+                    langRecord = lang;
+                }
             });
 
             var tab = [{
@@ -577,38 +549,90 @@ Ext.extend(CommerceMultiLang.window.ProductImage,MODx.Window,{
                 ,id: 'variation-update-language-tab-'+langTab['lang_key']
                 ,cls:'language-tab'
                 ,forceLayout: true // important! if not added new tabs will not submit.
-                ,items:fields
+                ,items:[{
+                    layout:'column',
+                    items:[{
+                        columnWidth:.4
+                        ,id:'product-image-update-left-col-'+langTab['lang_key']
+                        ,layout:'form'
+                        ,items:[{
+                            xtype: 'modx-combo-browser'
+                            ,id: 'update-product-image-select-'+langTab['lang_key']
+                            ,fieldLabel: 'Select Image'
+                            //,source: CommerceMultiLang.config.institutionMediaSource
+                            ,name: 'image_'+langTab['lang_key']
+                            ,anchor:'100%'
+                            ,rootId: '/'
+                            //,openTo: 'institution/'+config.record['alias']+'/'
+                            ,rootVisible:true
+                            ,hideSourceCombo: true
+                            ,value:langRecord['image']
+                            ,listeners: {
+                                'select' : function(value){
+                                    Ext.getCmp('commercemultilang-window-product-image').renderImage(value,langTab);
+                                }
+                            }
+                            //TODO: fix listener!
+                        },{
+                            html:'<img style="max-width:100%; margin-top:10px;" ' +
+                            'src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />'
+                            ,id:'update-product-image-preview-'+langTab['lang_key']
+                        }]
+                    },{
+                        columnWidth:.6
+                        ,layout: 'form'
+                        ,items:[{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product_image.title')
+                            ,name: 'title_'+langTab['lang_key']
+                            ,anchor: '100%'
+                            ,value: langRecord['title']
+                        },{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('commercemultilang.product_image.alt')
+                            ,name: 'alt_'+langTab['lang_key']
+                            ,anchor: '100%'
+                            ,value: langRecord['alt']
+                        },{
+                            xtype: 'textarea'
+                            ,fieldLabel: _('description')
+                            ,name: 'description_'+langTab['lang_key']
+                            ,anchor: '100%'
+                            ,value: langRecord['description']
+                        }]
+                    }]
+                }]
             }];
             //console.log(tab);
             tabs.add(tab);
         });
     }
 
-    ,renderImage:function(value) {
-        var leftCol = Ext.getCmp('product-image-update-left-col');
+    ,renderImage:function(value,langTab) {
+        var leftCol = Ext.getCmp('product-image-update-left-col-'+langTab['lang_key']);
         var url = value.fullRelativeUrl;
-        console.log(value);
+        //console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;
         }
-        leftCol.remove('update-product-image-preview');
+        leftCol.remove('update-product-image-preview-'+langTab['lang_key']);
         leftCol.add({
             html: '<img style="width:100%; margin-top:10px;" src="' + url + '" />'
-            ,id: 'update-product-image-preview'
+            ,id: 'update-product-image-preview-'+langTab['lang_key']
         });
         leftCol.doLayout();
     }
-    ,renderImageOnLoad:function() {
-        var leftCol = Ext.getCmp('product-image-update-left-col');
-        var url = Ext.getCmp('update-product-image-select').getValue();
+    ,renderImageOnLoad:function(langTab) {
+        var leftCol = Ext.getCmp('product-image-update-left-col-'+langTab['lang_key']);
+        var url = Ext.getCmp('update-product-image-select-'+langTab['lang_key']).getValue();
         if(url) {
             if (url.charAt(0) !== '/') {
                 url = '/' + url;
             }
-            leftCol.remove('update-product-image-preview');
+            leftCol.remove('update-product-image-preview-'+langTab['lang_key']);
             leftCol.add({
                 html: '<img style="width:100%; margin-top:10px;" src="' + url + '" />'
-                , id: 'update-product-image-preview'
+                , id: 'update-product-image-preview-'+langTab['lang_key']
             });
             leftCol.doLayout();
         }

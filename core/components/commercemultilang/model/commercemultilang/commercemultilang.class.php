@@ -314,7 +314,7 @@ class CommerceMultiLang {
         $languages = array();
         $c = $this->commerce->adapter->newQuery('modContext');
         $c->leftJoin('modContextSetting','ContextSettings','modContext.key=ContextSettings.context_key');
-        $c->select('modContext.key,modContext.name,ContextSettings.key as setting_key,ContextSettings.value as lang_key');
+        $c->select('modContext.key,modContext.name,modContext.rank,ContextSettings.key as setting_key,ContextSettings.value as lang_key');
         $c->where(array(
             'modContext.key:!=' => 'mgr',
             'AND:ContextSettings.key:=' => 'cultureKey'
@@ -335,6 +335,7 @@ class CommerceMultiLang {
                     $lang['lang_key'] = $context['lang_key'];
                     $lang['name'] = $context['name'];
                     $lang['viewport'] = $setting['value'];
+                    $lang['context_rank'] = $context['rank'];
                     array_push($languages, $lang);
                 }
             }

@@ -77,9 +77,33 @@ class CommerceMultiLangProductChildCreateProcessor extends modObjectCreateProces
         $productData->set('parent', $this->parentObj->get('id'));
         $productData->set('type', $this->parentProductData->get('type'));
         $productData->set('product_listing',0);
-        $items = $this->modx->getCollection($this->classKey);
+        $items = $this->modx->getCollection('CommerceMultiLangProductData');
         $productData->set('position', count($items));
         $productData->save();
+
+        $productImage = $this->modx->newObject('CommerceMultiLangProductImage');
+        $productImage->set('product_id',$this->object->get('id'));
+        $productImage->set('main',1);
+        $items = $this->modx->getCollection('CommerceMultiLangProductData');
+        $productImage->set('position',count($items));
+        $productImage->save();
+
+        if($productImage) {
+            foreach($this->parentLangs as $lang) {
+                $imageLanguage = $this->modx->newObject('CommerceMultiLangProductImageLanguage');
+                $imageLanguage->set('image',$this->object->get('image'));
+                $imageLanguage->set('product_image_id',$productImage->get('id'));
+                $imageLanguage->set('lang_key',$lang->get('lang_key'));
+                if($this->object->get('title')) {
+                    $imageLanguage->set('title', $this->object->get('title'));
+                } else {
+                    $imageLanguage->set('title', '');
+                }
+                $imageLanguage->set('alt',$this->object->get('alt'));
+                $imageLanguage->set('description',$this->object->get('description'));
+                $imageLanguage->save();
+            }
+        }
 
         foreach($this->parentLangs as $lang) {
             $productLang = $this->modx->newObject('CommerceMultiLangProductLanguage');

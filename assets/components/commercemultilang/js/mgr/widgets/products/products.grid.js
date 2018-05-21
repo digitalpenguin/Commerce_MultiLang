@@ -144,7 +144,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
             var mask = new Ext.LoadMask(Ext.get(this.el), {msg:'Loading product...'});
             mask.show();
 
-            // Local var so it's usable throughout whole function.
+            // Local var so it's usable throughou t whole function.
             var record = this.menu.record;
 
             // match the records to grab variation values

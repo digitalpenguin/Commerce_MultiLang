@@ -12,7 +12,6 @@ You can find documentation in the wiki at https://github.com/digitalpenguin/Comm
 WORK IN PROGRESS
 
 TODO:
-- Make a more functional update window for image languages.
 - Allow an initial image for product create form.
 - Cache everything!
 - Build a breadcrumbs snippet that includes categories (resources) and products.
