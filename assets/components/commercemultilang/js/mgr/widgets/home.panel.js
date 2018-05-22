@@ -6,7 +6,7 @@ CommerceMultiLang.panel.Home = function(config) {
         ,cls: 'container'
         ,layout:'anchor'
         ,items: [{
-            html: '<h2>Commerce <span style="font-size:15px; position:relative; top:-5px;">>></span> Products</h2>'//'<h2>'+_('commercemultilang')+'</h2>'
+            html: '<h2 id="commercemultilang-header">Commerce <span style="font-size:15px; position:relative; top:-5px;">>></span> Products</h2>'//'<h2>'+_('commercemultilang')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
         },{

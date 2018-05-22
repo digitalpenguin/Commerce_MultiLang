@@ -17,8 +17,10 @@ if ($object->xpdo) {
             $manager->createObjectContainer('CommerceMultiLangProductVariation');
             $manager->createObjectContainer('CommerceMultiLangProductVariationLanguage');
             $manager->createObjectContainer('CommerceMultiLangAssignedVariation');
+            $manager->createObjectContainer('CommerceMultiLangAssignedCategory');
 
-            $modx->log(modX::LOG_LEVEL_INFO, 'Loading/updating available modules...');
+
+        $modx->log(modX::LOG_LEVEL_INFO, 'Loading/updating available modules...');
             $corePath = $modx->getOption('commerce.core_path', null, $modx->getOption('core_path') . 'components/commerce/');
             $commerce = $modx->getService('commerce', 'Commerce', $corePath . 'model/commerce/' , ['isSetup' => true]);
             if ($commerce instanceof Commerce) {

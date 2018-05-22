@@ -246,7 +246,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
         ,keys: []
         ,fields: [{
             style:'padding:15px 0'
-            ,html:'<h4>Add Product</h4><p>Images and translations can only be added after the product has been created.</p>'
+            ,html:'<h4>Add Product</h4><p>Translations can only be added after the product has been created.</p>'
         },{
             xtype: 'modx-tabs'
             ,id: 'product-create-window-tabs'
@@ -394,6 +394,8 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                     ,anchor: '100%'
                 }]
             }]
+        },{
+
         }]
     });
     CommerceMultiLang.window.ProductCreate.superclass.constructor.call(this,config);

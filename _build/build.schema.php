@@ -70,6 +70,7 @@ $manager->createObjectContainer('CommerceMultiLangProductType');
 $manager->createObjectContainer('CommerceMultiLangProductVariation');
 $manager->createObjectContainer('CommerceMultiLangProductVariationLanguage');
 $manager->createObjectContainer('CommerceMultiLangAssignedVariation');
+$manager->createObjectContainer('CommerceMultiLangAssignedCategory');
 //$manager->createObjectContainer('CommerceMultiLangFlatRow');
 
 $mtime= microtime();

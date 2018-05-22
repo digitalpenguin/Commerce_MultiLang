@@ -3,6 +3,9 @@
     color: red;
 }
 
+#commercemultilang-header {
+    padding:12px 0 15px 0;
+}
 
 #commercemultilang-window-product-update #commercemultilang-grid-product-images .x-grid3-scroller {
     height:356px;

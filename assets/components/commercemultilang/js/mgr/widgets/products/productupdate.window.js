@@ -572,7 +572,6 @@ Ext.extend(CommerceMultiLang.window.ProductImage,MODx.Window,{
                                     Ext.getCmp('commercemultilang-window-product-image').renderImage(value,langTab);
                                 }
                             }
-                            //TODO: fix listener!
                         },{
                             html:'<img style="max-width:100%; margin-top:10px;" ' +
                             'src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />'
@@ -603,7 +602,6 @@ Ext.extend(CommerceMultiLang.window.ProductImage,MODx.Window,{
                     }]
                 }]
             }];
-            //console.log(tab);
             tabs.add(tab);
         });
     }
