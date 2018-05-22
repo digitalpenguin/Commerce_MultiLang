@@ -415,7 +415,7 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
     ,createProductImage: function(btn,e) {
         var languages = JSON.stringify(this.languages);
         var createProductImage = MODx.load({
-            xtype: 'commercemultilang-window-product-image'
+            xtype: 'commercemultilang-window-product-image-create'
             ,baseParams: {
                 action: 'mgr/product/image/create'
                 ,languages: languages
@@ -425,7 +425,6 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
-
         createProductImage.show(e.target);
     }
 
@@ -436,7 +435,7 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
         var record = this.menu.record;
 
         var updateProductImage = MODx.load({
-            xtype: 'commercemultilang-window-product-image'
+            xtype: 'commercemultilang-window-product-image-update'
             ,title: _('commercemultilang.product_image.update')
             ,action: 'mgr/product/image/update'
             ,record: record
@@ -456,7 +455,6 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
                 }
             });
         });
-
         updateProductImage.addLanguageTabs(langTabs,record);
         updateProductImage.fp.getForm().setValues(record);
 
@@ -503,15 +501,89 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
 });
 Ext.reg('commercemultilang-grid-product-images',CommerceMultiLang.grid.ProductImages);
 
-
-CommerceMultiLang.window.ProductImage = function(config) {
+CommerceMultiLang.window.ProductImageCreate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('commercemultilang.product_image.add')
-        ,id:'commercemultilang-window-product-image'
+        ,id:'commercemultilang-window-product-image-create'
         ,closeAction: 'close'
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product/image/create'
+        ,fields:[{
+            layout:'column',
+            items:[{
+                columnWidth:.4
+                ,id:'product-image-create-left-col'
+                ,layout:'form'
+                ,items:[{
+                    xtype: 'modx-combo-browser'
+                    ,id: 'create-product-image-select'
+                    ,fieldLabel: 'Select Image'
+                    ,name: 'image'
+                    ,anchor:'100%'
+                    ,rootId: '/'
+                    ,rootVisible:true
+                    ,hideSourceCombo: true
+                    ,listeners: {
+                        'select' : function(value){
+                            Ext.getCmp('commercemultilang-window-product-image-create').renderImage(value);
+                        }
+                    }
+                },{
+                    html:'<img style="max-width:100%; margin-top:10px;" ' +
+                    'src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />'
+                    ,id:'create-product-image-preview'
+                }]
+            },{
+                columnWidth:.6
+                ,layout: 'form'
+                ,items:[{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('commercemultilang.product_image.title')
+                    ,name: 'title'
+                    ,anchor: '100%'
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('commercemultilang.product_image.alt')
+                    ,name: 'alt'
+                    ,anchor: '100%'
+                },{
+                    xtype: 'textarea'
+                    ,fieldLabel: _('description')
+                    ,name: 'description'
+                    ,anchor: '100%'
+                }]
+            }]
+        }]
+    });
+    CommerceMultiLang.window.ProductImageCreate.superclass.constructor.call(this,config);
+};
+Ext.extend(CommerceMultiLang.window.ProductImageCreate,MODx.Window,{
+    renderImage:function(value) {
+        var leftCol = Ext.getCmp('product-image-create-left-col');
+        var url = value.fullRelativeUrl;
+        //console.log(value);
+        if(url.charAt(0) !== '/') {
+            url = '/'+url;
+        }
+        leftCol.remove('create-product-image-preview');
+        leftCol.add({
+            html: '<img style="width:100%; margin-top:10px;" src="' + url + '" />'
+            ,id: 'create-product-image-preview'
+        });
+        leftCol.doLayout();
+    }
+});
+Ext.reg('commercemultilang-window-product-image-create',CommerceMultiLang.window.ProductImageCreate);
+
+CommerceMultiLang.window.ProductImageUpdate = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('commercemultilang.product_image.update')
+        ,id:'commercemultilang-window-product-image-update'
+        ,closeAction: 'close'
+        ,url: CommerceMultiLang.config.connectorUrl
+        ,action: 'mgr/product/image/update'
         ,fields: [{
             xtype: 'textfield'
             ,name: 'id'
@@ -527,9 +599,9 @@ CommerceMultiLang.window.ProductImage = function(config) {
             ,deferredRender: false
         }]
     });
-    CommerceMultiLang.window.ProductImage.superclass.constructor.call(this,config);
+    CommerceMultiLang.window.ProductImageUpdate.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.window.ProductImage,MODx.Window,{
+Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
     addLanguageTabs: function(langTabs,record) {
         //console.log(record);
         var tabs = Ext.getCmp('product-image-update-window-tabs');
@@ -569,7 +641,7 @@ Ext.extend(CommerceMultiLang.window.ProductImage,MODx.Window,{
                             ,value:langRecord['image']
                             ,listeners: {
                                 'select' : function(value){
-                                    Ext.getCmp('commercemultilang-window-product-image').renderImage(value,langTab);
+                                    Ext.getCmp('commercemultilang-window-product-image-update').renderImage(value,langTab);
                                 }
                             }
                         },{
@@ -636,5 +708,5 @@ Ext.extend(CommerceMultiLang.window.ProductImage,MODx.Window,{
         }
     }
 });
-Ext.reg('commercemultilang-window-product-image',CommerceMultiLang.window.ProductImage);
+Ext.reg('commercemultilang-window-product-image-update',CommerceMultiLang.window.ProductImageUpdate);
 

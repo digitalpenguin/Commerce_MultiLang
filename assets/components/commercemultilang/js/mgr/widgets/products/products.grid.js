@@ -394,9 +394,9 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                     ,anchor: '100%'
                 }]
             }]
-        },{
-
-        }]
+        }/*,{
+            //TODO: Add image selection
+        }*/]
     });
     CommerceMultiLang.window.ProductCreate.superclass.constructor.call(this,config);
 };

@@ -1,6 +1,6 @@
 <?php
 /**
- * Remove a product.
+ * Remove a product and children (variations).
  * 
  * @package commercemultilang
  * @subpackage processors
