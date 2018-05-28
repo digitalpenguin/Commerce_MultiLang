@@ -24,7 +24,7 @@ set_time_limit(0);
 /* define version */
 define('PKG_NAME', 'CommerceMultiLang');
 define('PKG_NAMESPACE', 'commercemultilang');
-define('PKG_VERSION', '0.2.1');
+define('PKG_VERSION', '0.2.2');
 define('PKG_RELEASE', 'Alpha');
 
 /* load modx */

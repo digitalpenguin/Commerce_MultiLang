@@ -1,5 +1,12 @@
 Changelog for CommerceMultiLang.
 
+CommerceMultiLang 0.2.2 Alpha
+==============
+- Added base_image_url system setting to get media sources working.
+- Products now have their alias removed on delete.
+- JS image paths updated
+- Product create processor now ignores removed products on alias compare.
+
 CommerceMultiLang 0.2.1 Alpha
 ==============
 - Fixed bug on image create window.

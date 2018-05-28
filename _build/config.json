@@ -3,7 +3,7 @@
     "lowCaseName": "commercemultilang",
     "description": "Custom multi-lang products and CMP for Commerce (MODX)",
     "author": "Murray Wood - www.digitalpenguin.hk",
-    "version": "0.1.0",
+    "version": "0.2.2",
     "package":{
 
         "menus": [{
