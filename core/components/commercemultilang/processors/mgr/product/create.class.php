@@ -53,9 +53,13 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
         $text = str_replace("&", "and", $text);
         $text = str_replace("?", "", $text);
         $alias = strtolower(str_replace(" ", "-", $text));
-        $count = $this->modx->getCount('CommerceMultiLangProductData',array(
-            'alias' => $alias
-        ));
+        $c = $this->modx->newQuery('CommerceMultiLangProduct');
+        $c->leftJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
+        $c->where([
+            'ProductData.alias'                 => $alias,
+            'CommerceMultiLangProduct.removed'  => 0
+        ]);
+        $count = $this->modx->getCount('CommerceMultiLangProduct',$c);
         if ($count) {
             $this->addFieldError('name',$this->modx->lexicon('commercemultilang.err.product_alias_ae'));
         }

@@ -11,6 +11,13 @@ class CommerceMultiLangProductRemoveProcessor extends modObjectRemoveProcessor {
     public $objectType = 'commercemultilang.product';
 
     public function afterRemove() {
+        // Remove alias from the removed product.
+        $objectData = $this->modx->getObject('CommerceMultiLangProductData',[
+            'product_id'    =>  $this->object->get('id')
+        ]);
+        $objectData->set('alias','');
+        $objectData->save();
+
         $c = $this->modx->newQuery($this->classKey);
         $c->innerJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
         $c->where([
