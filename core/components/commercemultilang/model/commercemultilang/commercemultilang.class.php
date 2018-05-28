@@ -19,8 +19,9 @@ class CommerceMultiLang {
         $corePath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/commercemultilang/');
         $assetsPath = $this->getOption('assets_path', $options, $this->modx->getOption('assets_path', null, MODX_ASSETS_PATH) . 'components/commercemultilang/');
         $assetsUrl = $this->getOption('assets_url', $options, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/commercemultilang/');
+        $baseImageUrl = $this->getOption('base_image_url',$options,'/');
 
-        /* loads some default paths for easier management */
+        // Load some default paths
         $this->options = array_merge(array(
             'namespace' => $this->namespace,
             'corePath' => $corePath,
@@ -32,7 +33,8 @@ class CommerceMultiLang {
             'assetsUrl' => $assetsUrl,
             'jsUrl' => $assetsUrl . 'js/',
             'cssUrl' => $assetsUrl . 'css/',
-            'connectorUrl' => $assetsUrl . 'connector.php'
+            'connectorUrl' => $assetsUrl . 'connector.php',
+            'baseImageUrl'    =>  $baseImageUrl
         ), $options);
 
         $this->commerce = $this->modx->getService('commerce','Commerce',MODX_CORE_PATH.'components/commerce/model/commerce/');
@@ -113,7 +115,8 @@ class CommerceMultiLang {
                     $url = $this->modx->makeUrl($currentId);
                     $product['product_link'] = $url . $product['alias'] . $extension;
                     if($product['image']) {
-                        $product['image'] = '/' . $product['image'];
+                        $uri = ltrim($this->options['baseImageUrl'], '/');
+                        $product['image'] = '/' . $uri . $product['image'];
                     } else {
                         $product['image'] = $this->commerce->adapter->getOption('commercemultilang.assets_url').'img/placeholder.jpg';
                     }
@@ -181,13 +184,17 @@ class CommerceMultiLang {
                 $product['variations'] = $variations;
             }
             if($product['image']) {
-                $product['image'] = '/' . $product['image'];
+                $uri = ltrim($this->options['baseImageUrl'], '/');
+                $product['image'] = '/' . $uri . $product['image'];
             } else {
                 $product['image'] = $this->commerce->adapter->getOption('commercemultilang.assets_url').'img/placeholder.jpg';
 
             }
-            $output =  $this->modx->getChunk('product_detail_tpl',$product);
-
+            if($scriptProperties['tpl']) {
+                $output = $this->modx->getChunk($scriptProperties['tpl'], $product);
+            } else {
+                $output = $this->modx->getChunk('product_detail_tpl', $product);
+            }
             //$this->modx->log(1,$output);
         }
         return $output;
@@ -299,10 +306,12 @@ class CommerceMultiLang {
                     //$this->modx->log(1,print_r($new,true));
                 }
             }
-            $final[] = $new;
+            if($new['value']) {
+                $final[] = $new;
+            }
             $idx++;
         }
-        //$this->modx->log(1,print_r($final,true));
+        //$this->modx->log(1,'|'.print_r($final,true).'|');
         return $final;
     }
 

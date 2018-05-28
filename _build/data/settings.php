@@ -5,6 +5,10 @@ return [
         'area' => 'defaults',
         'value' => '',
     ],
+    'base_image_url' => [
+        'area' => 'defaults',
+        'value' => '',
+    ],
     'assets_path' => [
         'area' => 'paths',
         'value' => '{assets_path}components/commercemultilang/',

@@ -84,7 +84,8 @@ class CommerceMultiLangProduct extends comProduct {
         if(!$this->extendedData) {
             $this->loadExtendedData();
         }
-        return '/'.$this->extendedData['image'];
+        $uri = ltrim($this->adapter->getOption('commercemultilang.base_image_url',null,1), '/');
+        return '/'.$uri.$this->extendedData['image'];
 
     }
 }

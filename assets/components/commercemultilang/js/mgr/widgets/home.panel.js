@@ -58,12 +58,12 @@ Ext.extend(CommerceMultiLang.panel.Home,MODx.Panel,{
             handler: this.loadOrdersPage,
             scope:this
         });
-        modab.add({
+        /*modab.add({
             xtype:'button',
             text:'<i class="icon icon-cog"></i> &nbsp;Product Settings',
             handler: this.loadSettingsPage,
             scope:this
-        });
+        });*/
 
         modab.doLayout();
     }

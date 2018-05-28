@@ -1,6 +1,6 @@
 <?php
 
-namespace ThirdParty\CommerceMultiLang\Modules;
+namespace DigitalPenguin\CommerceMultiLang\Modules;
 use modmore\Commerce\Admin\Generator;
 use modmore\Commerce\Events\Admin\TopNavMenu as TopNavMenuEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;

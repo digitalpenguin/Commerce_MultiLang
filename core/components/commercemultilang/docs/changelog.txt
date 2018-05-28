@@ -1,5 +1,9 @@
 Changelog for CommerceMultiLang.
 
+CommerceMultiLang 0.2.1 Alpha
+==============
+- Fixed bug on image create window.
+
 CommerceMultiLang 0.2.0 Alpha
 ==============
 - Fully editable product images for each language with metadata

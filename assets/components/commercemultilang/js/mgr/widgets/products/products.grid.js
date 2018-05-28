@@ -25,7 +25,11 @@ CommerceMultiLang.grid.Products = function(config) {
             ,width: 140
             ,renderer: function(value){
                 if(value) {
-                    return '<img style="max-width:100%;" src="/' + value + '" />';
+                    var url = '';
+                    if(CommerceMultiLang.config.baseImageUrl.charAt(0) !== '/') {
+                        url = '/'+ CommerceMultiLang.config.baseImageUrl;
+                    }
+                    return '<img style="max-width:100%;" src="'+ url + value + '" />';
                 } else {
                     return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }

@@ -31,7 +31,7 @@ if ($object->xpdo) {
                     $module->set('enabled_in_live',0);
                     $module->set('name','CommerceMultiLang');
                     $module->set('author','Murray Wood - Digital Penguin');
-                    $module->set('class_name','ThirdParty\CommerceMultiLang\Modules\CommerceMultiLang');
+                    $module->set('class_name','DigitalPenguin\CommerceMultiLang\Modules\CommerceMultiLang');
                     $module->set('class_path','{core_path}components/commercemultilang/src/Modules/CommerceMultiLang.php');
                     if($module->save()) {
                         $modx->log(modX::LOG_LEVEL_INFO, 'Module added to Commerce successfully.');

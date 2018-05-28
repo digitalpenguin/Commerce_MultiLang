@@ -288,7 +288,11 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             ,width: 100
             ,renderer: function(value, meta, record) {
                 if(value) {
-                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="/' + value + '">';
+                    var url = '';
+                    if(CommerceMultiLang.config.baseImageUrl.charAt(0) !== '/') {
+                        url = '/'+CommerceMultiLang.config.baseImageUrl;
+                    }
+                    return '<img style="max-width:100%;" title="'+record['name']+'"  src="' + url + value + '">';
                 } else {
                     return '<img style="max-width:100%;" title="'+record['name']+'"  src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg">';
                 }
@@ -346,7 +350,11 @@ CommerceMultiLang.grid.ProductImages = function(config) {
             ,width: 100
             ,renderer: function(value){
                 if(value) {
-                    return '<img style="max-width:100%;" src="/' + value + '" />';
+                    var url = '';
+                    if(CommerceMultiLang.config.baseImageUrl.charAt(0) !== '/') {
+                        url = '/'+ CommerceMultiLang.config.baseImageUrl;
+                    }
+                    return '<img style="max-width:100%;" src="' + url + value + '" />';
                 } else {
                     return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }
@@ -561,7 +569,7 @@ CommerceMultiLang.window.ProductImageCreate = function(config) {
 Ext.extend(CommerceMultiLang.window.ProductImageCreate,MODx.Window,{
     renderImage:function(value) {
         var leftCol = Ext.getCmp('product-image-create-left-col');
-        var url = value.fullRelativeUrl;
+        var url = CommerceMultiLang.config.baseImageUrl + value.fullRelativeUrl;
         //console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;
@@ -680,7 +688,7 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
 
     ,renderImage:function(value,langTab) {
         var leftCol = Ext.getCmp('product-image-update-left-col-'+langTab['lang_key']);
-        var url = value.fullRelativeUrl;
+        var url = CommerceMultiLang.config.baseImageUrl + value.fullRelativeUrl;
         //console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;
@@ -694,7 +702,7 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
     }
     ,renderImageOnLoad:function(langTab) {
         var leftCol = Ext.getCmp('product-image-update-left-col-'+langTab['lang_key']);
-        var url = Ext.getCmp('update-product-image-select-'+langTab['lang_key']).getValue();
+        var url = CommerceMultiLang.config.baseImageUrl + Ext.getCmp('update-product-image-select-'+langTab['lang_key']).getValue();
         if(url) {
             if (url.charAt(0) !== '/') {
                 url = '/' + url;

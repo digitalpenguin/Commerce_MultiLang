@@ -257,7 +257,7 @@ Ext.extend(CommerceMultiLang.window.ProductVariationCreate,MODx.Window,{
     }
     ,renderImage:function(value) {
         var leftCol = Ext.getCmp('product-variation-create-left-col');
-        var url = value.fullRelativeUrl;
+        var url = CommerceMultiLang.config.baseImageUrl + value.fullRelativeUrl;
         console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;
@@ -271,7 +271,7 @@ Ext.extend(CommerceMultiLang.window.ProductVariationCreate,MODx.Window,{
     }
     ,renderImageOnLoad:function() {
         var leftCol = Ext.getCmp('product-variation-create-left-col');
-        var url = Ext.getCmp('update-product-image-select').getValue();
+        var url = CommerceMultiLang.config.baseImageUrl + Ext.getCmp('update-product-image-select').getValue();
         if(url.charAt(0) !== '/') {
             url = '/'+url;
         }
@@ -406,7 +406,7 @@ Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
 
     ,renderImage:function(value) {
         var leftCol = Ext.getCmp('product-variation-update-left-col');
-        var url = value.fullRelativeUrl;
+        var url = CommerceMultiLang.config.baseImageUrl + value.fullRelativeUrl;
         console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;
@@ -420,7 +420,7 @@ Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
     }
     ,renderImageOnLoad:function() {
         var leftCol = Ext.getCmp('product-variation-update-left-col');
-        var url = Ext.getCmp('update-product-image-select').getValue();
+        var url = CommerceMultiLang.config.baseImageUrl + Ext.getCmp('update-product-image-select').getValue();
         if(url) {
             if (url.charAt(0) !== '/') {
                 url = '/' + url;
