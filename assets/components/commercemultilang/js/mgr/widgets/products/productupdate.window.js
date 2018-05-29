@@ -569,7 +569,7 @@ CommerceMultiLang.window.ProductImageCreate = function(config) {
 Ext.extend(CommerceMultiLang.window.ProductImageCreate,MODx.Window,{
     renderImage:function(value) {
         var leftCol = Ext.getCmp('product-image-create-left-col');
-        var url = CommerceMultiLang.config.baseImageUrl + value.fullRelativeUrl;
+        var url = value.fullRelativeUrl;
         //console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;
@@ -688,7 +688,7 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
 
     ,renderImage:function(value,langTab) {
         var leftCol = Ext.getCmp('product-image-update-left-col-'+langTab['lang_key']);
-        var url = CommerceMultiLang.config.baseImageUrl + value.fullRelativeUrl;
+        var url = value.fullRelativeUrl;
         //console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;
