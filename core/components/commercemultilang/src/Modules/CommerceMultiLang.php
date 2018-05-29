@@ -24,7 +24,7 @@ class CommerceMultiLang extends \modmore\Commerce\Modules\BaseModule {
         if(!$this->adapter->loadPackage('commercemultilang',$root)) {
             $this->adapter->log(1, 'Unable to load the CommerceMultiLang package.');
         }
-        //$dispatcher->addListener(Generator::COLLECT_MENU_EVENT, array($this, 'alterProductsTab'));
+        $dispatcher->addListener(Generator::COLLECT_MENU_EVENT, array($this, 'alterProductsTab'));
     }
 
     public function alterProductsTab(TopNavMenuEvent $event) {
@@ -32,6 +32,8 @@ class CommerceMultiLang extends \modmore\Commerce\Modules\BaseModule {
 
         if (array_key_exists('products', $items)) {
             $items['products']['link'] = '?namespace=commercemultilang&a=home';
+            // Added in Commerce 0.11.0-pl - Allows a nav tab to ignore Commerce JS and link to another page.
+            $items['products']['class'] = 'commerce-ignore-jsnav';
         }
 
         $event->setItems($items);

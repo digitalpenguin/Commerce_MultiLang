@@ -75,6 +75,13 @@ class CommerceMultiLang {
      * @return string
      */
     public function getProductList(array $scriptProperties = array()) {
+        $categoryIds = [];
+        if ($scriptProperties['categories']) {
+            $categoryIds = explode(',', $scriptProperties['categories']);
+        } else {
+            $categoryIds[] = $this->modx->resource->get('id');
+        }
+
         $contentType = $this->commerce->adapter->getObject('modContentType',array(
             'mime_type' => 'text/html'
         ));
@@ -94,10 +101,10 @@ class CommerceMultiLang {
 
         //$c->leftJoin('modResource','Category','ProductLanguage.category=Category.id');
         $c->where(array(
-            'CommerceMultiLangProduct.removed'  => 0,
-            'ProductData.product_listing'       => 1,
-            'ProductLanguage.lang_key'          => $this->commerce->adapter->getOption('cultureKey'),
-            'ProductLanguage.category'          => $this->modx->resource->get('id'), // only show products on the correct resource
+            'CommerceMultiLangProduct.removed:='    => 0,
+            'AND:ProductData.product_listing:='     => 1,
+            'AND:ProductLanguage.lang_key:='        => $this->commerce->adapter->getOption('cultureKey'),
+            'AND:ProductLanguage.category:IN'       => $categoryIds, // only show products on the correct resources
         ));
         $c->select('CommerceMultiLangProduct.*,ProductData.alias,ProductLanguage.*,ProductImageLanguage.image');
         //$c->prepare();
