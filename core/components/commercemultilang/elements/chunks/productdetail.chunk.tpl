@@ -1,14 +1,14 @@
-<h1>[[+name]]</h1>
-<img title="[[+title]]" alt="[[+alt]]" src="[[+image]]">
-<p>[[+description]]</p>
+<h1>[[+cml.name]]</h1>
+<img title="[[+cml.title]]" alt="[[+cml.alt]]" src="[[+cml.image]]">
+<p>[[+cml.description]]</p>
 
 <form method="post" action="[[~[[++commerce.cart_resource]]]]">
     <input type="hidden" name="add_to_cart" value="1">
-    [[+variations:notempty=`<select name="products" onchange="setProduct(value)">
-        [[+variations]]
+    [[+cml.variations:notempty=`<select name="products" onchange="setProduct(value)">
+        [[+cml.variations]]
     </select>`]]<br><br>
     <label for="add-quantity">Quantity</label>
-    <input id="add-quantity" type="number" name="products[ [[+id]] ][quantity]" value="1">
+    <input id="add-quantity" type="number" name="products[ [[+cml.id]] ][quantity]" value="1">
     <input type="submit" value="Add to Cart">
 </form>
 <script>

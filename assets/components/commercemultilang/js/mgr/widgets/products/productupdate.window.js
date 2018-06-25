@@ -688,7 +688,7 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
 
     ,renderImage:function(value,langTab) {
         var leftCol = Ext.getCmp('product-image-update-left-col-'+langTab['lang_key']);
-        var url = value.fullRelativeUrl;
+        var url = value.fullRelativeUrl;use
         //console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;

@@ -8,7 +8,7 @@
 class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor {
     public $classKey = 'CommerceMultiLangProduct';
     public $languageTopics = array('commercemultilang:default');
-    public $defaultSortField = 'sku';
+    public $defaultSortField = 'name';
     public $defaultSortDirection = 'ASC';
     public $objectType = 'commercemultilang.product';
     protected $langKeys = array();
@@ -97,6 +97,7 @@ class CommerceMultiLangProductGetListProcessor extends modObjectGetListProcessor
             'AND:CommerceMultiLangProduct.class_key:!='=>'comProduct',
             'AND:ProductData.product_listing:=' =>  1
         ));
+        $c->groupBy('CommerceMultiLangProduct.sku,CommerceMultiLangProduct.id,ProductImageLanguage.image,Category.pagetitle,Category.id');
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
         $query = $this->getProperty('query');

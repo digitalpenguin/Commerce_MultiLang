@@ -46,6 +46,7 @@ class CommerceMultiLangProductCreateProcessor extends modObjectCreateProcessor {
     }
 
     protected function generateProductAlias($text) {
+        $text = $this->modx->sanitizeString($text);
         $letters = array(
             '–', '"','\'', '«', '»', '&', '÷', '>','<', '$', '/'
         );

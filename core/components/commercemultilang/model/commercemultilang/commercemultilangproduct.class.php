@@ -75,7 +75,12 @@ class CommerceMultiLangProduct extends comProduct {
                 }
                 $idx++;
             }
-            return $output.' | '.$this->extendedData['description'];
+            // Only attach the description if it's not empty.
+            if(!empty($this->extendedData['description'])) {
+                return $output.' | '.$this->extendedData['description'];
+            } else {
+                return $output;
+            }
         }
         return $this->extendedData['description'];
     }

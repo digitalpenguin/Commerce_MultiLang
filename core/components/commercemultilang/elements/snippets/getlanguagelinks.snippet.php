@@ -6,6 +6,7 @@
  */
 
 $request = $modx->sanitizeString($_REQUEST['q']);
+// Grab cached output if it exists.
 if($modx->cacheManager->get('cml_language_links_'.$request, [xPDO::OPT_CACHE_KEY => 'commercemultilang'])) {
     $modx->cacheManager->set('cml_language_links_'.$request,$output, 3600, [xPDO::OPT_CACHE_KEY => 'commercemultilang']);
 }
@@ -74,22 +75,39 @@ if($productDetailId) {
     foreach($languages as $language) {
         $url = $modx->makeUrl($language['category'],$language['context_key'],'','full');
 
+        // Check if active language and set active class
+        $active = '';
+        if($language['lang_key'] === $modx->getOption('cultureKey')) {
+            $active = 'active';
+        }
 
+        // Make sure the correct extension is used.
         if ($extension) {
             $alias = str_replace($extension, '', $alias);
             $alias = $alias.$extension;
         }
         $url = $url.$alias;
+
+        // Set template chunk
+        $chunkName = 'language_links_tpl';
+        if($scriptProperties['tpl']) {
+            $chunkName = $scriptProperties['tpl'];
+        }
+
         if($count > $idx) {
-            $output .= $modx->getChunk('language_links_tpl', array(
-                'link' => $url,
-                'name' => $language['name'],
-                'separator' => $scriptProperties['separator']
+            $output .= $modx->getChunk($chunkName, array(
+                'link'          => $url,
+                'name'          => $language['name'],
+                'active'        => $active,
+                'cultureKey'    => $language['lang_key'],
+                'separator'     => $scriptProperties['separator']
             ));
         } else {
-            $output .= $modx->getChunk('language_links_tpl', array(
-                'link' => $url,
-                'name' => $language['name']
+            $output .= $modx->getChunk($chunkName, array(
+                'link'          => $url,
+                'name'          => $language['name'],
+                'active'        => $active,
+                'cultureKey'    => $language['lang_key']
             ));
 
         }

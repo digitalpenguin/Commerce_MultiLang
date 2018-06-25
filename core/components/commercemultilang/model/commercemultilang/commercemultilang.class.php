@@ -10,6 +10,9 @@ class CommerceMultiLang {
     public $namespace = 'commercemultilang';
     public $cache = null;
     public $options = array();
+    public $sortby = 'CommerceMultiLangProduct.id';
+    public $sortdir = 'ASC';
+    public $limit = '30';
 
 
     public function __construct(modX &$modx, array $options = array()) {
@@ -71,10 +74,36 @@ class CommerceMultiLang {
     /**
      * Return a list of products
      *
+     * Snippet Params:
+     * - tpl : set a chunk name to use for the template
+     * - debug : set to 1 to see data output
+     * - limit : max number of items returned
+     * - sortby : field to sort items by
+     * - sortdir : ASC or DESC
+     *
      * @param array $scriptProperties
      * @return string
      */
     public function getProductList(array $scriptProperties = array()) {
+        // Check for sortdir param
+        if(array_key_exists('sortdir',$scriptProperties)) {
+            if($scriptProperties['sortdir']) {
+                $this->sortdir = $scriptProperties['sortdir'];
+            }
+        }
+        // Check for sortby param
+        if(array_key_exists('sortby',$scriptProperties)) {
+            if($scriptProperties['sortby']) {
+                $this->sortby = $scriptProperties['sortby'];
+            }
+        }
+        // Check for sortby param
+        if(array_key_exists('limit',$scriptProperties)) {
+            if($scriptProperties['limit']) {
+                $this->limit = $scriptProperties['limit'];
+            }
+        }
+
         $categoryIds = [];
         if ($scriptProperties['categories']) {
             $categoryIds = explode(',', $scriptProperties['categories']);
@@ -85,7 +114,9 @@ class CommerceMultiLang {
         $contentType = $this->commerce->adapter->getObject('modContentType',array(
             'mime_type' => 'text/html'
         ));
-        $extension = $contentType->get('file_extensions');
+        if($contentType) {
+            $extension = $contentType->get('file_extensions');
+        }
 
         $c = $this->commerce->adapter->newQuery('CommerceMultiLangProduct');
         $c->leftJoin('CommerceMultiLangProductData', 'ProductData', 'CommerceMultiLangProduct.id=ProductData.product_id');
@@ -98,15 +129,24 @@ class CommerceMultiLang {
             'ProductImage.id=ProductImageLanguage.product_image_id',
             'ProductImageLanguage.lang_key' =>  $this->modx->getOption('cultureKey')
         ));
-
         //$c->leftJoin('modResource','Category','ProductLanguage.category=Category.id');
+
+        if($c->sortby == 'RAND()') {
+            $c->sortby('RAND()');
+        } else {
+            $c->sortby($this->sortby, $this->sortdir);
+        }
+        $c->limit($this->limit);
         $c->where(array(
             'CommerceMultiLangProduct.removed:='    => 0,
             'AND:ProductData.product_listing:='     => 1,
             'AND:ProductLanguage.lang_key:='        => $this->commerce->adapter->getOption('cultureKey'),
             'AND:ProductLanguage.category:IN'       => $categoryIds, // only show products on the correct resources
         ));
-        $c->select('CommerceMultiLangProduct.*,ProductData.alias,ProductLanguage.*,ProductImageLanguage.image');
+        $c->select('CommerceMultiLangProduct.*,
+                    ProductData.alias,
+                    ProductLanguage.*,
+                    ProductImageLanguage.image');
         //$c->prepare();
         //echo $c->toSQL();
         if ($c->prepare() && $c->stmt->execute()) {
@@ -118,8 +158,7 @@ class CommerceMultiLang {
                     //Add current document extension to product
                     $product['extension'] = $extension;
 
-                    $currentId = $this->modx->resource->get('id');
-                    $url = $this->modx->makeUrl($currentId);
+                    $url = $this->modx->makeUrl($product['category']);
                     $product['product_link'] = $url . $product['alias'] . $extension;
                     if($product['image']) {
                         $uri = ltrim($this->options['baseImageUrl'], '/');
@@ -127,11 +166,12 @@ class CommerceMultiLang {
                     } else {
                         $product['image'] = $this->commerce->adapter->getOption('commercemultilang.assets_url').'img/placeholder.jpg';
                     }
-                    //$this->modx->log(1,print_r($product,true));
+
+                    $this->modx->setPlaceholders($product,'cml.list.');
                     if ($scriptProperties['tpl']) {
-                        $output .= $this->modx->getChunk($scriptProperties['tpl'], $product);
+                        $output .= $this->modx->getChunk($scriptProperties['tpl']);
                     } else {
-                        $output .= $this->modx->getChunk('product_preview_tpl', $product);
+                        $output .= $this->modx->getChunk('product_preview_tpl');
                     }
                 }
                 if ($scriptProperties['debug']) {
@@ -176,6 +216,8 @@ class CommerceMultiLang {
                     ProductData.alias,
                     ProductLanguage.name,
                     ProductLanguage.description,
+                    ProductLanguage.content,
+                    ProductLanguage.category,
                     ProductImageLanguage.title,
                     ProductImageLanguage.alt,
                     ProductImageLanguage.image'
@@ -185,24 +227,43 @@ class CommerceMultiLang {
 
         if ($c->prepare() && $c->stmt->execute()) {
             $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
-            $variations = $this->getProductVariationFields($product['id'],$scriptProperties);
-            //$this->modx->log(1,$variations);
-            if($variations) {
-                $product['variations'] = $variations;
-            }
-            if($product['image']) {
-                $uri = ltrim($this->options['baseImageUrl'], '/');
-                $product['image'] = '/' . $uri . $product['image'];
-            } else {
-                $product['image'] = $this->commerce->adapter->getOption('commercemultilang.assets_url').'img/placeholder.jpg';
+            if ($product) {
+                $variations = $this->getProductVariationFields($product['id'], $scriptProperties);
+                if ($variations) {
+                    $product['variations'] = $variations;
+                }
+                if ($product['image']) {
+                    $uri = ltrim($this->options['baseImageUrl'], '/');
+                    $product['image'] = '/' . $uri . $product['image'];
+                    $product['image_nr'] = ltrim($product['image'], '/');
+                } else {
+                    $product['image'] = $this->commerce->adapter->getOption('commercemultilang.assets_url') . 'img/placeholder.jpg';
+                }
+
+                // Set link to primary category as placeholder
+                // TODO: Change the way this is handled when multiple categories are added.
+                if($product['category']) {
+                    $product['category_link'] = $this->modx->makeUrl($product['category']);
+                }
+
+                // Checks for file extension and sets placeholder
+                $contentType = $this->modx->getObject('modContentType',array(
+                    'mime_type' => 'text/html'
+                ));
+                if($contentType) {
+                    $extension = $contentType->get('file_extensions');
+                    if ($extension) {
+                        $product['alias_ext'] = $extension;
+                    }
+                }
+                $this->modx->setPlaceholders($product,'cml.');
+                if ($scriptProperties['tpl']) {
+                    $output = $this->modx->getChunk($scriptProperties['tpl']);
+                } else {
+                    $output = $this->modx->getChunk('product_detail_tpl');
+                }
 
             }
-            if($scriptProperties['tpl']) {
-                $output = $this->modx->getChunk($scriptProperties['tpl'], $product);
-            } else {
-                $output = $this->modx->getChunk('product_detail_tpl', $product);
-            }
-            //$this->modx->log(1,$output);
         }
         return $output;
     }
@@ -215,6 +276,7 @@ class CommerceMultiLang {
      */
     public function getProductVariationFields($parentProductId,array $scriptProperties) {
         $output = '';
+        // Gets primary product and children
         $c = $this->commerce->adapter->newQuery('CommerceMultiLangProduct');
         $c->leftJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
         $c->leftJoin('CommerceMultiLangProductLanguage','ProductLanguage',array(
@@ -235,12 +297,13 @@ class CommerceMultiLang {
         if ($c->prepare() && $c->stmt->execute()) {
             $productArray = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
             $productIds = [];
+            // Collect the product ids into an array
             foreach($productArray as $product) {
                 $productIds[] = $product['id'];
             }
+            // Get assigned variations for current language if the product ID is in the array
             $v = $this->commerce->adapter->newQuery('CommerceMultiLangAssignedVariation');
             $v->select(['id','product_id','type_id','variation_id','name','lang_key','value']);
-
             $v->where([
                 'product_id:IN'     =>  $productIds,
                 'lang_key'          =>  $this->commerce->adapter->getOption('cultureKey'),
@@ -250,6 +313,7 @@ class CommerceMultiLang {
             //$this->modx->log(1,$v->toSQL());
             if ($v->prepare() && $v->stmt->execute()) {
                 $variations = $v->stmt->fetchAll(PDO::FETCH_ASSOC);
+
                 $variations = $this->mergeVariationsByProductId($variations,$scriptProperties);
                 foreach($variations as $variation) {
                     if($scriptProperties['variationTpl']) {
