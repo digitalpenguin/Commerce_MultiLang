@@ -1,15 +1,15 @@
 <?php
 /**
- * Default English Lexicon Entries for CommerceMultiLang
+ * Default English Lexicon Entries for Commerce_MultiLang
  *
  * @package commerce_multilang
  * @subpackage lexicon
  */
 
-$_lang['commerce_multilang'] = 'CommerceMultiLang';
+$_lang['commerce_multilang'] = 'Commerce_MultiLang';
 
-$_lang['commerce_multilang.menu.commerce_multilang'] = 'CommerceMultiLang';
-$_lang['commerce_multilang.menu.commercemultilang_desc'] = 'Multi-lingual products for Commerce.';
+$_lang['commerce_multilang.menu.commerce_multilang'] = 'Commerce_MultiLang';
+$_lang['commerce_multilang.menu.commerce_multilang_desc'] = 'Multilingual products for Commerce.';
 
 $_lang['commerce_multilang.global.search'] = 'Search';
 

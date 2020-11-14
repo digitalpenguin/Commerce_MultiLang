@@ -14,8 +14,8 @@ abstract class CommerceMultiLangBaseManagerController extends modExtraManagerCon
         $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/commerce_multilang.js');
         $this->addHtml('<script type="text/javascript">
         Ext.onReady(function() {
-            CommerceMultiLang.config = '.$this->modx->toJSON($this->commercemultilang->options).';
-            CommerceMultiLang.config.connector_url = "'.$this->commercemultilang->getOption('connectorUrl').'";
+            MultiLang.config = '.$this->modx->toJSON($this->commercemultilang->options).';
+            MultiLang.config.connector_url = "'.$this->commercemultilang->getOption('connectorUrl').'";
         });
         </script>');
         

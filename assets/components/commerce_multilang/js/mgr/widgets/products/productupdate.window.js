@@ -639,7 +639,7 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
                             xtype: 'modx-combo-browser'
                             ,id: 'update-product-image-select-'+langTab['lang_key']
                             ,fieldLabel: 'Select Image'
-                            //,source: CommerceMultiLang.config.institutionMediaSource
+                            //,source: MultiLang.config.institutionMediaSource
                             ,name: 'image_'+langTab['lang_key']
                             ,anchor:'100%'
                             ,rootId: '/'

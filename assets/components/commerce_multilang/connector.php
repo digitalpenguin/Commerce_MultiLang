@@ -1,6 +1,6 @@
 <?php
 /**
- * CommerceMultiLang Connector
+ * MultiLang Connector
  *
  * @package commerce_multilang
  */
@@ -11,7 +11,7 @@ require_once MODX_CONNECTORS_PATH . 'index.php';
 $corePath = $modx->getOption('commerce_multilang.core_path', null, $modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/commerce_multilang/');
 $commercemultilang = $modx->getService(
     'commerce_multilang',
-    'CommerceMultiLang',
+    'MultiLang',
     $corePath . 'model/commerce_multilang/',
     array(
         'core_path' => $corePath

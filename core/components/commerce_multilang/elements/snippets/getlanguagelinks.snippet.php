@@ -12,7 +12,7 @@ if($modx->cacheManager->get('cml_language_links_'.$request, [xPDO::OPT_CACHE_KEY
 }
 
 // Grab xpdo instance with needed tables loaded
-$commerceMultiLang = $modx->getService('commerce_multilang', 'CommerceMultiLang', $modx->getOption('commerce_multilang.core_path', null, $modx->getOption('core_path') . 'components/commerce_multilang/') . 'model/commerce_multilang/', $scriptProperties);
+$commerceMultiLang = $modx->getService('commerce_multilang', 'MultiLang', $modx->getOption('commerce_multilang.core_path', null, $modx->getOption('core_path') . 'components/commerce_multilang/') . 'model/commerce_multilang/', $scriptProperties);
 if (!($commerceMultiLang instanceof CommerceMultiLang))
     return '';
 $xpdo = &$commerceMultiLang->modx;

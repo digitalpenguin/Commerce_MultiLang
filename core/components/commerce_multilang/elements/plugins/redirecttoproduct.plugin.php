@@ -6,8 +6,8 @@
  */
 
 // Grab xpdo instance with needed tables loaded
-$commerceMultiLang = $modx->getService('commerce_multilang', 'CommerceMultiLang', $modx->getOption('commerce_multilang.core_path', null, $modx->getOption('core_path') . 'components/commerce_multilang/') . 'model/commerce_multilang/', $scriptProperties);
-if (!($commerceMultiLang instanceof CommerceMultiLang))
+$commerceMultiLang = $modx->getService('commerce_multilang', 'Commerce_MultiLang', $modx->getOption('commerce_multilang.core_path', null, $modx->getOption('core_path') . 'components/commerce_multilang/') . 'model/commerce_multilang/', $scriptProperties);
+if (!($commerceMultiLang instanceof Commerce_MultiLang))
     return '';
 $xpdo = &$commerceMultiLang->modx;
 
@@ -41,14 +41,14 @@ if($productDetailId) {
     }
 
     //Comment this out if using experimental flat rows
-    $c = $xpdo->newQuery('CommerceMultiLangProduct');
-    $c->leftJoin('CommerceMultiLangProductData','ProductData','CommerceMultiLangProduct.id=ProductData.product_id');
-    $c->leftJoin('CommerceMultiLangProductLanguage','ProductLanguage',array(
-        'CommerceMultiLangProduct.id=ProductLanguage.product_id',
+    $c = $xpdo->newQuery('CMLProduct');
+    $c->leftJoin('CMLProductData','ProductData','CMLProduct.id=ProductData.product_id');
+    $c->leftJoin('CMLProductLanguage','ProductLanguage',array(
+        'CMLProduct.id=ProductLanguage.product_id',
         'ProductLanguage.lang_key'  =>  $modx->getOption('cultureKey')
     ));
     $c->where(array('ProductData.alias'=>$alias));
-    $c->select('CommerceMultiLangProduct.id,ProductData.alias,ProductLanguage.name,ProductLanguage.description');
+    $c->select('CMLProduct.id,ProductData.alias,ProductLanguage.name,ProductLanguage.description');
     if ($c->prepare() && $c->stmt->execute()) {
         $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
         if($product) {
@@ -58,17 +58,6 @@ if($productDetailId) {
             $modx->sendRedirect($errorUrl);
         }
     }
-
-
-    // Used for experimental flat row table
-    /*$tableName = $xpdo->getTableName('CommerceMultiLangFlatRow');
-    $stmt = $xpdo->query('SHOW COLUMNS FROM ' . $xpdo->escape($tableName));
-    if ($stmt) {
-        $fields = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if($fields) {
-            //$xpdo->log(1,print_r($fields,true));
-        }
-    }*/
 
 } else {
     $modx->sendRedirect($errorUrl);

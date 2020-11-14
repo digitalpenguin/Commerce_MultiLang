@@ -4,7 +4,7 @@ $snippets = array();
 $snippets[0] = $modx->newObject('modSnippet');
 $snippets[0]->fromArray(array(
     'id' => 0,
-    'name' => 'getLanguageLinks',
+    'name' => 'cmlGetLanguageLinks',
     'description' => 'Displays links to translated products.',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/getlanguagelinks.snippet.php'),
 ),'',true,true);
@@ -15,7 +15,7 @@ $snippets[0]->fromArray(array(
 $snippets[1] = $modx->newObject('modSnippet');
 $snippets[1]->fromArray(array(
     'id' => 0,
-    'name' => 'getProductList',
+    'name' => 'cmlGetProductList',
     'description' => 'Returns a list of product previews formatted with a chunk.',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/getproductlist.snippet.php'),
 ),'',true,true);
@@ -26,7 +26,7 @@ $snippets[1]->fromArray(array(
 $snippets[2] = $modx->newObject('modSnippet');
 $snippets[2]->fromArray(array(
     'id' => 0,
-    'name' => 'getProductDetail',
+    'name' => 'cmlGetProductDetail',
     'description' => 'Returns a data for the product detail page.',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/getproductdetail.snippet.php'),
 ),'',true,true);

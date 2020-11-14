@@ -1,11 +1,11 @@
 <?php
 /**
- * The base CommerceMultiLang snippet.
+ * The base MultiLang snippet.
  *
  * @package commerce_multilang
  */
-$commercemultilang = $modx->getService('commerce_multilang','CommerceMultiLang',$modx->getOption('commerce_multilang.core_path',null,$modx->getOption('core_path').'components/commerce_multilang/').'model/commerce_multilang/',$scriptProperties);
-if (!($commercemultilang instanceof CommerceMultiLang)) return '';
+$commercemultilang = $modx->getService('commerce_multilang','Commerce_MultiLang',$modx->getOption('commerce_multilang.core_path',null,$modx->getOption('core_path').'components/commerce_multilang/').'model/commerce_multilang/',$scriptProperties);
+if (!($commercemultilang instanceof Commerce_MultiLang)) return '';
 
 /**
  * Do your snippet code here. This demo grabs 5 items from our custom table.

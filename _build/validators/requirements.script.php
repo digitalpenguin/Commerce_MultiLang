@@ -11,19 +11,19 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
         // Check for MODX 2.5.2 or higher
         $level = xPDO::LOG_LEVEL_INFO;
         $modxVersion = $modx->getVersionData();
-        if (version_compare($modxVersion['full_version'], '2.5.2') < 0) {
+        if (version_compare($modxVersion['full_version'], '2.6.5') < 0) {
             $level = xPDO::LOG_LEVEL_ERROR;
             $success = false;
         }
-        $modx->log($level, '- MODX Revolution 2.5.2+: ' . $modxVersion['full_version']);
+        $modx->log($level, '- MODX Revolution 2.6.5+: ' . $modxVersion['full_version']);
 
         // Check for PHP 5.5 or higher
         $level = xPDO::LOG_LEVEL_INFO;
-        if (version_compare(PHP_VERSION, '5.5.0') < 0) {
+        if (version_compare(PHP_VERSION, '7.2.0') < 0) {
             $level = xPDO::LOG_LEVEL_ERROR;
             $success = false;
         }
-        $modx->log($level, '- PHP version 5.5+: ' . PHP_VERSION);
+        $modx->log($level, '- PHP version 7.2+: ' . PHP_VERSION);
 
         // Check for Commerce 0.11 +
         /*$corePath = $modx->getOption('commerce.core_path', null, $modx->getOption('core_path') . 'components/commerce/');

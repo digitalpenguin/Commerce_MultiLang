@@ -1,22 +1,44 @@
 {
-    "name": "CommerceMultiLang",
+    "name": "Commerce_MultiLang",
     "lowCaseName": "commerce_multilang",
     "description": "Custom multilingual products and Custom Manager Page for Commerce (MODX)",
-    "author": "Murray Wood - https://www.digitalpenguin.hk",
+    "author": "Murray Wood",
     "version": "1.0.0-alpha1",
     "package":{
-
         "menus": [{
-            "text": "commerce_multilang.menu.commerce_multilang"
-            ,"description": "commerce_multilang.menu.commerce_multilang_desc"
-            ,"action": "home"
+            "text": "commerce_multilang.menu.commerce_multilang",
+            "description": "commerce_multilang.menu.commerce_multilang_desc",
+            "action": "home"
         }],
         "elements": {
-            "plugins": [],
-            "snippets": [],
-            "chunks": [],
-            "templates": [],
-            "tvs": []
+            "plugins": [{
+                "name": "cml_redirect_to_product",
+                "file": "redirecttoproduct.plugin.php",
+                "events": ["OnPageNotFound"]
+            }],
+            "snippets": [{
+                "name": "cmlGetLanguageLinks",
+                "file": "getlanguagelinks.snippet.php"
+            },{
+                "name": "cmlGetProductDetail",
+                "file": "getproductdetail.snippet.php"
+            },{
+                "name": "cmlGetProductList",
+                "file": "getproductlist.snippet.php"
+            }],
+            "chunks": [{
+                "name": "cml_language_links",
+                "file": "languagelinks.chunk.tpl"
+            },{
+                "name": "cml_product_detail",
+                "file": "productdetail.chunk.tpl"
+            },{
+                "name": "cml_product_preview",
+                "file": "productpreview.chunk.tpl"
+            },{
+                "name": "cml_variation",
+                "file": "variationrow.chunk.tpl"
+            }]
         },
 
         "systemSettings": [{
@@ -25,6 +47,13 @@
             "area": "defaults",
             "value": "en"
         }]
+    },
+
+    "build": {
+        "resolver": {
+            "resolversDir": "resolvers",
+            "after": "registermodule.resolver.php"
+        }
     }
-    
+
 }
