@@ -1,5 +1,5 @@
 ---------------------------------------
-CommerceMultiLang
+Commerce_MultiLang
 ---------------------------------------
 Version: 0.2.2
 
@@ -10,7 +10,7 @@ You can find documentation in the wiki at [https://github.com/digitalpenguin/Com
 WORK IN PROGRESS
 
 TODO:
-- Allow an initial image for product create form.
+- Allow an initial image for the product create form.
 - Cache everything!
 - Build a breadcrumbs snippet that includes categories (resources) and products.
 - Build a product bundle grid.
@@ -18,19 +18,16 @@ TODO:
 
 There is now a package which can be used to install the extra via the MODX package manager.
 
-This is a wrapper for Modmore's excellent MODX extra called Commerce. https://www.modmore.com/commerce/
+This is a wrapper for modmore's excellent MODX extra called Commerce. https://www.modmore.com/commerce/
 Commerce doesn't come with multi-lingual products out of the box so CommerceMultiLang adds this for websites with more than one language.
 CommerceMultiLang is an unofficial extension to Commerce made by Murray Wood at Digital Penguin Ltd Hong Kong. https://www.digitalpenguin.hk
 
 Commerce is a a premium extra for MODX and using CommerceMultiLang requires a valid Commerce license.
-https://www.modmore.com/commerce/pricing/
-
-Even though Commerce is HTML-first, this extra has been built with the UI framework the rest of MODX currently uses in the manager: ExtJS. (Sorry Mark! :) )
-Special thanks to @dimmy for advice given about some functionality such as loading with the resource viewport.
+https://www.modmore.com/commerce/
 
 Requirements:
-- MODX (of course!)
-- Commerce
+- MODX 2.6.5 or higher.
+- Commerce 1.2.x or higher.
 - Babel: https://modx.com/extras/package/babel
 - A language routing extra. We recommend LangRouter: https://modx.com/extras/package/langrouter (Others may work but they haven't been tested.)
 
@@ -42,7 +39,7 @@ Dependencies
 
 System Settings
 ---------------
-- A system setting called commercemultilang.default_lang needs to be set with your default language code. (e.g. en,zh,fr etc.) This setting must be the cultureKey that is set on one of your contexts.
+- A system setting called commerce_multilang.default_lang needs to be set with your default language code. (e.g. en, zh, fr etc.) This setting must be the cultureKey that is set on one of your contexts.
 
 Required Resources
 ------------------
@@ -59,8 +56,8 @@ Context Settings
 ----------------
 Add these to each context. (In addition to the context settings required by Babel and LangRouter.)
 
-- *commercemultilang.category_root_id* - This is the id of the "Categories" resource for that context.
+- *commerce_multilang.category_root_id* - This is the id of the "Categories" resource for that context.
 - *commerce.cart_resource* - The id of your cart resource.
 - *commerce.checkout_resource* - The id of your checkout resource.
-- *commercemultilang.product_detail_page* - This is the id of your viewport resource. (Product detail page will be loaded into this resource by a plugin.)
+- *commerce_multilang.product_detail_page* - This is the id of your viewport resource. (Product detail page will be loaded into this resource by a plugin.)
 

@@ -1,7 +1,7 @@
 CommerceMultiLang.window.ProductUpdate = function(config) {
 
     Ext.applyIf(config,{
-        title: _('commercemultilang.product.update')
+        title: _('commerce_multilang.product.update')
         ,closeAction: 'close'
         ,width:1000
         ,id:'commercemultilang-window-product-update'
@@ -44,23 +44,23 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.sku')
+                            ,fieldLabel: _('commerce_multilang.product.sku')
                             ,name: 'sku'
                             ,anchor: '100%'
                         },{
                             xtype: 'commercemultilang-combo-product-type'
-                            ,fieldLabel: _('commercemultilang.product.type')
+                            ,fieldLabel: _('commerce_multilang.product.type')
                             ,name: 'type'
                             ,hiddenName: 'type'
                             ,anchor: '100%'
                         },{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.price')
+                            ,fieldLabel: _('commerce_multilang.product.price')
                             ,name: 'price'
                             ,anchor: '100%'
                         },{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.stock')
+                            ,fieldLabel: _('commerce_multilang.product.stock')
                             ,name: 'stock'
                             ,anchor: '100%'
                         },{
@@ -71,7 +71,7 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                                 ,layout: 'form'
                                 ,items: [{
                                     xtype: 'textfield'
-                                    ,fieldLabel: _('commercemultilang.product.weight')
+                                    ,fieldLabel: _('commerce_multilang.product.weight')
                                     ,name: 'weight'
                                     ,anchor: '100%'
                                 }]
@@ -80,7 +80,7 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                                 ,layout: 'form'
                                 ,items: [{
                                     xtype: 'commercemultilang-combo-weightunit'
-                                    ,fieldLabel: _('commercemultilang.product.weight_unit')
+                                    ,fieldLabel: _('commerce_multilang.product.weight_unit')
                                     ,name: 'weight_unit'
                                     ,hiddenName: 'weight_unit'
                                     ,anchor: '100%'
@@ -88,13 +88,13 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                             }]
                         },{
                             xtype: 'commercemultilang-combo-deliverytype'
-                            ,fieldLabel: _('commercemultilang.product.delivery_type')
+                            ,fieldLabel: _('commerce_multilang.product.delivery_type')
                             ,name: 'delivery_type'
                             ,hiddenName: 'delivery_type'
                             ,anchor: '100%'
                         },{
                             xtype: 'commercemultilang-combo-taxgroup'
-                            ,fieldLabel: _('commercemultilang.product.tax_group')
+                            ,fieldLabel: _('commerce_multilang.product.tax_group')
                             ,name: 'tax_group'
                             ,hiddenName: 'tax_group'
                             ,anchor: '100%'
@@ -118,8 +118,8 @@ CommerceMultiLang.window.ProductUpdate = function(config) {
                 ,id:'variation-tab'
                 ,cls: 'main-wrapper'
                 ,items:[{
-                    html:'<h2>'+_('commercemultilang.product_variation.product_variations')+'</h2>' +
-                    '<p>'+_('commercemultilang.product_variation.intro')+'</p>'
+                    html:'<h2>'+_('commerce_multilang.product_variation.product_variations')+'</h2>' +
+                    '<p>'+_('commerce_multilang.product_variation.intro')+'</p>'
                 }]
             }]
         }]
@@ -200,7 +200,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                                     ,anchor: '100%'
                                 },{
                                     xtype: 'commercemultilang-combo-category'
-                                    ,fieldLabel: _('commercemultilang.product.category')
+                                    ,fieldLabel: _('commerce_multilang.product.category')
                                     ,id: 'product-update-category-combo'+langTab['lang_key']
                                     ,name: 'category_'+langTab['lang_key']
                                     ,hiddenName: 'category_'+langTab['lang_key']
@@ -282,7 +282,7 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
             ,dataIndex: 'id'
             ,width: 10
         },{
-            header: _('commercemultilang.product.image')
+            header: _('commerce_multilang.product.image')
             ,dataIndex: 'image'
             ,fixed:true
             ,width: 100
@@ -298,16 +298,16 @@ Ext.extend(CommerceMultiLang.window.ProductUpdate,MODx.Window,{
                 }
             }
         },{
-            header: _('commercemultilang.product.sku')
+            header: _('commerce_multilang.product.sku')
             ,dataIndex: 'sku'
         },{
-            header: _('commercemultilang.product.price')
+            header: _('commerce_multilang.product.price')
             ,dataIndex: 'price_formatted'
         },{
-            header: _('commercemultilang.product.stock')
+            header: _('commerce_multilang.product.stock')
             ,dataIndex: 'stock'
         },{
-            header: _('commercemultilang.product.weight')
+            header: _('commerce_multilang.product.weight')
             ,dataIndex: 'weight_formatted'
         }];
         variations.forEach(function(variation) {
@@ -344,7 +344,7 @@ CommerceMultiLang.grid.ProductImages = function(config) {
             ,dataIndex: 'id'
             ,width: 40
         },{
-            header: _('commercemultilang.product_image.image')
+            header: _('commerce_multilang.product_image.image')
             ,dataIndex: 'image'
             ,fixed:true
             ,width: 100
@@ -360,15 +360,15 @@ CommerceMultiLang.grid.ProductImages = function(config) {
                 }
             }
         },{
-            header: _('commercemultilang.product_image.title')
+            header: _('commerce_multilang.product_image.title')
             ,dataIndex: 'title'
             ,width: 100
         },{
-            header: _('commercemultilang.product_image.description')
+            header: _('commerce_multilang.product_image.description')
             ,dataIndex: 'description'
             ,width: 200
         },{
-            header: _('commercemultilang.product_image.main')
+            header: _('commerce_multilang.product_image.main')
             ,dataIndex: 'main'
             ,width: 40
             ,renderer: function(value) {
@@ -379,14 +379,14 @@ CommerceMultiLang.grid.ProductImages = function(config) {
                 }
             }
         },{
-            header: _('commercemultilang.product_image.position')
+            header: _('commerce_multilang.product_image.position')
             ,dataIndex: 'position'
             ,width: 60
             ,hidden:true
             //,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
         }]
         ,tbar: ['->',{
-            text: _('commercemultilang.product_image.add')
+            text: _('commerce_multilang.product_image.add')
             ,handler: this.createProductImage
             ,scope: this
         }]
@@ -405,16 +405,16 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
     ,getMenu: function() {
         var m = [];
         m.push({
-            text: _('commercemultilang.product_image.edit')
+            text: _('commerce_multilang.product_image.edit')
             ,handler: this.updateProductImage
         });
         m.push({
-            text: _('commercemultilang.product_image.make_main')
+            text: _('commerce_multilang.product_image.make_main')
             ,handler: this.makeMainImage
         });
         m.push('-');
         m.push({
-            text: _('commercemultilang.product_image.remove')
+            text: _('commerce_multilang.product_image.remove')
             ,handler: this.removeProductImage
         });
         this.addContextMenuItem(m);
@@ -444,7 +444,7 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
 
         var updateProductImage = MODx.load({
             xtype: 'commercemultilang-window-product-image-update'
-            ,title: _('commercemultilang.product_image.update')
+            ,title: _('commerce_multilang.product_image.update')
             ,action: 'mgr/product/image/update'
             ,record: record
             ,listeners: {
@@ -494,8 +494,8 @@ Ext.extend(CommerceMultiLang.grid.ProductImages,MODx.grid.Grid,{
         if (!this.menu.record) return false;
 
         MODx.msg.confirm({
-            title: _('commercemultilang.product_image.remove')
-            ,text: _('commercemultilang.product_image.remove_confirm')
+            title: _('commerce_multilang.product_image.remove')
+            ,text: _('commerce_multilang.product_image.remove_confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/product/image/remove'
@@ -512,7 +512,7 @@ Ext.reg('commercemultilang-grid-product-images',CommerceMultiLang.grid.ProductIm
 CommerceMultiLang.window.ProductImageCreate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('commercemultilang.product_image.add')
+        title: _('commerce_multilang.product_image.add')
         ,id:'commercemultilang-window-product-image-create'
         ,closeAction: 'close'
         ,url: CommerceMultiLang.config.connectorUrl
@@ -547,12 +547,12 @@ CommerceMultiLang.window.ProductImageCreate = function(config) {
                 ,layout: 'form'
                 ,items:[{
                     xtype: 'textfield'
-                    ,fieldLabel: _('commercemultilang.product_image.title')
+                    ,fieldLabel: _('commerce_multilang.product_image.title')
                     ,name: 'title'
                     ,anchor: '100%'
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('commercemultilang.product_image.alt')
+                    ,fieldLabel: _('commerce_multilang.product_image.alt')
                     ,name: 'alt'
                     ,anchor: '100%'
                 },{
@@ -587,7 +587,7 @@ Ext.reg('commercemultilang-window-product-image-create',CommerceMultiLang.window
 CommerceMultiLang.window.ProductImageUpdate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('commercemultilang.product_image.update')
+        title: _('commerce_multilang.product_image.update')
         ,id:'commercemultilang-window-product-image-update'
         ,closeAction: 'close'
         ,url: CommerceMultiLang.config.connectorUrl
@@ -662,13 +662,13 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
                         ,layout: 'form'
                         ,items:[{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product_image.title')
+                            ,fieldLabel: _('commerce_multilang.product_image.title')
                             ,name: 'title_'+langTab['lang_key']
                             ,anchor: '100%'
                             ,value: langRecord['title']
                         },{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product_image.alt')
+                            ,fieldLabel: _('commerce_multilang.product_image.alt')
                             ,name: 'alt_'+langTab['lang_key']
                             ,anchor: '100%'
                             ,value: langRecord['alt']

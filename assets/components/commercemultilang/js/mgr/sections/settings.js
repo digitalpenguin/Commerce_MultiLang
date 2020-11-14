@@ -7,7 +7,7 @@ CommerceMultiLang.page.Settings = function(config) {
     Ext.applyIf(config,{
         components: [{
             xtype: 'commercemultilang-panel-settings'
-            ,renderTo: 'commercemultilang-panel-settings-div'
+            ,renderTo: 'commerce_multilang-panel-settings-div'
         }]
     });
     CommerceMultiLang.page.Settings.superclass.constructor.call(this,config);

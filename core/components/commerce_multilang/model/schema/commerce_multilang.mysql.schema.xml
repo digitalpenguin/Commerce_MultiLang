@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="commerce_multilang" baseClass="comSimpleObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="commerce_multilang" version="1.1">
+
+    <object class="CMLProduct" extends="comProduct" inherit="single">
+        <composite alias="ProductLanguage" class="CMLProductLanguage" local="id" foreign="product_id" cardinality="many" owner="local" />
+        <composite alias="ProductImage" class="CMLProductImage" local="id" foreign="product_id" cardinality="many" owner="local" />
+        <composite alias="ProductData" local="id" class="CMLProductData" foreign="product_id" cardinality="one" owner="local" />
+        <composite alias="AssignedVariation" class="CMLAssignedVariation" local="id" foreign="variation_id" cardinality="many" owner="local" />
+    </object>
+
+    <object class="CMLProductData" table="commerce_multilang_product_data" extends="xPDOSimpleObject">
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="alias" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="product_listing" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false"/>
+        <field key="type" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" />
+        <field key="parent" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="published" dbtype="tinyint" precision="1" phptype="boolean" null="false" default="0" />
+        <field key="published_on" formatter="datetime" dbtype="int" precision="20" phptype="int" null="false" default="0" />
+        <field key="published_by" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+
+        <aggregate alias="Product" class="CMLProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="product_id" name="product_id" primary="false" unique="true" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="alias" name="alias" primary="false" unique="false" type="BTREE">
+            <column key="alias" length="" collation="A" null="false" />
+        </index>
+        <index alias="type" name="type" primary="false" unique="false" type="BTREE">
+            <column key="type" length="" collation="A" null="false" />
+        </index>
+        <index alias="parent" name="parent" primary="false" unique="false" type="BTREE">
+            <column key="parent" length="" collation="A" null="false" />
+        </index>
+        <index alias="published" name="published" primary="false" unique="false" type="BTREE">
+            <column key="published" length="" collation="A" null="false" />
+        </index>
+        <index alias="published_on" name="published_on" primary="false" unique="false" type="BTREE">
+            <column key="published_on" length="" collation="A" null="false" />
+        </index>
+        <index alias="published_by" name="published_by" primary="false" unique="false" type="BTREE">
+            <column key="published_by" length="" collation="A" null="false" />
+        </index>
+        <index alias="position" name="position" primary="false" unique="false" type="BTREE">
+            <column key="position" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="CMLProductLanguage" table="commerce_multilang_product_languages" extends="xPDOSimpleObject">
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
+        <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="category" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="description" dbtype="text" phptype="string" null="true" />
+        <field key="content" dbtype="mediumtext" phptype="string" null="true" />
+
+        <aggregate alias="Product" class="CMLProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="product_id" name="product_id" primary="false" unique="false" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="lang_key" name="lang_key" primary="false" unique="false" type="BTREE">
+            <column key="lang_key" length="" collation="A" null="false" />
+        </index>
+        <index alias="category" name="category" primary="false" unique="false" type="BTREE">
+            <column key="category" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="CMLProductImage" table="commerce_multilang_product_images" extends="xPDOSimpleObject">
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="main" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false"/>
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+
+        <composite alias="ProductImageLanguage" class="CMLProductImageLanguage" local="id" foreign="product_image_id" cardinality="many" owner="local" />
+        <aggregate alias="Product" class="CMLProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="product_id" name="product_id" primary="false" unique="false" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="main" name="main" primary="false" unique="false" type="BTREE">
+            <column key="main" length="" collation="A" null="false" />
+        </index>
+        <index alias="position" name="position" primary="false" unique="false" type="BTREE">
+            <column key="position" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="CMLProductImageLanguage" table="commerce_multilang_product_image_languages" extends="xPDOSimpleObject">
+        <field key="product_image_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
+        <field key="title" dbtype="varchar" precision="190" phptype="string" null="true" />
+        <field key="alt" dbtype="varchar" precision="190" phptype="string" null="true" />
+        <field key="image" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="description" dbtype="text" phptype="string" null="true" />
+        <aggregate alias="ProductImage" class="CMLProductImage" local="product_image_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="product_image_id" name="product_image_id" primary="false" unique="false" type="BTREE">
+            <column key="product_image_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="lang_key" name="lang_key" primary="false" unique="false" type="BTREE">
+            <column key="lang_key" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="CMLProductType" table="commerce_multilang_product_types" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="description" dbtype="text" phptype="string" null="true" />
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+
+        <composite alias="ProductVariation" local="id" class="CMLProductVariation" foreign="type_id" cardinality="many" owner="local" />
+
+        <index alias="position" name="position" primary="false" unique="false" type="BTREE">
+            <column key="position" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="CMLProductVariation" table="commerce_multilang_product_variations" extends="xPDOSimpleObject">
+        <field key="type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="display_name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="description" dbtype="text" phptype="string" null="true" />
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+
+        <aggregate alias="ProductType" class="CMLProductType" local="type_id" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="AssignedVariation" class="CMLAssignedVariation" local="id" foreign="variation_id" cardinality="many" owner="local" />
+        <composite alias="VariationLanguage" class="CMLProductVariationLanguage" local="id" foreign="variation_id" cardinality="many" owner="local" />
+
+        <index alias="type_id" name="type_id" primary="false" unique="false" type="BTREE">
+            <column key="type_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="name" name="name" primary="false" unique="false" type="BTREE">
+            <column key="name" length="" collation="A" null="false" />
+        </index>
+        <index alias="position" name="position" primary="false" unique="false" type="BTREE">
+            <column key="position" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="CMLProductVariationLanguage" table="commerce_multilang_product_variation_languages" extends="xPDOSimpleObject">
+        <field key="variation_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="display_name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <aggregate alias="ProductVariation" class="CMLProductVariation" local="variation_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="variation_id" name="variation_id" primary="false" unique="false" type="BTREE">
+            <column key="variation_id" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <!-- This is a many to many between the variation and the product-->
+    <object class="CMLAssignedVariation" table="commerce_multilang_assigned_product_variations" extends="xPDOSimpleObject">
+        <field key="variation_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="display_name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
+        <field key="value" dbtype="text" phptype="string" null="true" />
+
+        <aggregate alias="ProductVariation" class="CMLProductVariation" local="variation_id" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Product" class="CMLProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="variation_id" name="variation_id" primary="false" unique="false" type="BTREE">
+            <column key="variation_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="product_id" name="product_id" primary="false" unique="false" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="type_id" name="type_id" primary="false" unique="false" type="BTREE">
+            <column key="type_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="lang_key" name="lang_key" primary="false" unique="false" type="BTREE">
+            <column key="lang_key" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <!-- This is a many to many between the category resource and the product-->
+    <object class="CMLAssignedCategory" table="commerce_multilang_assigned_product_categories" extends="xPDOSimpleObject">
+        <field key="category_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="product_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="name" dbtype="varchar" precision="190" phptype="string" null="false" default="" />
+        <field key="lang_key" dbtype="varchar" precision="10" phptype="string" null="false" />
+        <field key="position" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+
+        <aggregate alias="Category" class="modResource" local="category_id" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Product" class="CMLProduct" local="product_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="variation_id" name="variation_id" primary="false" unique="false" type="BTREE">
+            <column key="variation_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="product_id" name="product_id" primary="false" unique="false" type="BTREE">
+            <column key="product_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="lang_key" name="lang_key" primary="false" unique="false" type="BTREE">
+            <column key="lang_key" length="" collation="A" null="false" />
+        </index>
+        <index alias="position" name="position" primary="false" unique="false" type="BTREE">
+            <column key="position" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+</model>

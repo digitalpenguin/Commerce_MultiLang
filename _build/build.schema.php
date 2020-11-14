@@ -2,7 +2,7 @@
 /**
  * Build Schema script
  *
- * @package CommerceMultiLang
+ * @package Commerce_MultiLang
  * @subpackage build
  */
 $mtime = microtime();
@@ -12,7 +12,7 @@ $tstart = $mtime;
 set_time_limit(0);
 
 /* define package name */
-define('PKG_NAME','CommerceMultiLang');
+define('PKG_NAME','Commerce_MultiLang');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
 
 /* define sources */
@@ -61,17 +61,16 @@ $generator->mapHeader= <<<EOD
  */
 EOD;
 $generator->parseSchema($sources['model'] . 'schema/'.PKG_NAME_LOWER.'.mysql.schema.xml', $sources['model']);
-$modx->addPackage('commercemultilang', $sources['model']);
-$manager->createObjectContainer('CommerceMultiLangProductData');
-$manager->createObjectContainer('CommerceMultiLangProductLanguage');
-$manager->createObjectContainer('CommerceMultiLangProductImage');
-$manager->createObjectContainer('CommerceMultiLangProductImageLanguage');
-$manager->createObjectContainer('CommerceMultiLangProductType');
-$manager->createObjectContainer('CommerceMultiLangProductVariation');
-$manager->createObjectContainer('CommerceMultiLangProductVariationLanguage');
-$manager->createObjectContainer('CommerceMultiLangAssignedVariation');
-$manager->createObjectContainer('CommerceMultiLangAssignedCategory');
-//$manager->createObjectContainer('CommerceMultiLangFlatRow');
+$modx->addPackage('commerce_multilang', $sources['model']);
+$manager->createObjectContainer('CMLProductData');
+$manager->createObjectContainer('CMLProductLanguage');
+$manager->createObjectContainer('CMLProductImage');
+$manager->createObjectContainer('CMLProductImageLanguage');
+$manager->createObjectContainer('CMLProductType');
+$manager->createObjectContainer('CMLProductVariation');
+$manager->createObjectContainer('CMLProductVariationLanguage');
+$manager->createObjectContainer('CMLAssignedVariation');
+$manager->createObjectContainer('CMLAssignedCategory');
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);

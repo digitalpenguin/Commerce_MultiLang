@@ -13,10 +13,10 @@ foreach ($settingSource as $key => $options) {
     /** @var modSystemSetting */
     $settings[$key] = $modx->newObject('modSystemSetting');
     $settings[$key]->fromArray(array(
-        'key' => 'commercemultilang.' . $key,
+        'key' => 'commerce_multilang.' . $key,
         'xtype' => $xtype,
         'value' => $options['value'],
-        'namespace' => 'commercemultilang',
+        'namespace' => 'commerce_multilang',
         'area' => $options['area'],
         'editedon' => time(),
     ), '', true, true);

@@ -1,14 +1,14 @@
 {
     "name": "CommerceMultiLang",
-    "lowCaseName": "commercemultilang",
-    "description": "Custom multi-lang products and CMP for Commerce (MODX)",
-    "author": "Murray Wood - www.digitalpenguin.hk",
-    "version": "0.2.2",
+    "lowCaseName": "commerce_multilang",
+    "description": "Custom multilingual products and Custom Manager Page for Commerce (MODX)",
+    "author": "Murray Wood - https://www.digitalpenguin.hk",
+    "version": "1.0.0-alpha1",
     "package":{
 
         "menus": [{
-            "text": "commercemultilang.menu.commercemultilang"
-            ,"description": "commercemultilang.menu.commercemultilang_desc"
+            "text": "commerce_multilang.menu.commerce_multilang"
+            ,"description": "commerce_multilang.menu.commerce_multilang_desc"
             ,"action": "home"
         }],
         "elements": {

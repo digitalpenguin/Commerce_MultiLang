@@ -19,7 +19,7 @@ CommerceMultiLang.grid.Products = function(config) {
             ,dataIndex: 'id'
             ,width: 40
         },{
-            header: _('commercemultilang.product.image')
+            header: _('commerce_multilang.product.image')
             ,dataIndex: 'main_image'
             ,fixed:true
             ,width: 140
@@ -35,43 +35,43 @@ CommerceMultiLang.grid.Products = function(config) {
                 }
             }
         },{
-            header: _('commercemultilang.product.sku')
+            header: _('commerce_multilang.product.sku')
             ,dataIndex: 'sku'
             ,width: 100
             ,editor: { xtype: 'textfield' }
         },{
-            header: _('commercemultilang.product.name')
+            header: _('commerce_multilang.product.name')
             ,dataIndex: 'name'
             ,width: 200
         },{
-            header: _('commercemultilang.product.category')
+            header: _('commerce_multilang.product.category')
             ,dataIndex: 'category'
             ,width: 200
             ,renderer: function(value, meta, record) {
                 return value + ' <br><span style="color:#888;">(Category ID:' +record.data['category_id']+')</span>';
             }
         },{
-            header: _('commercemultilang.product.type')
+            header: _('commerce_multilang.product.type')
             ,dataIndex: 'type'
             ,width: 200
             ,renderer: function(value, meta, record) {
                 return record.data['type_name'] + '<br><span style="color:#888;">'+record.data['type_variations']+'</span>';
             }
         },{
-            header: _('commercemultilang.product.alias')
+            header: _('commerce_multilang.product.alias')
             ,dataIndex: 'alias'
             ,width: 160
         },{
-            header: _('commercemultilang.product.stock')
+            header: _('commerce_multilang.product.stock')
             ,dataIndex: 'stock'
             ,width: 100
             ,editor: { xtype: 'textfield' }
         },{
-            header: _('commercemultilang.product.price')
+            header: _('commerce_multilang.product.price')
             ,dataIndex: 'price_formatted'
             ,width: 100
         },{
-            header: _('commercemultilang.product.weight')
+            header: _('commerce_multilang.product.weight')
             ,dataIndex: 'weight'
             ,width: 100
             ,editor: { xtype: 'textfield' }
@@ -80,12 +80,12 @@ CommerceMultiLang.grid.Products = function(config) {
             }
         }]
         ,tbar: [{
-            text: _('commercemultilang.product.create')
+            text: _('commerce_multilang.product.create')
             ,handler: this.createProduct
             ,scope: this
         },'->',{
             xtype: 'textfield'
-            ,emptyText: _('commercemultilang.global.search') + '...'
+            ,emptyText: _('commerce_multilang.global.search') + '...'
             ,listeners: {
                 'change': {fn:this.search,scope:this}
                 ,'render': {fn: function(cmp) {
@@ -110,12 +110,12 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
     ,getMenu: function() {
         var m = [];
         m.push({
-            text: _('commercemultilang.product.update')
+            text: _('commerce_multilang.product.update')
             ,handler: this.updateProduct
         });
         m.push('-');
         m.push({
-            text: _('commercemultilang.product.remove')
+            text: _('commerce_multilang.product.remove')
             ,handler: this.removeProduct
         });
         this.addContextMenuItem(m);
@@ -161,7 +161,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
 
             var updateProduct = MODx.load({
                 xtype: 'commercemultilang-window-product-update'
-                , title: _('commercemultilang.product.update')
+                , title: _('commerce_multilang.product.update')
                 ,id: 'commercemultilang-window-product-update'
                 , action: 'mgr/product/update'
                 , record: record
@@ -216,8 +216,8 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
         if (!this.menu.record) return false;
         
         MODx.msg.confirm({
-            title: _('commercemultilang.product.remove')
-            ,text: _('commercemultilang.product.remove_confirm')
+            title: _('commerce_multilang.product.remove')
+            ,text: _('commerce_multilang.product.remove_confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/product/remove'
@@ -242,7 +242,7 @@ Ext.reg('commercemultilang-grid-products',CommerceMultiLang.grid.Products);
 CommerceMultiLang.window.ProductCreate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('commercemultilang.product.create')
+        title: _('commerce_multilang.product.create')
         ,closeAction: 'close'
         ,width:600
         ,url: CommerceMultiLang.config.connectorUrl
@@ -272,10 +272,10 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         columnWidth: .66
                         ,layout: 'form'
                         ,items: [/*{
-                            xtype:'commercemultilang-combo-categories'
+                            xtype:'commerce_multilang-combo-categories'
                             ,fieldLabel: 'Categories'
                             ,anchor: '100%'
-                            ,id: 'commercemultilang-combo-categories'
+                            ,id: 'commerce_multilang-combo-categories'
 
                             ,name: 'categories'
                             ,hiddenName: 'categories[]'
@@ -291,7 +291,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.sku')
+                            ,fieldLabel: _('commerce_multilang.product.sku')
                             ,name: 'sku'
                             ,anchor: '100%'
                         }]
@@ -304,7 +304,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'commercemultilang-combo-category'
-                            ,fieldLabel: _('commercemultilang.product.category')
+                            ,fieldLabel: _('commerce_multilang.product.category')
                             ,id: 'product-create-category-combo'
                             ,name: 'category'
                             ,hiddenName: 'category'
@@ -315,7 +315,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.price')
+                            ,fieldLabel: _('commerce_multilang.product.price')
                             ,name: 'price'
                             ,anchor: '100%'
                         }]
@@ -328,7 +328,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'commercemultilang-combo-product-type'
-                            ,fieldLabel: _('commercemultilang.product.type')
+                            ,fieldLabel: _('commerce_multilang.product.type')
                             ,name: 'type'
                             ,hiddenName: 'type'
                             ,anchor: '100%'
@@ -338,7 +338,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.stock')
+                            ,fieldLabel: _('commerce_multilang.product.stock')
                             ,name: 'stock'
                             ,anchor: '100%'
                             ,value: 1
@@ -348,7 +348,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.weight')
+                            ,fieldLabel: _('commerce_multilang.product.weight')
                             ,name: 'weight'
                             ,anchor: '100%'
                             ,value: 1
@@ -358,7 +358,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'commercemultilang-combo-weightunit'
-                            ,fieldLabel: _('commercemultilang.product.unit')
+                            ,fieldLabel: _('commerce_multilang.product.unit')
                             ,name: 'weight_unit'
                             ,hiddenName: 'weight_unit'
                             ,anchor: '100%'
@@ -373,7 +373,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'commercemultilang-combo-taxgroup'
-                            ,fieldLabel: _('commercemultilang.product.tax_group')
+                            ,fieldLabel: _('commerce_multilang.product.tax_group')
                             ,name: 'tax_group'
                             ,hiddenName: 'tax_group'
                             ,anchor: '100%'
@@ -384,7 +384,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'commercemultilang-combo-deliverytype'
-                            ,fieldLabel: _('commercemultilang.product.delivery_type')
+                            ,fieldLabel: _('commerce_multilang.product.delivery_type')
                             ,name: 'delivery_type'
                             ,hiddenName: 'delivery_type'
                             ,anchor: '100%'

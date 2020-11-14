@@ -24,28 +24,28 @@ CommerceMultiLang.grid.ProductTypeVariations = function(config) {
             ,width: 40
             ,hidden: true
         },{
-            header: _('commercemultilang.product_type_variation.name')
+            header: _('commerce_multilang.product_type_variation.name')
             ,dataIndex: 'name'
             ,width: 100
         },{
-            header: _('commercemultilang.product_type_variation.display_name')
+            header: _('commerce_multilang.product_type_variation.display_name')
             ,dataIndex: 'display_name'
             ,width: 120
             ,editor: { xtype: 'textfield' }
         },{
-            header: _('commercemultilang.product_type_variation.description')
+            header: _('commerce_multilang.product_type_variation.description')
             ,dataIndex: 'description'
             ,width: 200
             ,editor: { xtype: 'textfield' }
         },{
-            header: _('commercemultilang.product_type_variation.position')
+            header: _('commerce_multilang.product_type_variation.position')
             ,dataIndex: 'position'
             ,width: 60
             ,hidden:true
             ,editor: { xtype: 'numberfield', allowDecimal: false, allowNegative: false }
         }]
         ,tbar: [{
-            text: _('commercemultilang.product_type_variation.create')
+            text: _('commerce_multilang.product_type_variation.create')
             ,handler: this.createProductTypeVariation
             ,scope: this
         }]
@@ -65,12 +65,12 @@ Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
     ,getMenu: function() {
         var m = [];
         m.push({
-            text: _('commercemultilang.product_type_variation.edit')
+            text: _('commerce_multilang.product_type_variation.edit')
             ,handler: this.updateProductTypeVariation
         });
         m.push('-');
         m.push({
-            text: _('commercemultilang.product_type_variation.remove')
+            text: _('commerce_multilang.product_type_variation.remove')
             ,handler: this.removeProductTypeVariation
         });
         this.addContextMenuItem(m);
@@ -109,9 +109,9 @@ Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
         } else {
             var updateProductType = MODx.load({
                 xtype: 'commercemultilang-window-product-type-variation-update'
-                ,title: _('commercemultilang.product_type_variation.update')
+                ,title: _('commerce_multilang.product_type_variation.update')
                 ,action: 'mgr/product-type/variation/update'
-                ,id:'commercemultilang-window-product-type-'+this.menu.record['id']
+                ,id:'commerce_multilang-window-product-type-'+this.menu.record['id']
                 ,record: this.menu.record
                 ,listeners: {
                     'success': {
@@ -131,8 +131,8 @@ Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
         if (!this.menu.record) return false;
 
         MODx.msg.confirm({
-            title: _('commercemultilang.product_type_variation.remove')
-            ,text: _('commercemultilang.product_type_variation.remove_confirm')
+            title: _('commerce_multilang.product_type_variation.remove')
+            ,text: _('commerce_multilang.product_type_variation.remove_confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/product-type/variation/remove'
@@ -149,7 +149,7 @@ Ext.reg('commercemultilang-grid-product-type-variations',CommerceMultiLang.grid.
 CommerceMultiLang.window.ProductTypeVariationCreate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('commercemultilang.product_type_variation.create')
+        title: _('commerce_multilang.product_type_variation.create')
         ,id:'commercemultilang-window-product-type-variation-create'
         ,closeAction: 'close'
         ,url: CommerceMultiLang.config.connectorUrl
@@ -161,7 +161,7 @@ CommerceMultiLang.window.ProductTypeVariationCreate = function(config) {
             ,hidden: true
         },{
             xtype: 'textfield'
-            ,fieldLabel: _('commercemultilang.product_type_variation.name')
+            ,fieldLabel: _('commerce_multilang.product_type_variation.name')
             ,name: 'name'
             ,anchor: '100%'
         },{
@@ -181,7 +181,7 @@ Ext.reg('commercemultilang-window-product-type-variation-create',CommerceMultiLa
 CommerceMultiLang.window.ProductTypeVariationUpdate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('commercemultilang.product_type.update')
+        title: _('commerce_multilang.product_type.update')
         ,id:'commercemultilang-window-product-type-variation-update'
         ,closeAction: 'close'
         ,url: CommerceMultiLang.config.connectorUrl
@@ -193,13 +193,13 @@ CommerceMultiLang.window.ProductTypeVariationUpdate = function(config) {
             ,hidden: true
         },{
             xtype: 'textfield'
-            ,fieldLabel: _('commercemultilang.product_type_variation.name')
+            ,fieldLabel: _('commerce_multilang.product_type_variation.name')
             ,name: 'name'
             ,disabled: true
             ,anchor: '100%'
         },{
             xtype: 'textfield'
-            ,fieldLabel: _('commercemultilang.product_type_variation.display_name')
+            ,fieldLabel: _('commerce_multilang.product_type_variation.display_name')
             ,name: 'display_name'
             ,anchor: '100%'
         },{

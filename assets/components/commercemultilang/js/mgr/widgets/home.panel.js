@@ -6,7 +6,7 @@ CommerceMultiLang.panel.Home = function(config) {
         ,cls: 'container'
         ,layout:'anchor'
         ,items: [{
-            html: '<h2 id="commercemultilang-header">Commerce <span style="font-size:15px; position:relative; top:-5px;">>></span> Products</h2>'//'<h2>'+_('commercemultilang')+'</h2>'
+            html: '<h2 id="commerce_multilang-header">Commerce <span style="font-size:15px; position:relative; top:-5px;">>></span> Products</h2>'//'<h2>'+_('commerce_multilang')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
         },{
@@ -19,7 +19,7 @@ CommerceMultiLang.panel.Home = function(config) {
                 title: 'Products'
                 ,layout:'anchor'
                 ,items: [{
-                    html: '<p>'+_('commercemultilang.product.intro_msg')+'</p>'
+                    html: '<p>'+_('commerce_multilang.product.intro_msg')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 },{
@@ -31,7 +31,7 @@ CommerceMultiLang.panel.Home = function(config) {
                 title: 'Variations'
                 ,layout:'anchor'
                 ,items: [{
-                    html: '<p>'+_('commercemultilang.product.variations_intro')+'</p>'
+                    html: '<p>'+_('commerce_multilang.product.variations_intro')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 },{
@@ -68,7 +68,7 @@ Ext.extend(CommerceMultiLang.panel.Home,MODx.Panel,{
         modab.doLayout();
     }
     ,loadSettingsPage: function() {
-        MODx.loadPage('settings', 'namespace=commercemultilang');
+        MODx.loadPage('settings', 'namespace=commerce_multilang');
     }
     ,loadOrdersPage: function() {
         MODx.loadPage('index&ca=orders', 'namespace=commerce');

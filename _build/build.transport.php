@@ -1,9 +1,9 @@
 <?php
 /**
- * CommerceMultiLang build script
+ * Commerce_MultiLang build script
  * Based on the Commerce module build script by @markh of Modmore.
  *
- * @package commercemultilang
+ * @package commerce_multilang
  * @subpackage build
  */
 
@@ -22,10 +22,10 @@ $tstart = $mtime;
 set_time_limit(0);
 
 /* define version */
-define('PKG_NAME', 'CommerceMultiLang');
-define('PKG_NAMESPACE', 'commercemultilang');
-define('PKG_VERSION', '0.2.2');
-define('PKG_RELEASE', 'Alpha');
+define('PKG_NAME', 'Commerce_MultiLang');
+define('PKG_NAMESPACE', 'commerce_multilang');
+define('PKG_VERSION', '1.0.0');
+define('PKG_RELEASE', 'Alpha1');
 
 /* load modx */
 require_once dirname(dirname(__FILE__)) . '/config.core.php';

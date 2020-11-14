@@ -11,14 +11,14 @@ return [
     ],
     'assets_path' => [
         'area' => 'paths',
-        'value' => '{assets_path}components/commercemultilang/',
+        'value' => '{assets_path}components/commerce_multilang/',
     ],
     'assets_url' => [
         'area' => 'paths',
-        'value' => '{assets_url}components/commercemultilang/',
+        'value' => '{assets_url}components/commerce_multilang/',
     ],
     'core_path' => [
         'area' => 'paths',
-        'value' => '{core_path}components/commercemultilang/',
+        'value' => '{core_path}components/commerce_multilang/',
     ],
 ];

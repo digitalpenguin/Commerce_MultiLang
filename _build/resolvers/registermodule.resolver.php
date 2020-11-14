@@ -6,8 +6,8 @@ if ($object->xpdo) {
         case xPDOTransport::ACTION_INSTALL:
             $modx =& $object->xpdo;
 
-            $modelPath = $modx->getOption('core_path').'components/commercemultilang/model/';
-            $modx->addPackage('commercemultilang', $modelPath);
+            $modelPath = $modx->getOption('core_path').'components/commerce_multilang/model/';
+            $modx->addPackage('commerce_multilang', $modelPath);
             $manager = $modx->getManager();
             $manager->createObjectContainer('CommerceMultiLangProductData');
             $manager->createObjectContainer('CommerceMultiLangProductLanguage');
@@ -32,7 +32,7 @@ if ($object->xpdo) {
                     $module->set('name','CommerceMultiLang');
                     $module->set('author','Murray Wood - Digital Penguin');
                     $module->set('class_name','DigitalPenguin\CommerceMultiLang\Modules\CommerceMultiLang');
-                    $module->set('class_path','{core_path}components/commercemultilang/src/Modules/CommerceMultiLang.php');
+                    $module->set('class_path','{core_path}components/commerce_multilang/src/Modules/CommerceMultiLang.php');
                     if($module->save()) {
                         $modx->log(modX::LOG_LEVEL_INFO, 'Module added to Commerce successfully.');
                     } else {

@@ -18,7 +18,7 @@ CommerceMultiLang.grid.ProductUpdateVariations = function(config) {
         ,pageSize: 10
         ,remoteSort: true
         ,tbar: [{
-            text: _('commercemultilang.product.variation_create')
+            text: _('commerce_multilang.product.variation_create')
             ,handler: this.createProductUpdateVariation
             ,scope: this
         }]
@@ -31,12 +31,12 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
     ,getMenu: function() {
         var m = [];
         m.push({
-            text: _('commercemultilang.product.variation_edit')
+            text: _('commerce_multilang.product.variation_edit')
             ,handler: this.updateProductUpdateVariation
         });
         m.push('-');
         m.push({
-            text: _('commercemultilang.product.variation_remove')
+            text: _('commerce_multilang.product.variation_remove')
             ,handler: this.removeProductUpdateVariation
         });
         this.addContextMenuItem(m);
@@ -90,7 +90,7 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
             var updateProductVariation = MODx.load({
                 xtype: 'commercemultilang-window-product-variation-update'
                 , id: 'commercemultilang-window-product-variation-update'
-                , title: _('commercemultilang.product.variation_edit')
+                , title: _('commerce_multilang.product.variation_edit')
                 , action: 'mgr/product/variation/update'
                 , record: record
                 , listeners: {
@@ -145,8 +145,8 @@ Ext.extend(CommerceMultiLang.grid.ProductUpdateVariations,MODx.grid.Grid,{
         if (!this.menu.record) return false;
 
         MODx.msg.confirm({
-            title: _('commercemultilang.product_image.remove')
-            ,text: _('commercemultilang.product_image.remove_confirm')
+            title: _('commerce_multilang.product_image.remove')
+            ,text: _('commerce_multilang.product_image.remove_confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/product/variation/remove'
@@ -206,22 +206,22 @@ CommerceMultiLang.window.ProductVariationCreate = function(config) {
                 ,layout: 'form'
                 ,items: [{
                     xtype: 'textfield'
-                    ,fieldLabel: _('commercemultilang.product.sku')
+                    ,fieldLabel: _('commerce_multilang.product.sku')
                     ,name: 'sku'
                     ,anchor: '100%'
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('commercemultilang.product.price')
+                    ,fieldLabel: _('commerce_multilang.product.price')
                     ,name: 'price'
                     ,anchor: '100%'
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('commercemultilang.product.stock')
+                    ,fieldLabel: _('commerce_multilang.product.stock')
                     ,name: 'stock'
                     ,anchor: '100%'
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('commercemultilang.product.weight')
+                    ,fieldLabel: _('commerce_multilang.product.weight')
                     ,name: 'weight'
                     ,anchor: '100%'
                 }]
@@ -290,8 +290,8 @@ Ext.reg('commercemultilang-window-product-variation-create',CommerceMultiLang.wi
 CommerceMultiLang.window.ProductVariationUpdate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('commercemultilang.product_type.update')
-        ,id:'commercemultilang-window-product-variation'
+        title: _('commerce_multilang.product_type.update')
+        ,id:'commerce_multilang-window-product-variation'
         ,closeAction: 'close'
         ,url: CommerceMultiLang.config.connectorUrl
         ,action: 'mgr/product-type/variation/update'
@@ -339,22 +339,22 @@ CommerceMultiLang.window.ProductVariationUpdate = function(config) {
                         ,layout: 'form'
                         ,items: [{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.sku')
+                            ,fieldLabel: _('commerce_multilang.product.sku')
                             ,name: 'sku'
                             ,anchor: '100%'
                         },{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.price')
+                            ,fieldLabel: _('commerce_multilang.product.price')
                             ,name: 'price'
                             ,anchor: '100%'
                         },{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.stock')
+                            ,fieldLabel: _('commerce_multilang.product.stock')
                             ,name: 'stock'
                             ,anchor: '100%'
                         },{
                             xtype: 'textfield'
-                            ,fieldLabel: _('commercemultilang.product.weight')
+                            ,fieldLabel: _('commerce_multilang.product.weight')
                             ,name: 'weight'
                             ,anchor: '100%'
                         }]
