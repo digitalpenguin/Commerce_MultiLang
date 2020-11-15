@@ -10,7 +10,7 @@ class CMLWeightUnitGetListProcessor extends modProcessor {
     public function process() {
         $weightUnits = explode(',',$this->modx->getOption('commerce.allowed_weight_units'));
         foreach ($weightUnits as $key => $value) {
-            $unit = array('weight_unit'=>$value);
+            $unit = ['weight_unit'=>$value];
             $weightUnits[$key] = $unit;
         }
         //$this->modx->log(1,print_r($weightUnits,true));

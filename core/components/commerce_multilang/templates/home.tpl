@@ -1,2 +1,2 @@
-<div id="commercemultilang-panel-home-div"></div>
+<div id="commerce_multilang-panel-home-div"></div>
 {$onRichTextEditorInit}

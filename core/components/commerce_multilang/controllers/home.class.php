@@ -6,7 +6,7 @@ require_once dirname(dirname(__FILE__)) . '/index.class.php';
  * @package commerce_multilang
  * @subpackage controllers
  */
-class CommerceMultiLangHomeManagerController extends CommerceMultiLangBaseManagerController {
+class Commerce_multilangHomeManagerController extends CommerceMultiLangBaseManagerController {
     public function loadRichTextEditor() {
         $useEditor = $this->modx->getOption('use_editor');
         $whichEditor = $this->modx->getOption('which_editor');
@@ -30,17 +30,17 @@ class CommerceMultiLangHomeManagerController extends CommerceMultiLangBaseManage
     public function loadCustomCssJs() {
     
     
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/extras/griddraganddrop.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/combos.widget.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/products/productupdatevariations.grid.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/products/productupdate.window.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/variations/producttypevariations.grid.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/variations/producttypes.grid.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/products/products.grid.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/home.panel.js');
-        $this->addLastJavascript($this->commercemultilang->getOption('jsUrl').'mgr/sections/home.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/extras/griddraganddrop.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/combos.widget.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/products/productupdatevariations.grid.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/products/productupdate.window.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/variations/producttypevariations.grid.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/variations/producttypes.grid.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/products/products.grid.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/home.panel.js');
+        $this->addLastJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/sections/home.js');
     
     }
 
-    public function getTemplateFile() { return $this->commercemultilang->getOption('templatesPath').'home.tpl'; }
+    public function getTemplateFile() { return $this->commerce_multilang->getOption('templatesPath').'home.tpl'; }
 }

@@ -5,8 +5,8 @@
  * @package commerce_multilang
  * @subpackage processors
  */
-class CommerceMultiLangProductTypeCreateProcessor extends modObjectCreateProcessor {
-    public $classKey = 'CommerceMultiLangProductType';
+class CMLProductTypeCreateProcessor extends modObjectCreateProcessor {
+    public $classKey = 'CMLProductType';
     public $languageTopics = array('commerce_multilang:default');
     public $objectType = 'commerce_multilang.producttype';
     protected $languages = array();
@@ -27,4 +27,4 @@ class CommerceMultiLangProductTypeCreateProcessor extends modObjectCreateProcess
         return parent::beforeSave();
     }
 }
-return 'CommerceMultiLangProductTypeCreateProcessor';
+return 'CMLProductTypeCreateProcessor';

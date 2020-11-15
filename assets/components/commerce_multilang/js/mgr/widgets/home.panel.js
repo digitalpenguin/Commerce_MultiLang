@@ -1,4 +1,4 @@
-CommerceMultiLang.panel.Home = function(config) {
+Commerce_MultiLang.panel.Home = function(config) {
     config = config || {};
     Ext.apply(config,{
         border: false
@@ -23,7 +23,7 @@ CommerceMultiLang.panel.Home = function(config) {
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 },{
-                    xtype: 'commercemultilang-grid-products'
+                    xtype: 'commerce_multilang-grid-products'
                     ,preventRender: true
                     ,cls: 'main-wrapper'
                 }]
@@ -35,7 +35,7 @@ CommerceMultiLang.panel.Home = function(config) {
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 },{
-                    xtype:'commercemultilang-grid-product-types'
+                    xtype:'commerce_multilang-grid-product-types'
                     ,preventRender: true
                     ,cls: 'main-wrapper'
                 }]
@@ -45,9 +45,9 @@ CommerceMultiLang.panel.Home = function(config) {
             render: this.getButtons
         }
     });
-    CommerceMultiLang.panel.Home.superclass.constructor.call(this,config);
+    Commerce_MultiLang.panel.Home.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.panel.Home,MODx.Panel,{
+Ext.extend(Commerce_MultiLang.panel.Home,MODx.Panel,{
     getButtons: function(e) {
         // get rid of the side bar
         //Ext.getCmp('modx-layout').hideLeftbar();
@@ -74,4 +74,4 @@ Ext.extend(CommerceMultiLang.panel.Home,MODx.Panel,{
         MODx.loadPage('index&ca=orders', 'namespace=commerce');
     }
 });
-Ext.reg('commercemultilang-panel-home',CommerceMultiLang.panel.Home);
+Ext.reg('commerce_multilang-panel-home',Commerce_MultiLang.panel.Home);

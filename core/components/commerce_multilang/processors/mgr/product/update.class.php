@@ -69,7 +69,7 @@ class CMLProductUpdateProcessor extends modObjectUpdateProcessor {
 
         // Now we do the same thing for each child resource and make sure they also have the
         // correct assigned variations for the product type.
-        $children = $this->modx->getCollection('CommerceMultiLangProductData',[
+        $children = $this->modx->getCollection('CMLProductData',[
             'parent'    =>  $this->object->get('id')
         ]);
         foreach($children as $child) {
@@ -81,7 +81,7 @@ class CMLProductUpdateProcessor extends modObjectUpdateProcessor {
             $langKey = $productLanguage->get('lang_key');
 
             // Grab all the assigned variation values for this product
-            $assignedVariations = $this->modx->getCollection('CommerceMultiLangAssignedVariation',[
+            $assignedVariations = $this->modx->getCollection('CMLAssignedVariation',[
                 'product_id'    =>  $this->object->get('id'),
                 'lang_key'      =>  $langKey
             ]);
@@ -130,11 +130,11 @@ class CMLProductUpdateProcessor extends modObjectUpdateProcessor {
      * Loads current variation fields for this product type.
      */
     protected function loadVariationFields() {
-        $productData = $this->modx->getObject('CommerceMultiLangProductData',[
+        $productData = $this->modx->getObject('CMLProductData',[
             'product_id'    =>  $this->getProperty('id')
         ]);
         if($productData) {
-            $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',[
+            $variations = $this->modx->getCollection('CMLProductVariation',[
                 'type_id'   =>  $productData->get('type')
             ]);
 
@@ -154,7 +154,7 @@ class CMLProductUpdateProcessor extends modObjectUpdateProcessor {
      */
     protected function addAssignedVariations(array $variations, array $productLanguages, $product) {
         foreach($variations as $variation) {
-            $assignments = $this->modx->getCollection('CommerceMultiLangAssignedVariation',[
+            $assignments = $this->modx->getCollection('CMLAssignedVariation',[
                 'product_id'    =>  $product->get('id'),
                 'variation_id'  =>  $variation->get('id')
             ]);
@@ -164,7 +164,7 @@ class CMLProductUpdateProcessor extends modObjectUpdateProcessor {
             }
             if(!in_array($variation->get('name'),$names)) {
                 foreach($productLanguages as $language) {
-                    $newAssignment = $this->modx->newObject('CommerceMultiLangAssignedVariation');
+                    $newAssignment = $this->modx->newObject('CMLAssignedVariation');
                     $newAssignment->set('name', $variation->get('name'));
                     $newAssignment->set('product_id', $product->get('id'));
                     $newAssignment->set('type_id', $product->get('type'));
@@ -176,4 +176,4 @@ class CMLProductUpdateProcessor extends modObjectUpdateProcessor {
         }
     }
 }
-return 'CommerceMultiLangProductUpdateProcessor';
+return 'CMLProductUpdateProcessor';

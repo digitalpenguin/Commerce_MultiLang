@@ -5,17 +5,17 @@
  * @package commerce_multilang
  * @subpackage processors
  */
-class CommerceMultiLangProductTypeRemoveProcessor extends modObjectRemoveProcessor {
-    public $classKey = 'CommerceMultiLangProductType';
+class CMLProductTypeRemoveProcessor extends modObjectRemoveProcessor {
+    public $classKey = 'CMLProductType';
     public $languageTopics = array('commerce_multilang:default');
     public $objectType = 'commerce_multilang.producttype';
 
     public function beforeRemove() {
-        $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
+        $variations = $this->modx->getCollection('CMLProductVariation',array(
             'type_id'   => $this->object->get('id')
         ));
         foreach($variations as $variation) {
-            $count = $this->modx->getCount('CommerceMultiLangAssignedVariation',array(
+            $count = $this->modx->getCount('CMLAssignedVariation',array(
                 'variation_id'  =>  $variation->get('id')
             ));
             if($count) {
@@ -25,4 +25,4 @@ class CommerceMultiLangProductTypeRemoveProcessor extends modObjectRemoveProcess
         return parent::beforeRemove();
     }
 }
-return 'CommerceMultiLangProductTypeRemoveProcessor';
+return 'CMLProductTypeRemoveProcessor';

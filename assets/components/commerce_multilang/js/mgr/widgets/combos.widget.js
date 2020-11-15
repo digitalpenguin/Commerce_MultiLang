@@ -1,7 +1,7 @@
-CommerceMultiLang.combo.ProductType = function(config) {
+Commerce_MultiLang.combo.ProductType = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: CommerceMultiLang.config.connectorUrl
+        url: Commerce_MultiLang.config.connectorUrl
         ,baseParams: {
             action: 'mgr/product-type/getlist'
         }
@@ -13,15 +13,15 @@ CommerceMultiLang.combo.ProductType = function(config) {
         ,editable:true
         ,forceSelection:true
     });
-    CommerceMultiLang.combo.ProductType.superclass.constructor.call(this,config);
+    Commerce_MultiLang.combo.ProductType.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.combo.ProductType,MODx.combo.ComboBox);
-Ext.reg('commercemultilang-combo-product-type',CommerceMultiLang.combo.ProductType);
+Ext.extend(Commerce_MultiLang.combo.ProductType,MODx.combo.ComboBox);
+Ext.reg('commerce_multilang-combo-product-type',Commerce_MultiLang.combo.ProductType);
 
-CommerceMultiLang.combo.Language = function(config) {
+Commerce_MultiLang.combo.Language = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: CommerceMultiLang.config.connectorUrl
+        url: Commerce_MultiLang.config.connectorUrl
         ,baseParams: {
             action: 'mgr/product-type/variation/language/getlist'
         }
@@ -33,15 +33,15 @@ CommerceMultiLang.combo.Language = function(config) {
         ,editable:true
         ,forceSelection:true
     });
-    CommerceMultiLang.combo.Language.superclass.constructor.call(this,config);
+    Commerce_MultiLang.combo.Language.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.combo.Language,MODx.combo.ComboBox);
-Ext.reg('commercemultilang-combo-language',CommerceMultiLang.combo.Language);
+Ext.extend(Commerce_MultiLang.combo.Language,MODx.combo.ComboBox);
+Ext.reg('commerce_multilang-combo-language',Commerce_MultiLang.combo.Language);
 
-CommerceMultiLang.combo.WeightUnit = function(config) {
+Commerce_MultiLang.combo.WeightUnit = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: CommerceMultiLang.config.connectorUrl
+        url: Commerce_MultiLang.config.connectorUrl
         ,baseParams: {
             action: 'mgr/product/weightunit/getlist'
         }
@@ -53,15 +53,15 @@ CommerceMultiLang.combo.WeightUnit = function(config) {
         ,editable:true
         ,forceSelection:true
     });
-    CommerceMultiLang.combo.WeightUnit.superclass.constructor.call(this,config);
+    Commerce_MultiLang.combo.WeightUnit.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.combo.WeightUnit,MODx.combo.ComboBox);
-Ext.reg('commercemultilang-combo-weightunit',CommerceMultiLang.combo.WeightUnit);
+Ext.extend(Commerce_MultiLang.combo.WeightUnit,MODx.combo.ComboBox);
+Ext.reg('commerce_multilang-combo-weightunit',Commerce_MultiLang.combo.WeightUnit);
 
-CommerceMultiLang.combo.TaxGroup = function(config) {
+Commerce_MultiLang.combo.TaxGroup = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: CommerceMultiLang.config.connectorUrl
+        url: Commerce_MultiLang.config.connectorUrl
         ,baseParams: {
             action: 'mgr/product/taxgroup/getlist'
         }
@@ -73,15 +73,15 @@ CommerceMultiLang.combo.TaxGroup = function(config) {
         ,editable:true
         ,forceSelection:true
     });
-    CommerceMultiLang.combo.TaxGroup.superclass.constructor.call(this,config);
+    Commerce_MultiLang.combo.TaxGroup.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.combo.TaxGroup,MODx.combo.ComboBox);
-Ext.reg('commercemultilang-combo-taxgroup',CommerceMultiLang.combo.TaxGroup);
+Ext.extend(Commerce_MultiLang.combo.TaxGroup,MODx.combo.ComboBox);
+Ext.reg('commerce_multilang-combo-taxgroup',Commerce_MultiLang.combo.TaxGroup);
 
-CommerceMultiLang.combo.DeliveryType = function(config) {
+Commerce_MultiLang.combo.DeliveryType = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: CommerceMultiLang.config.connectorUrl
+        url: Commerce_MultiLang.config.connectorUrl
         ,baseParams: {
             action: 'mgr/product/deliverytype/getlist'
         }
@@ -93,15 +93,15 @@ CommerceMultiLang.combo.DeliveryType = function(config) {
         ,editable:true
         ,forceSelection:true
     });
-    CommerceMultiLang.combo.DeliveryType.superclass.constructor.call(this,config);
+    Commerce_MultiLang.combo.DeliveryType.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.combo.DeliveryType,MODx.combo.ComboBox);
-Ext.reg('commercemultilang-combo-deliverytype',CommerceMultiLang.combo.DeliveryType);
+Ext.extend(Commerce_MultiLang.combo.DeliveryType,MODx.combo.ComboBox);
+Ext.reg('commerce_multilang-combo-deliverytype',Commerce_MultiLang.combo.DeliveryType);
 
-CommerceMultiLang.combo.Category = function(config) {
+Commerce_MultiLang.combo.Category = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: CommerceMultiLang.config.connectorUrl
+        url: Commerce_MultiLang.config.connectorUrl
         ,baseParams: {
             action: 'mgr/product/category/getlist'
         }
@@ -116,12 +116,12 @@ CommerceMultiLang.combo.Category = function(config) {
         ,editable:true
         ,forceSelection:true
     });
-    CommerceMultiLang.combo.Category.superclass.constructor.call(this,config);
+    Commerce_MultiLang.combo.Category.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.combo.Category,MODx.combo.ComboBox);
-Ext.reg('commercemultilang-combo-category',CommerceMultiLang.combo.Category);
+Ext.extend(Commerce_MultiLang.combo.Category,MODx.combo.ComboBox);
+Ext.reg('commerce_multilang-combo-category',Commerce_MultiLang.combo.Category);
 
-CommerceMultiLang.combo.Categories = function (config, getStore) {
+Commerce_MultiLang.combo.Categories = function (config, getStore) {
     config = config || {};
     Ext.applyIf(config, {
         name:'categories[]'
@@ -135,7 +135,7 @@ CommerceMultiLang.combo.Categories = function (config, getStore) {
         ,preventDuplicates:true
         ,renderFieldButtons:false
         ,pageSize: 20
-        ,url: CommerceMultiLang.config.connectorUrl
+        ,url: Commerce_MultiLang.config.connectorUrl
         ,baseParams:{
             action: 'mgr/product/category/getList'
         }
@@ -165,11 +165,11 @@ CommerceMultiLang.combo.Categories = function (config, getStore) {
         return config.store;
     }
 
-    CommerceMultiLang.combo.Categories.superclass.constructor.call(this, config);
+    Commerce_MultiLang.combo.Categories.superclass.constructor.call(this, config);
     this.config = config;
     return this;
 };
-Ext.extend(CommerceMultiLang.combo.Categories, Ext.ux.form.SuperBoxSelect,{
+Ext.extend(Commerce_MultiLang.combo.Categories, Ext.ux.form.SuperBoxSelect,{
     addItemBox : function(itemVal,itemDisplay,itemCaption, itemClass, itemStyle) {
         var hConfig, parseStyle = function(s){
             var ret = '';
@@ -248,4 +248,4 @@ Ext.extend(CommerceMultiLang.combo.Categories, Ext.ux.form.SuperBoxSelect,{
         this.applyEmptyText().autoSize().manageClearBtn().validateValue();
     }
 });
-Ext.reg('commercemultilang-combo-categories', CommerceMultiLang.combo.Categories);
+Ext.reg('commerce_multilang-combo-categories', Commerce_MultiLang.combo.Categories);

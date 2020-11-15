@@ -40,14 +40,14 @@ class CMLProductImageGetListProcessor extends modObjectGetListProcessor {
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
         $c->leftJoin('CMLProductImageLanguage','ProductImageLanguage',array(
-            'CommerceMultiLangProductImage.id=ProductImageLanguage.product_image_id',
+            'CMLProductImage.id=ProductImageLanguage.product_image_id',
             'ProductImageLanguage.lang_key'    =>  $this->modx->getOption('commerce_multilang.default_lang')
         ));
         $c->where(array(
             'product_id'=>$this->getProperty('product_id')
         ));
         $c->sortby('main','DESC');
-        $c->select('CommerceMultiLangProductImage.*,CommerceMultiLangProductImage.product_id,ProductImageLanguage.title,ProductImageLanguage.image,ProductImageLanguage.alt,ProductImageLanguage.description');
+        $c->select('CMLProductImage.*,CMLProductImage.product_id,ProductImageLanguage.title,ProductImageLanguage.image,ProductImageLanguage.alt,ProductImageLanguage.description');
         /*$c->prepare();
         $this->modx->log(1,$c->toSQL());*/
         $query = $this->getProperty('query');
@@ -61,7 +61,7 @@ class CMLProductImageGetListProcessor extends modObjectGetListProcessor {
 
     public function prepareRow(xPDOObject $object) {
         $row = parent::prepareRow($object);
-        $languages = $this->modx->getCollection('CommerceMultiLangProductImageLanguage',array(
+        $languages = $this->modx->getCollection('CMLProductImageLanguage',array(
             'product_image_id'    => $object->get('id')
         ));
         $langs = array();
@@ -88,4 +88,4 @@ class CMLProductImageGetListProcessor extends modObjectGetListProcessor {
         return $output;
     }
 }
-return 'CommerceMultiLangProductImageGetListProcessor';
+return 'CMLProductImageGetListProcessor';

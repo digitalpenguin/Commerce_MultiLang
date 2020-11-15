@@ -3,11 +3,11 @@
  * @param config
  * @constructor
  */
-CommerceMultiLang.grid.ProductTypeVariations = function(config) {
+Commerce_MultiLang.grid.ProductTypeVariations = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'commercemultilang-grid-product-type-variations'
-        ,url: CommerceMultiLang.config.connectorUrl
+        id: 'commerce_multilang-grid-product-type-variations'
+        ,url: Commerce_MultiLang.config.connectorUrl
         ,baseParams:{
             action: 'mgr/product-type/variation/getlist'
         }
@@ -51,15 +51,15 @@ CommerceMultiLang.grid.ProductTypeVariations = function(config) {
         }]
         ,listeners: {
             'render': function(grid) {
-                grid.type_id = Ext.getCmp('commercemultilang-window-product-type-update').config.record.type_id;
+                grid.type_id = Ext.getCmp('commerce_multilang-window-product-type-update').config.record.type_id;
                 grid.store.setBaseParam('action','mgr/product-type/variation/getlist');
                 grid.store.setBaseParam('type_id',grid.type_id);
             }
         }
     });
-    CommerceMultiLang.grid.ProductTypeVariations.superclass.constructor.call(this,config);
+    Commerce_MultiLang.grid.ProductTypeVariations.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
+Ext.extend(Commerce_MultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
     windows: {}
 
     ,getMenu: function() {
@@ -77,13 +77,13 @@ Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
     }
 
     ,createProductTypeVariation: function(btn,e) {
-        var win = Ext.getCmp('commercemultilang-window-product-type-variation-create');
+        var win = Ext.getCmp('commerce_multilang-window-product-type-variation-create');
         if(win) {
             win.show(e.target);
         } else {
             var createProductTypeVariation = MODx.load({
-                xtype: 'commercemultilang-window-product-type-variation-create'
-                ,id: 'commercemultilang-window-product-type-variation-create'
+                xtype: 'commerce_multilang-window-product-type-variation-create'
+                ,id: 'commerce_multilang-window-product-type-variation-create'
                 ,baseParams: {
                     action:'mgr/product-type/variation/create'
                     ,type_id: this.type_id
@@ -103,12 +103,12 @@ Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
 
     ,updateProductTypeVariation: function(btn,e,isUpdate) {
         if (!this.menu.record || !this.menu.record.id) return false;
-        var win = Ext.getCmp('commercemultilang-window-product-type-variation-update');
+        var win = Ext.getCmp('commerce_multilang-window-product-type-variation-update');
         if(win) {
             win.show(e.target);
         } else {
             var updateProductType = MODx.load({
-                xtype: 'commercemultilang-window-product-type-variation-update'
+                xtype: 'commerce_multilang-window-product-type-variation-update'
                 ,title: _('commerce_multilang.product_type_variation.update')
                 ,action: 'mgr/product-type/variation/update'
                 ,id:'commerce_multilang-window-product-type-'+this.menu.record['id']
@@ -144,15 +144,15 @@ Ext.extend(CommerceMultiLang.grid.ProductTypeVariations,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('commercemultilang-grid-product-type-variations',CommerceMultiLang.grid.ProductTypeVariations);
+Ext.reg('commerce_multilang-grid-product-type-variations',Commerce_MultiLang.grid.ProductTypeVariations);
 
-CommerceMultiLang.window.ProductTypeVariationCreate = function(config) {
+Commerce_MultiLang.window.ProductTypeVariationCreate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('commerce_multilang.product_type_variation.create')
-        ,id:'commercemultilang-window-product-type-variation-create'
+        ,id:'commerce_multilang-window-product-type-variation-create'
         ,closeAction: 'close'
-        ,url: CommerceMultiLang.config.connectorUrl
+        ,url: Commerce_MultiLang.config.connectorUrl
         ,action: 'mgr/product-type/variation/create'
         ,keys: []
         ,fields: [{
@@ -171,20 +171,20 @@ CommerceMultiLang.window.ProductTypeVariationCreate = function(config) {
             ,anchor: '100%'
         }]
     });
-    CommerceMultiLang.window.ProductTypeVariationCreate.superclass.constructor.call(this,config);
+    Commerce_MultiLang.window.ProductTypeVariationCreate.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.window.ProductTypeVariationCreate,MODx.Window);
-Ext.reg('commercemultilang-window-product-type-variation-create',CommerceMultiLang.window.ProductTypeVariationCreate);
+Ext.extend(Commerce_MultiLang.window.ProductTypeVariationCreate,MODx.Window);
+Ext.reg('commerce_multilang-window-product-type-variation-create',Commerce_MultiLang.window.ProductTypeVariationCreate);
 
 
 
-CommerceMultiLang.window.ProductTypeVariationUpdate = function(config) {
+Commerce_MultiLang.window.ProductTypeVariationUpdate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('commerce_multilang.product_type.update')
-        ,id:'commercemultilang-window-product-type-variation-update'
+        ,id:'commerce_multilang-window-product-type-variation-update'
         ,closeAction: 'close'
-        ,url: CommerceMultiLang.config.connectorUrl
+        ,url: Commerce_MultiLang.config.connectorUrl
         ,action: 'mgr/product-type/variation/update'
         ,keys: []
         ,fields: [{
@@ -209,7 +209,7 @@ CommerceMultiLang.window.ProductTypeVariationUpdate = function(config) {
             ,anchor: '100%'
         }]
     });
-    CommerceMultiLang.window.ProductTypeVariationUpdate.superclass.constructor.call(this,config);
+    Commerce_MultiLang.window.ProductTypeVariationUpdate.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.window.ProductTypeVariationUpdate,MODx.Window);
-Ext.reg('commercemultilang-window-product-type-variation-update',CommerceMultiLang.window.ProductTypeVariationUpdate);
+Ext.extend(Commerce_MultiLang.window.ProductTypeVariationUpdate,MODx.Window);
+Ext.reg('commerce_multilang-window-product-type-variation-update',Commerce_MultiLang.window.ProductTypeVariationUpdate);

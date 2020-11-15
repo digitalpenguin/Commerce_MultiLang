@@ -1,7 +1,6 @@
 <?php
 
 namespace DigitalPenguin\Commerce_MultiLang\Modules;
-use modmore\Commerce\Admin\Generator;
 use modmore\Commerce\Events\Admin\TopNavMenu as TopNavMenuEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -24,7 +23,7 @@ class MultiLang extends \modmore\Commerce\Modules\BaseModule {
         if(!$this->adapter->loadPackage('commerce_multilang',$root)) {
             $this->adapter->log(1, 'Unable to load the MultiLang package.');
         }
-        $dispatcher->addListener(Generator::COLLECT_MENU_EVENT, array($this, 'alterProductsTab'));
+        $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_GET_MENU, array($this, 'alterProductsTab'));
     }
 
     public function alterProductsTab(TopNavMenuEvent $event) {

@@ -6,7 +6,7 @@
  * @subpackage processors
  */
 class CMLProductGetListProcessor extends modObjectGetListProcessor {
-    public $classKey = 'CommerceMultiLangProduct';
+    public $classKey = 'CMLProduct';
     public $languageTopics = array('commerce_multilang:default');
     public $defaultSortField = 'name';
     public $defaultSortDirection = 'ASC';
@@ -56,8 +56,8 @@ class CMLProductGetListProcessor extends modObjectGetListProcessor {
                     ));
                     $setting->set('value',$managerLang);
                     $setting->save();
-                    $cacheRefreshOptions =  array( 'system_settings' => array() );
-                    $this->modx->cacheManager-> refresh($cacheRefreshOptions);
+                    $cacheRefreshOptions =  [ 'system_settings' => [] ];
+                    $this->modx->cacheManager->refresh($cacheRefreshOptions);
                 }
             }
 
@@ -70,22 +70,22 @@ class CMLProductGetListProcessor extends modObjectGetListProcessor {
     }
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
-        $c->leftJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
-        $c->leftJoin('CommerceMultiLangProductLanguage','ProductLanguage',array(
-            'ProductLanguage.product_id=CommerceMultiLangProduct.id',
+        $c->leftJoin('CMLProductData','ProductData','ProductData.product_id=CMLProduct.id');
+        $c->leftJoin('CMLProductLanguage','ProductLanguage',array(
+            'ProductLanguage.product_id=CMLProduct.id',
             'ProductLanguage.lang_key'=>$this->defaultLanguage
         ));
-        $c->leftJoin('CommerceMultiLangProductImage','ProductImage',array(
-            'ProductImage.product_id=CommerceMultiLangProduct.id',
+        $c->leftJoin('CMLProductImage','ProductImage',array(
+            'ProductImage.product_id=CMLProduct.id',
             'ProductImage.main' =>  true
         ));
-        $c->leftJoin('CommerceMultiLangProductImageLanguage','ProductImageLanguage',array(
+        $c->leftJoin('CMLProductImageLanguage','ProductImageLanguage',array(
             'ProductImageLanguage.product_image_id=ProductImage.id'
         ));
         $c->leftJoin('modResource','Category',array(
             'ProductLanguage.category=Category.id'
         ));
-        $c->select('CommerceMultiLangProduct.*,
+        $c->select('CMLProduct.*,
                     ProductData.type,
                     ProductData.product_listing,
                     ProductData.alias,
@@ -94,10 +94,10 @@ class CMLProductGetListProcessor extends modObjectGetListProcessor {
                     Category.id AS category_id');
         $c->where(array(
             'removed:=' =>  0,
-            'AND:CommerceMultiLangProduct.class_key:!='=>'comProduct',
+            'AND:CMLProduct.class_key:!='=>'comProduct',
             'AND:ProductData.product_listing:=' =>  1
         ));
-        $c->groupBy('CommerceMultiLangProduct.sku,CommerceMultiLangProduct.id,ProductImageLanguage.image,Category.pagetitle,Category.id');
+        $c->groupBy('CMLProduct.sku,CMLProduct.id,ProductImageLanguage.image,Category.pagetitle,Category.id');
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
         $query = $this->getProperty('query');
@@ -112,7 +112,7 @@ class CMLProductGetListProcessor extends modObjectGetListProcessor {
 
     public function prepareRow(xPDOObject $object) {
         $row = parent::prepareRow($object);
-        $languages = $this->modx->getCollection('CommerceMultiLangProductLanguage',array(
+        $languages = $this->modx->getCollection('CMLProductLanguage',array(
             'product_id'    => $object->get('id')
         ));
         $langs = array();
@@ -123,7 +123,7 @@ class CMLProductGetListProcessor extends modObjectGetListProcessor {
         $row['langs'] = $langs;
 
         // Grab all the assigned variation values for this product
-        $assignedVariations = $this->modx->getCollection('CommerceMultiLangAssignedVariation',array(
+        $assignedVariations = $this->modx->getCollection('CMLAssignedVariation',array(
             'product_id'    =>  $row['id']
         ));
         foreach($assignedVariations as $variation) {
@@ -132,12 +132,12 @@ class CMLProductGetListProcessor extends modObjectGetListProcessor {
 
         // Display name of product type and associated variations instead of just id
         if($row['type']) {
-            $type = $this->modx->getObject('CommerceMultiLangProductType',array(
+            $type = $this->modx->getObject('CMLProductType',array(
                 'id'    =>  $row['type']
             ));
             if($type) {
                 $row['type_name'] = $type->get('name');
-                $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
+                $variations = $this->modx->getCollection('CMLProductVariation',array(
                     'type_id'   =>  $type->get('id')
                 ));
                 if($variations) {
@@ -178,4 +178,4 @@ class CMLProductGetListProcessor extends modObjectGetListProcessor {
         return $output;
     }
 }
-return 'CommerceMultiLangProductGetListProcessor';
+return 'CMLProductGetListProcessor';

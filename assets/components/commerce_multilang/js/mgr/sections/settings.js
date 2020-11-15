@@ -1,16 +1,16 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'commercemultilang-page-settings'});
+    MODx.load({ xtype: 'commerce_multilang-page-settings'});
 });
 
-CommerceMultiLang.page.Settings = function(config) {
+Commerce_MultiLang.page.Settings = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
-            xtype: 'commercemultilang-panel-settings'
+            xtype: 'commerce_multilang-panel-settings'
             ,renderTo: 'commerce_multilang-panel-settings-div'
         }]
     });
-    CommerceMultiLang.page.Settings.superclass.constructor.call(this,config);
+    Commerce_MultiLang.page.Settings.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.page.Settings,MODx.Component);
-Ext.reg('commercemultilang-page-settings',CommerceMultiLang.page.Settings);
+Ext.extend(Commerce_MultiLang.page.Settings,MODx.Component);
+Ext.reg('commerce_multilang-page-settings',Commerce_MultiLang.page.Settings);

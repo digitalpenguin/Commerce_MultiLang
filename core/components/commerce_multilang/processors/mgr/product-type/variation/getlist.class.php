@@ -5,8 +5,8 @@
  * @package commerce_multilang
  * @subpackage processors
  */
-class CommerceMultiLangProductVariationGetListProcessor extends modObjectGetListProcessor {
-    public $classKey = 'CommerceMultiLangProductVariation';
+class CMLProductVariationGetListProcessor extends modObjectGetListProcessor {
+    public $classKey = 'CMLProductVariation';
     public $languageTopics = array('commerce_multilang:default');
     public $defaultSortField = 'id';
     public $defaultSortDirection = 'ASC';
@@ -17,4 +17,4 @@ class CommerceMultiLangProductVariationGetListProcessor extends modObjectGetList
         return parent::prepareQueryBeforeCount($c);
     }
 }
-return 'CommerceMultiLangProductVariationGetListProcessor';
+return 'CMLProductVariationGetListProcessor';

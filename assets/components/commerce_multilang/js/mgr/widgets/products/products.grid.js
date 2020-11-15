@@ -1,8 +1,8 @@
-CommerceMultiLang.grid.Products = function(config) {
+Commerce_MultiLang.grid.Products = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'commercemultilang-grid-products'
-        ,url: CommerceMultiLang.config.connectorUrl
+        id: 'commerce_multilang-grid-products'
+        ,url: Commerce_MultiLang.config.connectorUrl
         ,baseParams: {
             action: 'mgr/product/getlist'
         }
@@ -26,12 +26,12 @@ CommerceMultiLang.grid.Products = function(config) {
             ,renderer: function(value){
                 if(value) {
                     var url = '';
-                    if(CommerceMultiLang.config.baseImageUrl.charAt(0) !== '/') {
-                        url = '/'+ CommerceMultiLang.config.baseImageUrl;
+                    if(Commerce_MultiLang.config.baseImageUrl.charAt(0) !== '/') {
+                        url = '/'+ Commerce_MultiLang.config.baseImageUrl;
                     }
                     return '<img style="max-width:100%;" src="'+ url + value + '" />';
                 } else {
-                    return '<img style="max-width:100%;" src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />';
+                    return '<img style="max-width:100%;" src="'+ Commerce_MultiLang.config.assetsUrl +'img/placeholder.jpg" />';
                 }
             }
         },{
@@ -102,9 +102,9 @@ CommerceMultiLang.grid.Products = function(config) {
             }
         }]
     });
-    CommerceMultiLang.grid.Products.superclass.constructor.call(this,config);
+    Commerce_MultiLang.grid.Products.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
+Ext.extend(Commerce_MultiLang.grid.Products,MODx.grid.Grid,{
     windows: {}
 
     ,getMenu: function() {
@@ -122,13 +122,13 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
     }
     
     ,createProduct: function(btn,e) {
-        var win = Ext.getCmp('commercemultilang-window-product-create');
+        var win = Ext.getCmp('commerce_multilang-window-product-create');
         if(win) {
             win.show(e.target);
         } else {
             var createProduct = MODx.load({
-                xtype: 'commercemultilang-window-product-create'
-                ,id:'commercemultilang-window-product-create'
+                xtype: 'commerce_multilang-window-product-create'
+                ,id:'commerce_multilang-window-product-create'
                 ,listeners: {
                     'success': {fn:function() { this.refresh(); },scope:this}
                 }
@@ -141,7 +141,7 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
 
     ,updateProduct: function(btn,e,isUpdate) {
         if (!this.menu.record || !this.menu.record.id) return false;
-        var win = Ext.getCmp('commercemultilang-window-product-update');
+        var win = Ext.getCmp('commerce_multilang-window-product-update');
         if(win) {
             win.show(e.target);
         } else {
@@ -160,9 +160,9 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
             });
 
             var updateProduct = MODx.load({
-                xtype: 'commercemultilang-window-product-update'
+                xtype: 'commerce_multilang-window-product-update'
                 , title: _('commerce_multilang.product.update')
-                ,id: 'commercemultilang-window-product-update'
+                ,id: 'commerce_multilang-window-product-update'
                 , action: 'mgr/product/update'
                 , record: record
                 , listeners: {
@@ -237,15 +237,15 @@ Ext.extend(CommerceMultiLang.grid.Products,MODx.grid.Grid,{
     }
 
 });
-Ext.reg('commercemultilang-grid-products',CommerceMultiLang.grid.Products);
+Ext.reg('commerce_multilang-grid-products',Commerce_MultiLang.grid.Products);
 
-CommerceMultiLang.window.ProductCreate = function(config) {
+Commerce_MultiLang.window.ProductCreate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('commerce_multilang.product.create')
         ,closeAction: 'close'
         ,width:600
-        ,url: CommerceMultiLang.config.connectorUrl
+        ,url: Commerce_MultiLang.config.connectorUrl
         ,action: 'mgr/product/create'
         ,keys: []
         ,fields: [{
@@ -303,7 +303,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         columnWidth: .66
                         ,layout: 'form'
                         ,items: [{
-                            xtype: 'commercemultilang-combo-category'
+                            xtype: 'commerce_multilang-combo-category'
                             ,fieldLabel: _('commerce_multilang.product.category')
                             ,id: 'product-create-category-combo'
                             ,name: 'category'
@@ -327,7 +327,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         columnWidth: .33
                         ,layout: 'form'
                         ,items: [{
-                            xtype: 'commercemultilang-combo-product-type'
+                            xtype: 'commerce_multilang-combo-product-type'
                             ,fieldLabel: _('commerce_multilang.product.type')
                             ,name: 'type'
                             ,hiddenName: 'type'
@@ -357,7 +357,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         columnWidth: .13
                         ,layout: 'form'
                         ,items: [{
-                            xtype: 'commercemultilang-combo-weightunit'
+                            xtype: 'commerce_multilang-combo-weightunit'
                             ,fieldLabel: _('commerce_multilang.product.unit')
                             ,name: 'weight_unit'
                             ,hiddenName: 'weight_unit'
@@ -372,7 +372,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         columnWidth: .5
                         ,layout: 'form'
                         ,items: [{
-                            xtype: 'commercemultilang-combo-taxgroup'
+                            xtype: 'commerce_multilang-combo-taxgroup'
                             ,fieldLabel: _('commerce_multilang.product.tax_group')
                             ,name: 'tax_group'
                             ,hiddenName: 'tax_group'
@@ -383,7 +383,7 @@ CommerceMultiLang.window.ProductCreate = function(config) {
                         columnWidth: .5
                         ,layout: 'form'
                         ,items: [{
-                            xtype: 'commercemultilang-combo-deliverytype'
+                            xtype: 'commerce_multilang-combo-deliverytype'
                             ,fieldLabel: _('commerce_multilang.product.delivery_type')
                             ,name: 'delivery_type'
                             ,hiddenName: 'delivery_type'
@@ -402,9 +402,9 @@ CommerceMultiLang.window.ProductCreate = function(config) {
             //TODO: Add image selection
         }*/]
     });
-    CommerceMultiLang.window.ProductCreate.superclass.constructor.call(this,config);
+    Commerce_MultiLang.window.ProductCreate.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.window.ProductCreate,MODx.Window,{
+Ext.extend(Commerce_MultiLang.window.ProductCreate,MODx.Window,{
     addLanguageTabs: function(languages) {
         var tabs = Ext.getCmp('product-create-window-tabs');
         var imageTab = [{
@@ -433,6 +433,6 @@ Ext.extend(CommerceMultiLang.window.ProductCreate,MODx.Window,{
         comboStore.setBaseParam('action','mgr/product/category/getlist');
     }
 });
-Ext.reg('commercemultilang-window-product-create',CommerceMultiLang.window.ProductCreate);
+Ext.reg('commerce_multilang-window-product-create',Commerce_MultiLang.window.ProductCreate);
 
 

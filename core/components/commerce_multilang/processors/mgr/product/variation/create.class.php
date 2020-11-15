@@ -116,7 +116,7 @@ class CMLProductChildCreateProcessor extends modObjectCreateProcessor {
 
             // Set the variation field values by creating new many-to-many records for each one.
             foreach($this->variationData as $variation) {
-                $varField = $this->modx->newObject('CommerceMultiLangAssignedVariation');
+                $varField = $this->modx->newObject('CMLAssignedVariation');
                 $varField->set('variation_id',$variation->get('id'));
                 $varField->set('product_id',$this->object->get('id'));
                 $varField->set('type_id',$this->parentProductData->get('type'));
@@ -131,11 +131,11 @@ class CMLProductChildCreateProcessor extends modObjectCreateProcessor {
     }
 
     protected function loadVariationFields() {
-        $this->parentProductData = $this->modx->getObject('CommerceMultiLangProductData',array(
+        $this->parentProductData = $this->modx->getObject('CMLProductData',array(
             'product_id'    =>  $this->getProperty('parent')
         ));
         if($this->parentProductData) {
-            $variations = $this->modx->getCollection('CommerceMultiLangProductVariation',array(
+            $variations = $this->modx->getCollection('CMLProductVariation',array(
                 'type_id'   =>  $this->parentProductData->get('type')
             ));
 
@@ -149,4 +149,4 @@ class CMLProductChildCreateProcessor extends modObjectCreateProcessor {
 
 
 }
-return 'CommerceMultiLangProductChildCreateProcessor';
+return 'CMLProductChildCreateProcessor';

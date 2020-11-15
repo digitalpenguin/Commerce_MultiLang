@@ -5,21 +5,21 @@
  * @package commerce_multilang
  * @subpackage processors
  */
-class CommerceMultiLangProductRemoveProcessor extends modObjectRemoveProcessor {
-    public $classKey = 'CommerceMultiLangProduct';
+class CMLProductRemoveProcessor extends modObjectRemoveProcessor {
+    public $classKey = 'CMLProduct';
     public $languageTopics = array('commerce_multilang:default');
     public $objectType = 'commerce_multilang.product';
 
     public function afterRemove() {
         // Remove alias from the removed product.
-        $objectData = $this->modx->getObject('CommerceMultiLangProductData',[
+        $objectData = $this->modx->getObject('CMLProductData',[
             'product_id'    =>  $this->object->get('id')
         ]);
         $objectData->set('alias','');
         $objectData->save();
 
         $c = $this->modx->newQuery($this->classKey);
-        $c->innerJoin('CommerceMultiLangProductData','ProductData','ProductData.product_id=CommerceMultiLangProduct.id');
+        $c->innerJoin('CMLProductData','ProductData','ProductData.product_id=CMLProduct.id');
         $c->where([
             'ProductData.parent'    =>  $this->object->get('id')
         ]);
@@ -30,4 +30,4 @@ class CommerceMultiLangProductRemoveProcessor extends modObjectRemoveProcessor {
         return parent::afterRemove();
     }
 }
-return 'CommerceMultiLangProductRemoveProcessor';
+return 'CMLProductRemoveProcessor';

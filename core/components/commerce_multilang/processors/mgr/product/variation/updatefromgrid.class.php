@@ -7,7 +7,7 @@
  */
 require_once (dirname(__FILE__).'/update.class.php');
 
-class CommerceMultiLangProductUpdateFromGridProcessor extends CommerceMultiLangProductUpdateProcessor {
+class CMLProductUpdateFromGridProcessor extends CMLProductUpdateProcessor {
     public function initialize() {
         $data = $this->getProperty('data');
         if (empty($data)) return $this->modx->lexicon('invalid_data');
@@ -20,4 +20,4 @@ class CommerceMultiLangProductUpdateFromGridProcessor extends CommerceMultiLangP
     }
 
 }
-return 'CommerceMultiLangProductUpdateFromGridProcessor';
+return 'CMLProductUpdateFromGridProcessor';

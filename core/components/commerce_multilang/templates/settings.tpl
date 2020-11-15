@@ -1,1 +1,1 @@
-<div id="commercemultilang-panel-settings-div"></div>
+<div id="commerce_multilang-panel-settings-div"></div>

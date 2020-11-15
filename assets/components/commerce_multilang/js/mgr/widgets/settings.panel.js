@@ -1,4 +1,4 @@
-CommerceMultiLang.panel.Settings = function(config) {
+Commerce_MultiLang.panel.Settings = function(config) {
     config = config || {};
     Ext.apply(config,{
         border: false
@@ -42,9 +42,9 @@ CommerceMultiLang.panel.Settings = function(config) {
             render: this.getButtons
         }
     });
-    CommerceMultiLang.panel.Settings.superclass.constructor.call(this,config);
+    Commerce_MultiLang.panel.Settings.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.panel.Settings,MODx.Panel,{
+Ext.extend(Commerce_MultiLang.panel.Settings,MODx.Panel,{
     getButtons: function(e) {
         // get rid of the side bar
         //Ext.getCmp('modx-layout').hideLeftbar();
@@ -71,4 +71,4 @@ Ext.extend(CommerceMultiLang.panel.Settings,MODx.Panel,{
         MODx.loadPage('index&ca=orders', 'namespace=commerce');
     }
 });
-Ext.reg('commercemultilang-panel-settings',CommerceMultiLang.panel.Settings);
+Ext.reg('commerce_multilang-panel-settings',Commerce_MultiLang.panel.Settings);
