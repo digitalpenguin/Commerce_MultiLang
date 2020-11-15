@@ -97,7 +97,7 @@ class Commerce_MultiLang {
                 $this->sortby = $scriptProperties['sortby'];
             }
         }
-        // Check for sortby param
+        // Check for limit param
         if(array_key_exists('limit',$scriptProperties)) {
             if($scriptProperties['limit']) {
                 $this->limit = $scriptProperties['limit'];
@@ -119,7 +119,7 @@ class Commerce_MultiLang {
         }
 
         $c = $this->commerce->adapter->newQuery('CMLProduct');
-        $c->leftJoin('CMLProductData', 'ProductData', 'Commerce_MultiLang_Product.id=ProductData.product_id');
+        $c->leftJoin('CMLProductData', 'ProductData', 'CMLProduct.id=ProductData.product_id');
         $c->leftJoin('CMLProductLanguage', 'ProductLanguage', 'CMLProduct.id=ProductLanguage.product_id');
         $c->leftJoin('CMLProductImage', 'ProductImage', array(
             'CMLProduct.id=ProductImage.product_id',
@@ -171,7 +171,7 @@ class Commerce_MultiLang {
                     if ($scriptProperties['tpl']) {
                         $output .= $this->modx->getChunk($scriptProperties['tpl']);
                     } else {
-                        $output .= $this->modx->getChunk('product_preview_tpl');
+                        $output .= $this->modx->getChunk('cml_product_preview');
                     }
                 }
                 if ($scriptProperties['debug']) {
@@ -260,7 +260,7 @@ class Commerce_MultiLang {
                 if ($scriptProperties['tpl']) {
                     $output = $this->modx->getChunk($scriptProperties['tpl']);
                 } else {
-                    $output = $this->modx->getChunk('product_detail_tpl');
+                    $output = $this->modx->getChunk('cml_product_detail');
                 }
 
             }
@@ -319,7 +319,7 @@ class Commerce_MultiLang {
                     if($scriptProperties['variationTpl']) {
                         $output .= $this->modx->getChunk($scriptProperties['variationTpl'],$variation);
                     } else {
-                        $output .= $this->modx->getChunk('variation_row_tpl',[
+                        $output .= $this->modx->getChunk('cml_variation',[
                             'variation' =>  $variation['value'],
                             'variation_product_id'  => $variation['product_id']
                         ]);

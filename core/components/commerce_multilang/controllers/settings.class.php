@@ -14,13 +14,13 @@ class CommerceMultiLangSettingsManagerController extends CommerceMultiLangBaseMa
     public function loadCustomCssJs() {
     
     
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/extras/griddraganddrop.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/combos.widget.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/producttypes.grid.js');
-        $this->addJavascript($this->commercemultilang->getOption('jsUrl').'mgr/widgets/settings.panel.js');
-        $this->addLastJavascript($this->commercemultilang->getOption('jsUrl').'mgr/sections/settings.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/extras/griddraganddrop.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/combos.widget.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/producttypes.grid.js');
+        $this->addJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/widgets/settings.panel.js');
+        $this->addLastJavascript($this->commerce_multilang->getOption('jsUrl').'mgr/sections/settings.js');
     
     }
 
-    public function getTemplateFile() { return $this->commercemultilang->getOption('templatesPath').'settings.tpl'; }
+    public function getTemplateFile() { return $this->commerce_multilang->getOption('templatesPath').'settings.tpl'; }
 }

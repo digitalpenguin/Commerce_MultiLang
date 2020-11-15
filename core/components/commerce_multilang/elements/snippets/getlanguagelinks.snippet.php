@@ -12,8 +12,8 @@ if($modx->cacheManager->get('cml_language_links_'.$request, [xPDO::OPT_CACHE_KEY
 }
 
 // Grab xpdo instance with needed tables loaded
-$commerceMultiLang = $modx->getService('commerce_multilang', 'MultiLang', $modx->getOption('commerce_multilang.core_path', null, $modx->getOption('core_path') . 'components/commerce_multilang/') . 'model/commerce_multilang/', $scriptProperties);
-if (!($commerceMultiLang instanceof CommerceMultiLang))
+$commerceMultiLang = $modx->getService('commerce_multilang', 'Commerce_MultiLang', $modx->getOption('commerce_multilang.core_path', null, $modx->getOption('core_path') . 'components/commerce_multilang/') . 'model/commerce_multilang/', $scriptProperties);
+if (!($commerceMultiLang instanceof Commerce_MultiLang))
     return '';
 $xpdo = &$commerceMultiLang->modx;
 
@@ -31,15 +31,15 @@ if($productDetailId) {
 
     $contextLangs = $commerceMultiLang->getLanguages();
     $productLangs = array();
-    $c = $xpdo->newQuery('CommerceMultiLangProduct');
-    $c->leftJoin('CommerceMultiLangProductData','ProductData','CommerceMultiLangProduct.id=ProductData.product_id');
+    $c = $xpdo->newQuery('CMLProduct');
+    $c->leftJoin('CMLProductData','ProductData','CMLProduct.id=ProductData.product_id');
     $c->where(array('ProductData.alias'=>$alias));
-    $c->select('CommerceMultiLangProduct.id,ProductData.alias');
+    $c->select('CMLProduct.id,ProductData.alias');
     if ($c->prepare() && $c->stmt->execute()) {
         $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
         if($product) {
             $productId = $product['id'];
-            $l = $modx->newQuery('CommerceMultiLangProductLanguage');
+            $l = $modx->newQuery('CMLProductLanguage');
             $l->where(array(
                 'product_id'    =>  $product['id']
             ));
