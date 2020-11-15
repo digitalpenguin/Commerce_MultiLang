@@ -159,7 +159,7 @@ class Commerce_MultiLang {
                     $product['extension'] = $extension;
 
                     $url = $this->modx->makeUrl($product['category']);
-                    $product['product_link'] = $url . $product['alias'] . $extension;
+                    $product['product_link'] = $url .'/'. $product['alias'] . $extension;
                     if($product['image']) {
                         $uri = ltrim($this->options['baseImageUrl'], '/');
                         $product['image'] = '/' . $uri . $product['image'];

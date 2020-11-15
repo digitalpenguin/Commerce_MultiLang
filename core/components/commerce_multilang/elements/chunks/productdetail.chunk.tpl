@@ -2,7 +2,7 @@
 <img title="[[+cml.title]]" alt="[[+cml.alt]]" src="[[+cml.image]]">
 <p>[[+cml.description]]</p>
 
-<form method="post" action="[[~[[++commerce.cart_resource]]]]">
+<form method="post" action="[[~[[++commerce.cart_resource]]? &scheme=`full`]]">
     <input type="hidden" name="add_to_cart" value="1">
     [[+cml.variations:notempty=`<select name="products" onchange="setProduct(value)">
         [[+cml.variations]]
