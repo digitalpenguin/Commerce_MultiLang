@@ -180,7 +180,7 @@ class Commerce_MultiLang {
                 return $output;
             } else {
                 // If nothing found
-                return '<p>There are no products listed in this category yet.</p>';
+                return $this->modx->lexicon('commerce_multilang.product.no_products');
             }
 
         }

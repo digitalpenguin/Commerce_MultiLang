@@ -41,6 +41,7 @@ $_lang['commerce_multilang.product.create'] = 'Create product';
 $_lang['commerce_multilang.product.update'] = 'Update product';
 $_lang['commerce_multilang.product.remove'] = 'Remove product';
 $_lang['commerce_multilang.product.remove_confirm'] = 'Are you sure you want to remove this product?';
+$_lang['commerce_multilang.product.no_products'] = 'There are no products currently listed in this category.';
 
 $_lang['commerce_multilang.err.product_name_ae'] = 'A product already exists with that name.';
 $_lang['commerce_multilang.err.product_alias_ae'] = 'An alias can\'t be generated from this product name as it already exists. Try creating a different name then change it after.';

@@ -13,6 +13,10 @@ class CMLProductChildUpdateProcessor extends modObjectUpdateProcessor {
     protected $variationData = array();
 
     public function beforeSave() {
+
+        $this->modx->log(MODX_LOG_LEVEL_ERROR,print_r($this->object->toArray(),true));
+
+
         $sku = $this->getProperty('sku');
         if (empty($sku)) {
             $this->addFieldError('sku',$this->modx->lexicon('commerce_multilang.err.product_type_sku_ns'));
@@ -34,6 +38,11 @@ class CMLProductChildUpdateProcessor extends modObjectUpdateProcessor {
 
     public function afterSave() {
         $this->loadVariationFields();
+
+        /*foreach($this->variationData as $datum) {
+            $this->modx->log(1,print_r($datum->toArray(),true));
+        }*/
+
         $productData = $this->modx->getObject('CMLProductData',array(
             'product_id' => $this->object->get('id')
         ));
@@ -43,6 +52,10 @@ class CMLProductChildUpdateProcessor extends modObjectUpdateProcessor {
 
         $productImages = $this->modx->getCollection('CMLProductImage',[
             'product_id'    =>  $this->object->get('id')
+        ]);
+
+        $variations = $this->modx->getCollection('CMLProductVariation',[
+            'type_id'   =>  $productData->get('type')
         ]);
 
         // Grabs related language table
@@ -66,12 +79,6 @@ class CMLProductChildUpdateProcessor extends modObjectUpdateProcessor {
                 $imageLanguage->save();
             }
 
-            // Grab all the assigned variation values for this product
-            $assignedVariations = $this->modx->getCollection('CMLAssignedVariation',array(
-                'product_id'    =>  $this->object->get('id'),
-                'lang_key'      =>  $langKey
-            ));
-
             $lkLength = strlen($langKey);
             foreach($this->getProperties() as $key => $value) {
                 // Get the lang_key from the submitted field name and check if it matches current language row
@@ -84,10 +91,26 @@ class CMLProductChildUpdateProcessor extends modObjectUpdateProcessor {
                     //$this->modx->log(1,'field name: '.$fieldName);
                     $productLanguage->set($fieldName,$value);
 
+
                     // Insert variation values into each field.
-                    foreach($assignedVariations as $assignedVariation) {
-                        if($fieldName == $assignedVariation->get('name')) {
-                            $assignedVariation->set('value', $value);
+                    foreach($variations as $variation) {
+                        if($fieldName === $variation->get('name')) {
+
+                            $assignedVariation = $this->modx->getObject('CMLAssignedVariation',[
+                                'product_id'    =>  $this->object->get('id'),
+                                'lang_key'      =>  $langKey,
+                                'name'          =>  strtolower($fieldName)
+                            ]);
+                            if(!$assignedVariation instanceof CMLAssignedVariation) {
+                                $assignedVariation = $this->modx->newObject('CMLAssignedVariation',[
+                                    'product_id'    =>  $this->object->get('id'),
+                                    'lang_key'      =>  $langKey,
+                                    'name'          =>  $fieldName,
+                                    'type_id'       =>  $productData->get('type'),
+                                    'variation_id'  =>  $variation->get('id')
+                                ]);
+                            }
+                            $assignedVariation->set('value',$value);
                             $assignedVariation->save();
                         }
                     }
