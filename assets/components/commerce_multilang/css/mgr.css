@@ -31,7 +31,9 @@
 #product-update-window-tabs .language-tab .x-panel-body.x-panel-body-noheader.x-panel-body-noborder,
 #product-update-window-tabs .language-tab .x-panel.x-panel-noborder.x-form-label-top{
     max-width:96% !important;
+    min-height:500px;
 }
+
 
 /*Super Select*/
 .x-superboxselect {

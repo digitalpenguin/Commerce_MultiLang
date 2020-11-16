@@ -12,7 +12,7 @@ class CMLProductVariationRemoveProcessor extends modObjectRemoveProcessor {
 
     public function beforeRemove() {
         // Don't allow the remove if the variation is being used.
-        
+
         $count = $this->modx->getCount('CMLProductData',[
             'type'  =>  $this->object->get('type_id')
         ]);
