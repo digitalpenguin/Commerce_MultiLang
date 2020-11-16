@@ -3,15 +3,15 @@ Commerce_MultiLang
 ---------------------------------------
 Version: 1.0.0-alpha1
 
-You can find documentation in the wiki at [https://github.com/digitalpenguin/CommerceMultiLang/wiki](https://github.com/digitalpenguin/CommerceMultiLang/wiki)
+You can find documentation in the wiki at [https://github.com/digitalpenguin/Commerce_MultiLang/wiki](https://github.com/digitalpenguin/Commerce_MultiLang/wiki)
 
-[![CommerceMultiLang Product Variations](https://github.com/digitalpenguin/CommerceMultiLang/blob/master/core/components/commerce_multilang/docs/img/cml-variations.png "Click to zoom in!")](https://raw.githubusercontent.com/digitalpenguin/CommerceMultiLang/master/core/components/commercemultilang/docs/img/cml-variations.png)
+[![CommerceMultiLang Product Variations](https://github.com/digitalpenguin/Commerce_MultiLang/blob/master/core/components/commerce_multilang/docs/img/cml-variations.png "Click to zoom in!")](https://raw.githubusercontent.com/digitalpenguin/Commerce_MultiLang/master/core/components/commercemultilang/docs/img/cml-variations.png)
 
 WORK IN PROGRESS
 
 TODO:
-- Allow an initial image for the product create form.
-- Cache everything!
+- Mimic the Commerce top nav tabs so the user feels like they haven't actually left the Commerce cmp.
+- Add a parameter to the `cmlGetProductDetail` snippet that allows variations to be separated into different select boxes instead of all variations shown in the same option row. For example instead of `Size:Medium, Colour:Blue` on the one row, you could display a `Sizes` select box and a `Colours` select box.
 - Build a breadcrumbs snippet that includes categories (resources) and products.
 - Build a product bundle grid.
 - Allow products to belong to multiple categories. A default category can replace the current singular category.
