@@ -195,9 +195,20 @@ class Commerce_MultiLang {
      */
     public function getProductDetail($scriptProperties = array()) {
         $output = '';
-        if(!$productId = intval($_GET['product']['id'])) {
-            return false;
+
+        // Ensure product is an array (for Fred compatibility)
+        $product = (array)$_GET['product'];
+
+        if(isset($product['id'])) {
+            $productId = $product['id'];
+            if(!$productId = filter_var($productId, FILTER_SANITIZE_NUMBER_INT)) {
+                return '';
+            }
+        } else {
+            return 'Product Placeholder';
         }
+
+
         $c = $this->modx->newQuery('CMLProduct');
         $c->leftJoin('CMLProductData','ProductData','ProductData.product_id=CMLProduct.id');
         $c->leftJoin('CMLProductLanguage','ProductLanguage',array(
@@ -212,17 +223,17 @@ class Commerce_MultiLang {
             'ProductImageLanguage.product_image_id=ProductImage.id'
         ));
         $c->where(array('CMLProduct.id'=>$productId));
-        $c->select(
-            'CMLProduct.*,
-                    ProductData.alias,
-                    ProductLanguage.name,
-                    ProductLanguage.description,
-                    ProductLanguage.content,
-                    ProductLanguage.category,
-                    ProductImageLanguage.title,
-                    ProductImageLanguage.alt,
-                    ProductImageLanguage.image'
-        );
+        $c->select([
+            'CMLProduct.*',
+            'ProductData.alias',
+            'ProductLanguage.name',
+            'ProductLanguage.description',
+            'ProductLanguage.content',
+            'ProductLanguage.category',
+            'ProductImageLanguage.title',
+            'ProductImageLanguage.alt',
+            'ProductImageLanguage.image'
+        ]);
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
 
@@ -267,6 +278,7 @@ class Commerce_MultiLang {
             }
         }
         return $output;
+        //return '<h1>Test</h1>';
     }
 
 
