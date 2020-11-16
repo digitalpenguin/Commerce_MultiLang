@@ -28,7 +28,7 @@ Commerce_MultiLang.panel.Home = function(config) {
                     ,cls: 'main-wrapper'
                 }]
             },{
-                title: 'Variations'
+                title: 'Types'
                 ,layout:'anchor'
                 ,items: [{
                     html: '<p>'+_('commerce_multilang.product.variations_intro')+'</p>'

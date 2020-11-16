@@ -113,7 +113,7 @@ Commerce_MultiLang.window.ProductUpdate = function(config) {
                     }]
                 }]
             },{
-                title:'Variations'
+                title:'Product Variations'
                 ,layout:'form'
                 ,id:'variation-tab'
                 ,cls: 'main-wrapper'
@@ -231,7 +231,7 @@ Ext.extend(Commerce_MultiLang.window.ProductUpdate,MODx.Window,{
                             ,anchor: '100%'
                         }]
                     },{
-                        title: 'Variations'
+                        title: 'Variation Values'
                         ,id: 'language-variation-vtab-'+langTab['lang_key']
                         ,layout:'form'
                         ,forceLayout:true

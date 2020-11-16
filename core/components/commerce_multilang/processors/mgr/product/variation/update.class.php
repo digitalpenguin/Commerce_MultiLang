@@ -14,7 +14,7 @@ class CMLProductChildUpdateProcessor extends modObjectUpdateProcessor {
 
     public function beforeSave() {
 
-        $this->modx->log(MODX_LOG_LEVEL_ERROR,print_r($this->object->toArray(),true));
+        //$this->modx->log(MODX_LOG_LEVEL_ERROR,print_r($this->object->toArray(),true));
 
 
         $sku = $this->getProperty('sku');
