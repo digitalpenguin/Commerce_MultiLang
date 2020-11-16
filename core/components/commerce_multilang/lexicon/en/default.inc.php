@@ -72,6 +72,7 @@ $_lang['commerce_multilang.err.product_image_save'] = 'An error occurred while t
 /* Product Variations */
 $_lang['commerce_multilang.product_variation.product_variations'] = 'Product Variations';
 $_lang['commerce_multilang.product_variation.intro'] = 'Product variations are complete products with their own SKU and alias however by default they are hidden from the customer when browsing product listings. Customers can select to buy a product variation (e.g. colour, size etc.) instead of the default listed product on the product detail screen.';
+$_lang['commerce_multilang.product_variation.remove_error'] = 'This variation is currently being used by active products. You need to change the related product types before removing.';
 
 /* Product Types */
 $_lang['commerce_multilang.product_type.name'] = 'Name';
