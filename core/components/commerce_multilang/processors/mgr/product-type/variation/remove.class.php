@@ -12,10 +12,11 @@ class CMLProductVariationRemoveProcessor extends modObjectRemoveProcessor {
 
     public function beforeRemove() {
         // Don't allow the remove if the variation is being used.
-        $count = $this->modx->getCount('CMLAssignedVariation',array(
-            'variation_id'  =>  $this->object->get('id')
-        ));
-        //$this->modx->log(1,$count);
+        
+        $count = $this->modx->getCount('CMLProductData',[
+            'type'  =>  $this->object->get('type_id')
+        ]);
+        $this->modx->log(1,$count);
 
         if($count) {
             return 'This variation is currently being used by active products. You need to change the related product types before removing.';

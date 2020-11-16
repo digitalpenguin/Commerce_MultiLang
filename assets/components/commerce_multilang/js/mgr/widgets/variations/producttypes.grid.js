@@ -215,4 +215,4 @@ Commerce_MultiLang.window.ProductTypeUpdate = function(config) {
     Commerce_MultiLang.window.ProductTypeUpdate.superclass.constructor.call(this,config);
 };
 Ext.extend(Commerce_MultiLang.window.ProductTypeUpdate,MODx.Window);
-Ext.reg('commerce_multilang-window-product-type-update',CommerceMultiLang.window.ProductTypeUpdate);
+Ext.reg('commerce_multilang-window-product-type-update',Commerce_MultiLang.window.ProductTypeUpdate);

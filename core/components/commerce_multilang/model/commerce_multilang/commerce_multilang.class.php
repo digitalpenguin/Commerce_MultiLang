@@ -205,7 +205,8 @@ class Commerce_MultiLang {
             'ProductLanguage.lang_key'=>$this->modx->getOption('cultureKey')
         ));
         $c->leftJoin('CMLProductImage','ProductImage',array(
-            'ProductImage.product_id=CMLProduct.id'
+            'ProductImage.product_id=CMLProduct.id',
+            'ProductImage.main' =>  true
         ));
         $c->leftJoin('CMLProductImageLanguage','ProductImageLanguage',array(
             'ProductImageLanguage.product_image_id=ProductImage.id'

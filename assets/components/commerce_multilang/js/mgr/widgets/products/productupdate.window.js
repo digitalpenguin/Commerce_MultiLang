@@ -607,9 +607,9 @@ Commerce_MultiLang.window.ProductImageUpdate = function(config) {
             ,deferredRender: false
         }]
     });
-    CommerceMultiLang.window.ProductImageUpdate.superclass.constructor.call(this,config);
+    Commerce_MultiLang.window.ProductImageUpdate.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
+Ext.extend(Commerce_MultiLang.window.ProductImageUpdate,MODx.Window,{
     addLanguageTabs: function(langTabs,record) {
         //console.log(record);
         var tabs = Ext.getCmp('product-image-update-window-tabs');
@@ -654,7 +654,7 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
                             }
                         },{
                             html:'<img style="max-width:100%; margin-top:10px;" ' +
-                            'src="'+ CommerceMultiLang.config.assetsUrl +'img/placeholder.jpg" />'
+                            'src="'+ Commerce_MultiLang.config.assetsUrl +'img/placeholder.jpg" />'
                             ,id:'update-product-image-preview-'+langTab['lang_key']
                         }]
                     },{
@@ -702,7 +702,7 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
     }
     ,renderImageOnLoad:function(langTab) {
         var leftCol = Ext.getCmp('product-image-update-left-col-'+langTab['lang_key']);
-        var url = CommerceMultiLang.config.baseImageUrl + Ext.getCmp('update-product-image-select-'+langTab['lang_key']).getValue();
+        var url = Commerce_MultiLang.config.baseImageUrl + Ext.getCmp('update-product-image-select-'+langTab['lang_key']).getValue();
         if(url) {
             if (url.charAt(0) !== '/') {
                 url = '/' + url;
@@ -716,5 +716,5 @@ Ext.extend(CommerceMultiLang.window.ProductImageUpdate,MODx.Window,{
         }
     }
 });
-Ext.reg('commerce_multilang-window-product-image-update',CommerceMultiLang.window.ProductImageUpdate);
+Ext.reg('commerce_multilang-window-product-image-update',Commerce_MultiLang.window.ProductImageUpdate);
 

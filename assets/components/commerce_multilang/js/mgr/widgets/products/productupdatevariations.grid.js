@@ -365,7 +365,7 @@ Commerce_MultiLang.window.ProductVariationUpdate = function(config) {
     });
     Commerce_MultiLang.window.ProductVariationUpdate.superclass.constructor.call(this,config);
 };
-Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
+Ext.extend(Commerce_MultiLang.window.ProductVariationUpdate,MODx.Window,{
 
     addLanguageTabs: function(langTabs,variations,record) {
         //console.log(record);
@@ -406,7 +406,7 @@ Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
 
     ,renderImage:function(value) {
         var leftCol = Ext.getCmp('product-variation-update-left-col');
-        var url = CommerceMultiLang.config.baseImageUrl + value.fullRelativeUrl;
+        var url = Commerce_MultiLang.config.baseImageUrl + value.fullRelativeUrl;
         console.log(value);
         if(url.charAt(0) !== '/') {
             url = '/'+url;
@@ -420,7 +420,7 @@ Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
     }
     ,renderImageOnLoad:function() {
         var leftCol = Ext.getCmp('product-variation-update-left-col');
-        var url = CommerceMultiLang.config.baseImageUrl + Ext.getCmp('update-product-image-select').getValue();
+        var url = Commerce_MultiLang.config.baseImageUrl + Ext.getCmp('update-product-image-select').getValue();
         if(url) {
             if (url.charAt(0) !== '/') {
                 url = '/' + url;
@@ -434,5 +434,5 @@ Ext.extend(CommerceMultiLang.window.ProductVariationUpdate,MODx.Window,{
         }
     }
 });
-Ext.reg('commerce_multilang-window-product-variation-update',CommerceMultiLang.window.ProductVariationUpdate);
+Ext.reg('commerce_multilang-window-product-variation-update',Commerce_MultiLang.window.ProductVariationUpdate);
 
