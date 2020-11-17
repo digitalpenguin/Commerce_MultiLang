@@ -17,29 +17,29 @@
                 "events": ["OnPageNotFound"]
             }],
             "snippets": [{
-                "name": "cmlGetLanguageLinks",
+                "name": "cml.getLanguageLinks",
                 "file": "getlanguagelinks.snippet.php"
             },{
-                "name": "cmlGetProductDetail",
-                "file": "getproductdetail.snippet.php"
+                "name": "cml.productDetail",
+                "file": "productdetail.snippet.php"
             },{
-                "name": "cmlGetProductList",
+                "name": "cml.getProductList",
                 "file": "getproductlist.snippet.php"
             }],
             "chunks": [{
-                "name": "cml_language_links",
+                "name": "cml.language_links",
                 "file": "languagelinks.chunk.tpl"
             },{
-                "name": "cml_product_detail",
+                "name": "cml.product_detail",
                 "file": "productdetail.chunk.tpl"
             },{
-                "name": "cml_product_preview",
+                "name": "cml.product_preview",
                 "file": "productpreview.chunk.tpl"
             },{
-                "name": "cml_variation",
+                "name": "cml.variation",
                 "file": "variationrow.chunk.tpl"
             },{
-                "name": "cml_product_image",
+                "name": "cml.product_image",
                 "file": "productimage.chunk.tpl"
             }]
         },

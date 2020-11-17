@@ -171,7 +171,7 @@ class Commerce_MultiLang {
                     if ($scriptProperties['tpl']) {
                         $output .= $this->modx->getChunk($scriptProperties['tpl']);
                     } else {
-                        $output .= $this->modx->getChunk('cml_product_preview');
+                        $output .= $this->modx->getChunk('cml.product_preview');
                     }
                 }
                 if ($scriptProperties['debug']) {
@@ -279,8 +279,7 @@ class Commerce_MultiLang {
                 if ($scriptProperties['tpl']) {
                     $output = $this->modx->getChunk($scriptProperties['tpl'],$productArray);
                 } else {
-                    $output = $this->modx->getChunk('cml_product_detail',$productArray);
-                    $this->modx->log(1,$output);
+                    $output = $this->modx->getChunk('cml.product_detail',$productArray);
                 }
 
             }
@@ -290,7 +289,7 @@ class Commerce_MultiLang {
     }
 
     /**
-     * Returns templated ( cml_product_image ) images for a particular product
+     * Returns templated ( cml.product_image ) images for a particular product
      *
      * @param int $productId
      * @param bool $excludeMain
@@ -331,7 +330,7 @@ class Commerce_MultiLang {
             if($scriptProperties['tpl']) {
                 $output .= $this->modx->getChunk($scriptProperties['tpl'],$imageArray);
             } else {
-                $output .= $this->modx->getChunk('cml_product_image',$imageArray);
+                $output .= $this->modx->getChunk('cml.product_image',$imageArray);
             }
         }
 
@@ -388,7 +387,7 @@ class Commerce_MultiLang {
                     if($scriptProperties['variationTpl']) {
                         $output .= $this->modx->getChunk($scriptProperties['variationTpl'],$variation);
                     } else {
-                        $output .= $this->modx->getChunk('cml_variation',[
+                        $output .= $this->modx->getChunk('cml.variation',[
                             'variation' =>  $variation['value'],
                             'variation_product_id'  => $variation['product_id']
                         ]);

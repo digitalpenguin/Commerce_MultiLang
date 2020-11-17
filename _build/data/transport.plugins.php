@@ -23,7 +23,7 @@ unset($events);
 
 $plugins[1] = $modx->newObject('modPlugin');
 $plugins[1]->set('id',1);
-$plugins[1]->set('name','makeCategoryContainer');
+$plugins[1]->set('name','cml.makeCategoryContainer');
 $plugins[1]->set('description','Makes a resource a container if a descendant of the category root.');
 $plugins[1]->set('plugincode', getSnippetContent($sources['plugins'] . 'makecategorycontainer.plugin.php'));
 $plugins[1]->set('category', 0);

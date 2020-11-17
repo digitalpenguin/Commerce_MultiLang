@@ -4,7 +4,7 @@ $chunks = array();
 $chunks[0] = $modx->newObject('modChunk');
 $chunks[0]->fromArray(array(
     'id' => 0,
-    'name' => 'cml_language_links',
+    'name' => 'cml.language_links',
     'description' => 'Displays links to translated products.',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/languagelinks.chunk.tpl'),
 ),'',true,true);
@@ -15,7 +15,7 @@ $chunks[0]->fromArray(array(
 $chunks[1] = $modx->newObject('modChunk');
 $chunks[1]->fromArray(array(
     'id' => 0,
-    'name' => 'cml_product_preview',
+    'name' => 'cml.product_preview',
     'description' => 'Returns a list of product previews formatted with a chunk.',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/productpreview.chunk.tpl'),
 ),'',true,true);
@@ -26,7 +26,7 @@ $chunks[1]->fromArray(array(
 $chunks[2] = $modx->newObject('modChunk');
 $chunks[2]->fromArray(array(
     'id' => 0,
-    'name' => 'cml_product_detail',
+    'name' => 'cml.product_detail',
     'description' => 'Returns a data for the product detail page.',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/productdetail.chunk.tpl'),
 ),'',true,true);
@@ -37,7 +37,7 @@ $chunks[2]->fromArray(array(
 $chunks[3] = $modx->newObject('modChunk');
 $chunks[3]->fromArray(array(
     'id' => 0,
-    'name' => 'cml_variation_row',
+    'name' => 'cml.variation_row',
     'description' => 'Chunk used for formatting rows with product variation output.',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/variationrow.chunk.tpl'),
 ),'',true,true);
@@ -48,7 +48,7 @@ $chunks[3]->fromArray(array(
 $chunks[4] = $modx->newObject('modChunk');
 $chunks[4]->fromArray(array(
     'id' => 0,
-    'name' => 'cml_product_image',
+    'name' => 'cml.product_image',
     'description' => 'Template chunk used to output any additional gallery images on the product detail page',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/productimage.chunk.tpl'),
 ),'',true,true);
