@@ -374,7 +374,7 @@ Commerce_MultiLang.window.ProductCreate = function(config) {
                             ,name: 'weight_unit'
                             ,hiddenName: 'weight_unit'
                             ,anchor: '100%'
-                            ,value:'kg'
+                            ,value:'g'
                         }]
                     }]
                 },{
