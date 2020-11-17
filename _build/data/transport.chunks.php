@@ -45,4 +45,13 @@ $chunks[3]->fromArray(array(
 //chunks[1]->setProperties($properties);
 //unset($properties);
 
+$chunks[4] = $modx->newObject('modChunk');
+$chunks[4]->fromArray(array(
+    'id' => 0,
+    'name' => 'cml_product_image',
+    'description' => 'Template chunk used to output any additional gallery images on the product detail page',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/chunks/productimage.chunk.tpl'),
+),'',true,true);
+
+
 return $chunks;

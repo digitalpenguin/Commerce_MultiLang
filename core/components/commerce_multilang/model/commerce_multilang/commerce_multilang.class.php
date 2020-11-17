@@ -220,7 +220,8 @@ class Commerce_MultiLang {
             'ProductImage.main' =>  true
         ));
         $c->leftJoin('CMLProductImageLanguage','ProductImageLanguage',array(
-            'ProductImageLanguage.product_image_id=ProductImage.id'
+            'ProductImageLanguage.product_image_id=ProductImage.id',
+            'ProductImageLanguage.lang_key'=>$this->modx->getOption('cultureKey')
         ));
         $c->where(array('CMLProduct.id'=>$productId));
         $c->select([
@@ -230,9 +231,9 @@ class Commerce_MultiLang {
             'ProductLanguage.description',
             'ProductLanguage.content',
             'ProductLanguage.category',
-            'ProductImageLanguage.title',
-            'ProductImageLanguage.alt',
-            'ProductImageLanguage.image'
+            'ProductImageLanguage.title as main_image_title',
+            'ProductImageLanguage.alt as main_image_alt',
+            'ProductImageLanguage.image as main_image'
         ]);
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
@@ -268,11 +269,18 @@ class Commerce_MultiLang {
                         $product['alias_ext'] = $extension;
                     }
                 }
-                $this->modx->setPlaceholders($product,'cml.');
+
+                // Grab secondary images
+                $images = $this->getProductImages($product['id'],true,$scriptProperties);
+                $product['secondary_images'] = $images;
+
+                $productArray['cml'] = $product;
+
                 if ($scriptProperties['tpl']) {
-                    $output = $this->modx->getChunk($scriptProperties['tpl']);
+                    $output = $this->modx->getChunk($scriptProperties['tpl'],$productArray);
                 } else {
-                    $output = $this->modx->getChunk('cml_product_detail');
+                    $output = $this->modx->getChunk('cml_product_detail',$productArray);
+                    $this->modx->log(1,$output);
                 }
 
             }
@@ -281,13 +289,61 @@ class Commerce_MultiLang {
         //return '<h1>Test</h1>';
     }
 
+    /**
+     * Returns templated ( cml_product_image ) images for a particular product
+     *
+     * @param int $productId
+     * @param bool $excludeMain
+     * @param array $scriptProperties
+     * @return string
+     */
+    public function getProductImages(int $productId, bool $excludeMain = false, array $scriptProperties = []) : string
+    {
+        $c = $this->commerce->adapter->newQuery('CMLProductImage');
+        $c->leftJoin('CMLProductImageLanguage','ImageLanguage',[
+            'ImageLanguage.product_image_id=CMLProductImage.id',
+            'ImageLanguage.lang_key'    =>  $this->commerce->adapter->getOption('cultureKey')
+        ]);
+        $c->select([
+            'CMLProductImage.*',
+            'ImageLanguage.image',
+            'ImageLanguage.alt',
+            'ImageLanguage.title',
+            'ImageLanguage.description'
+        ]);
+        $c->where(['CMLProductImage.product_id:=' => $productId]);
+        if($excludeMain) {
+            $c->where(['AND:CMLProductImage.main:=' => false]);
+        }
+        //$c->prepare();
+        //$this->modx->log(MODX_LOG_LEVEL_ERROR,$c->toSQL());
+        if ($c->prepare() && $c->stmt->execute()) {
+            $images = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        $c->sortby('ProductImage.position','ASC');
+        if(empty($images)) return '';
+
+
+
+        $output = '';
+        foreach($images as $image) {
+            $imageArray['cml'] = $image;
+            if($scriptProperties['tpl']) {
+                $output .= $this->modx->getChunk($scriptProperties['tpl'],$imageArray);
+            } else {
+                $output .= $this->modx->getChunk('cml_product_image',$imageArray);
+            }
+        }
+
+        return $output;
+    }
 
     /**
      * @param int $parentProductId
      * @param array $scriptProperties
      * @return string
      */
-    public function getProductVariationFields($parentProductId,array $scriptProperties) {
+    public function getProductVariationFields(int $parentProductId,array $scriptProperties) {
         $output = '';
         // Gets primary product and children
         $c = $this->commerce->adapter->newQuery('CMLProduct');

@@ -38,6 +38,9 @@
             },{
                 "name": "cml_variation",
                 "file": "variationrow.chunk.tpl"
+            },{
+                "name": "cml_product_image",
+                "file": "productimage.chunk.tpl"
             }]
         },
 
