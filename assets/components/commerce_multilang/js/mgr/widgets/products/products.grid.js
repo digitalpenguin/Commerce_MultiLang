@@ -187,6 +187,18 @@ Ext.extend(Commerce_MultiLang.grid.Products,MODx.grid.Grid,{
                         langTab['fields'] = lang;
                     }
                 });
+/*
+                langTab.on('afterrender', function() {
+                    var languages = record.langs;
+                    languages.forEach(function (language, index) {
+                        if (MODx.loadRTE) {
+                            //console.log(Ext.getCmp('product-content-'+language.lang_key));
+                            //MODx.loadRTE('product-content-'+language.lang_key);
+                            MODx.loadRTE('product-content-'+langTab.lang_key);
+                        }
+                    });
+
+                });*/
             });
             // Grab variation names for this product
             var variations = null;

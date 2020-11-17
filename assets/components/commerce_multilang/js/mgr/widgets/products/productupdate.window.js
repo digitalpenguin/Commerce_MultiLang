@@ -2,7 +2,7 @@ Commerce_MultiLang.window.ProductUpdate = function(config) {
 
     Ext.applyIf(config,{
         title: _('commerce_multilang.product.update')
-        ,closeAction: 'close'
+        ,closeAction: 'destroy'
         ,width:1000
         ,id:'commerce_multilang-window-product-update'
         ,url: Commerce_MultiLang.config.connectorUrl
@@ -125,14 +125,14 @@ Commerce_MultiLang.window.ProductUpdate = function(config) {
         }]
     });
     Commerce_MultiLang.window.ProductUpdate.superclass.constructor.call(this,config);
-    this.on('afterrender', function() {
-        var languages = this.config.record.languages;
-        languages.forEach(function (language, index) {
-            if (MODx.loadRTE) {
-                MODx.loadRTE('product-content-'+language.lang_key);
-            }
-        });
-
+    this.on('activate', function() {
+        if (MODx.loadRTE) {
+            var languages = this.config.record.languages;
+            languages.forEach(function (language, index) {
+                //console.log(Ext.getCmp('product-content-'+language.lang_key));
+                MODx.loadRTE('product-content-' + language.lang_key);
+            });
+        }
     });
 };
 Ext.extend(Commerce_MultiLang.window.ProductUpdate,MODx.Window,{
@@ -167,6 +167,7 @@ Ext.extend(Commerce_MultiLang.window.ProductUpdate,MODx.Window,{
                     }
                 });
                 fields.push(field);
+
             });
 
             var tab = [{
