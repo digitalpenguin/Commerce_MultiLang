@@ -11,6 +11,9 @@
     <input id="add-quantity" type="number" name="products[ [[+cml.id]] ][quantity]" value="1">
     <input type="submit" value="Add to Cart">
 </form>
+<div>
+    [[+cml.content]]
+</div>
 <script>
     function setProduct(value) {
         document.getElementById('add-quantity').setAttribute('name','products['+value+'][quantity]');
