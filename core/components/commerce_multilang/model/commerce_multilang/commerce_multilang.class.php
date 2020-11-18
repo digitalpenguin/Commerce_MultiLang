@@ -275,20 +275,18 @@ class Commerce_MultiLang {
                 $images = $this->getProductImages($product['id'],true,$scriptProperties);
                 $product['secondary_images'] = $images;
 
-                //$productArray['cml'] = $product;
-                $this->modx->log(1,print_r($product,true));
-                $this->modx->setPlaceholders($product,'cml.');
-
-                /*if ($scriptProperties['tpl']) {
+                $productArray['cml'] = $product;
+                if ($scriptProperties['tpl'] === 'default') {
+                    $output = $this->modx->getChunk('cml.product_detail',$productArray);
+                } else if($scriptProperties['tpl']) {
                     $output = $this->modx->getChunk($scriptProperties['tpl'],$productArray);
                 } else {
-                    $output = $this->modx->getChunk('cml.product_detail',$productArray);
-                }*/
-
+                    $this->modx->setPlaceholders($product,'cml.');
+                }
             }
         }
         return $output;
-        //return '<h1>Test</h1>';
+
     }
 
 
