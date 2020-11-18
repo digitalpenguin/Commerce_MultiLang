@@ -7,9 +7,9 @@
 
 $request = $modx->sanitizeString($_REQUEST['q']);
 // Grab cached output if it exists.
-if($modx->cacheManager->get('cml_language_links_'.$request, [xPDO::OPT_CACHE_KEY => 'commerce_multilang'])) {
+/*if($modx->cacheManager->get('cml_language_links_'.$request, [xPDO::OPT_CACHE_KEY => 'commerce_multilang'])) {
     $modx->cacheManager->set('cml_language_links_'.$request,$output, 3600, [xPDO::OPT_CACHE_KEY => 'commerce_multilang']);
-}
+}*/
 
 // Grab xpdo instance with needed tables loaded
 $commerceMultiLang = $modx->getService('commerce_multilang', 'Commerce_MultiLang', $modx->getOption('commerce_multilang.core_path', null, $modx->getOption('core_path') . 'components/commerce_multilang/') . 'model/commerce_multilang/', $scriptProperties);
@@ -89,7 +89,7 @@ if($productDetailId) {
         $url = $url.$alias;
 
         // Set template chunk
-        $chunkName = 'language_links_tpl';
+        $chunkName = 'cml.language_links';
         if($scriptProperties['tpl']) {
             $chunkName = $scriptProperties['tpl'];
         }
@@ -115,10 +115,12 @@ if($productDetailId) {
     }
 }
 // Cache the output
-$options = array(
+/*$options = array(
     xPDO::OPT_CACHE_KEY => 'commerce_multilang',
 );
 if(!$modx->cacheManager->get('cml_language_links_'.$request, $options)) {
     $modx->cacheManager->set('cml_language_links_'.$request,$output, 3600, $options);
 }
 return $modx->cacheManager->get('cml_language_links_'.$request, $options);
+*/
+return $output;

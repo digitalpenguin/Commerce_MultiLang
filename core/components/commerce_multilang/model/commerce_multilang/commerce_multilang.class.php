@@ -245,6 +245,7 @@ class Commerce_MultiLang {
                 if ($variations) {
                     $product['variations'] = $variations;
                 }
+                //unset($product['variations']);
                 if ($product['image']) {
                     $uri = ltrim($this->options['baseImageUrl'], '/');
                     $product['image'] = '/' . $uri . $product['image'];
@@ -288,9 +289,9 @@ class Commerce_MultiLang {
         //return '<h1>Test</h1>';
     }
 
+
     /**
      * Returns templated ( cml.product_image ) images for a particular product
-     *
      * @param int $productId
      * @param bool $excludeMain
      * @param array $scriptProperties
@@ -353,10 +354,10 @@ class Commerce_MultiLang {
         ));
         $c->select('CMLProduct.id,ProductData.type');
         $c->where([
-            'CMLProduct.removed:!='       =>  1,
+            'CMLProduct.removed:!=' =>  1,
             [
-                'AND:ProductData.parent:='              =>  $parentProductId,
-                'OR:CMLProduct.id:='      =>  $parentProductId
+                'AND:ProductData.parent:='  =>  $parentProductId,
+                'OR:CMLProduct.id:='        =>  $parentProductId
             ]
 
         ]);
@@ -388,8 +389,8 @@ class Commerce_MultiLang {
                         $output .= $this->modx->getChunk($scriptProperties['variationTpl'],$variation);
                     } else {
                         $output .= $this->modx->getChunk('cml.variation',[
-                            'variation' =>  $variation['value'],
-                            'variation_product_id'  => $variation['product_id']
+                            'variation'             =>  $variation['value'],
+                            'variation_product_id'  =>  $variation['product_id']
                         ]);
                     }
                 }
