@@ -15,7 +15,7 @@ $contextKey = $modx->context->get('key');
 $errorUrl = $modx->makeUrl($modx->getOption('error_page'),$contextKey);
 
 // Grabs request
-$path = $_REQUEST['q'];
+$path = filter_var($_REQUEST['q'],FILTER_SANITIZE_STRING);
 $requestArray = explode('/', $path);
 $requestArray = array_reverse($requestArray);
 $alias = $requestArray[0];
@@ -25,11 +25,9 @@ if($alias == '') {
     $modx->sendRedirect($errorUrl);
 };
 
-
 // Gets id of the product resource viewport
 $productDetailId = $modx->getOption('commerce_multilang.product_detail_page');
 if($productDetailId) {
-
     // Grabs the extension type for documents then strips it from the alias
     $contentType = $modx->getObject('modContentType',array(
         'mime_type' => 'text/html'
@@ -43,18 +41,21 @@ if($productDetailId) {
     //Comment this out if using experimental flat rows
     $c = $xpdo->newQuery('CMLProduct');
     $c->leftJoin('CMLProductData','ProductData','CMLProduct.id=ProductData.product_id');
-    $c->leftJoin('CMLProductLanguage','ProductLanguage',array(
+    $c->leftJoin('CMLProductLanguage','ProductLanguage',[
         'CMLProduct.id=ProductLanguage.product_id',
         'ProductLanguage.lang_key'  =>  $modx->getOption('cultureKey')
-    ));
+    ]);
     $c->where(array('ProductData.alias'=>$alias));
     $c->select('CMLProduct.id,ProductData.alias,ProductLanguage.name,ProductLanguage.description');
+    //$c->prepare();
+    //$modx->log(MODX_LOG_LEVEL_ERROR,$c->toSQL());
     if ($c->prepare() && $c->stmt->execute()) {
         $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
         if($product) {
             $_GET['product'] = $product;
             $modx->sendForward($productDetailId);
         } else {
+            $modx->log(1,'no product');
             $modx->sendRedirect($errorUrl);
         }
     }

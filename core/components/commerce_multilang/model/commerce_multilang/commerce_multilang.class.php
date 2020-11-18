@@ -275,13 +275,15 @@ class Commerce_MultiLang {
                 $images = $this->getProductImages($product['id'],true,$scriptProperties);
                 $product['secondary_images'] = $images;
 
-                $productArray['cml'] = $product;
+                //$productArray['cml'] = $product;
+                $this->modx->log(1,print_r($product,true));
+                $this->modx->setPlaceholders($product,'cml.');
 
-                if ($scriptProperties['tpl']) {
+                /*if ($scriptProperties['tpl']) {
                     $output = $this->modx->getChunk($scriptProperties['tpl'],$productArray);
                 } else {
                     $output = $this->modx->getChunk('cml.product_detail',$productArray);
-                }
+                }*/
 
             }
         }
@@ -328,8 +330,8 @@ class Commerce_MultiLang {
         $output = '';
         foreach($images as $image) {
             $imageArray['cml'] = $image;
-            if($scriptProperties['tpl']) {
-                $output .= $this->modx->getChunk($scriptProperties['tpl'],$imageArray);
+            if($scriptProperties['imageTpl']) {
+                $output .= $this->modx->getChunk($scriptProperties['imageTpl'],$imageArray);
             } else {
                 $output .= $this->modx->getChunk('cml.product_image',$imageArray);
             }
@@ -352,15 +354,16 @@ class Commerce_MultiLang {
             'ProductLanguage.product_id=CMLProduct.id',
             'ProductLanguage.lang_key'=>$this->modx->getOption('cultureKey')
         ));
-        $c->select('CMLProduct.id,ProductData.type');
+        $c->leftJoin('CMLAssignedVariation','AssignedVariation','AssignedVariation.type_id=ProductData.type');
+        $c->select(['CMLProduct.id','ProductData.type','AssignedVariation.name']);
         $c->where([
             'CMLProduct.removed:!=' =>  1,
             [
                 'AND:ProductData.parent:='  =>  $parentProductId,
                 'OR:CMLProduct.id:='        =>  $parentProductId
             ]
-
         ]);
+        $c->sortby('AssignedVariation.name','DESC');
         //$c->prepare();
         //$this->modx->log(1,$c->toSQL());
         if ($c->prepare() && $c->stmt->execute()) {
@@ -378,6 +381,7 @@ class Commerce_MultiLang {
                 'lang_key'          =>  $this->commerce->adapter->getOption('cultureKey'),
                 'type_id'           =>  $productArray[0]['type']
             ]);
+
             //$v->prepare();
             //$this->modx->log(1,$v->toSQL());
             if ($v->prepare() && $v->stmt->execute()) {
