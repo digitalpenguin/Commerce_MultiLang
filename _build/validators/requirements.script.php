@@ -17,7 +17,7 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
         }
         $modx->log($level, '- MODX Revolution 2.6.5+: ' . $modxVersion['full_version']);
 
-        // Check for PHP 5.5 or higher
+        // Check for PHP 7.2 or higher
         $level = xPDO::LOG_LEVEL_INFO;
         if (version_compare(PHP_VERSION, '7.2.0') < 0) {
             $level = xPDO::LOG_LEVEL_ERROR;

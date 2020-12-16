@@ -16,9 +16,7 @@ $xpdo_meta_map['CMLProductLanguage']= array (
     'product_id' => NULL,
     'lang_key' => NULL,
     'name' => '',
-    'category' => NULL,
     'description' => NULL,
-    'content' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -45,23 +43,9 @@ $xpdo_meta_map['CMLProductLanguage']= array (
       'null' => false,
       'default' => '',
     ),
-    'category' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'attributes' => 'unsigned',
-      'phptype' => 'integer',
-      'null' => false,
-    ),
     'description' => 
     array (
       'dbtype' => 'text',
-      'phptype' => 'string',
-      'null' => true,
-    ),
-    'content' => 
-    array (
-      'dbtype' => 'mediumtext',
       'phptype' => 'string',
       'null' => true,
     ),
@@ -93,22 +77,6 @@ $xpdo_meta_map['CMLProductLanguage']= array (
       'columns' => 
       array (
         'lang_key' => 
-        array (
-          'length' => '',
-          'collation' => 'A',
-          'null' => false,
-        ),
-      ),
-    ),
-    'category' => 
-    array (
-      'alias' => 'category',
-      'primary' => false,
-      'unique' => false,
-      'type' => 'BTREE',
-      'columns' => 
-      array (
-        'category' => 
         array (
           'length' => '',
           'collation' => 'A',

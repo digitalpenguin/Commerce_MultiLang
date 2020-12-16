@@ -72,416 +72,30 @@ class Commerce_MultiLang {
     }
 
     /**
-     * Return a list of products
-     *
-     * Snippet Params:
-     * - tpl : set a chunk name to use for the template
-     * - debug : set to 1 to see data output
-     * - limit : max number of items returned
-     * - sortby : field to sort items by
-     * - sortdir : ASC or DESC
-     *
-     * @param array $scriptProperties
-     * @return string
-     */
-    public function getProductList(array $scriptProperties = array()) {
-        // Check for sortdir param
-        if(array_key_exists('sortdir',$scriptProperties)) {
-            if($scriptProperties['sortdir']) {
-                $this->sortdir = $scriptProperties['sortdir'];
-            }
-        }
-        // Check for sortby param
-        if(array_key_exists('sortby',$scriptProperties)) {
-            if($scriptProperties['sortby']) {
-                $this->sortby = $scriptProperties['sortby'];
-            }
-        }
-        // Check for limit param
-        if(array_key_exists('limit',$scriptProperties)) {
-            if($scriptProperties['limit']) {
-                $this->limit = $scriptProperties['limit'];
-            }
-        }
-
-        $categoryIds = [];
-        if ($scriptProperties['categories']) {
-            $categoryIds = explode(',', $scriptProperties['categories']);
-        } else {
-            $categoryIds[] = $this->modx->resource->get('id');
-        }
-
-        $contentType = $this->commerce->adapter->getObject('modContentType',array(
-            'mime_type' => 'text/html'
-        ));
-        if($contentType) {
-            $extension = $contentType->get('file_extensions');
-        }
-
-        $c = $this->commerce->adapter->newQuery('CMLProduct');
-        $c->leftJoin('CMLProductData', 'ProductData', 'CMLProduct.id=ProductData.product_id');
-        $c->leftJoin('CMLProductLanguage', 'ProductLanguage', 'CMLProduct.id=ProductLanguage.product_id');
-        $c->leftJoin('CMLProductImage', 'ProductImage', array(
-            'CMLProduct.id=ProductImage.product_id',
-            'ProductImage.main' => 1
-        ));
-        $c->leftJoin('CMLProductImageLanguage', 'ProductImageLanguage', array(
-            'ProductImage.id=ProductImageLanguage.product_image_id',
-            'ProductImageLanguage.lang_key' =>  $this->modx->getOption('cultureKey')
-        ));
-        //$c->leftJoin('modResource','Category','ProductLanguage.category=Category.id');
-
-        if($c->sortby == 'RAND()') {
-            $c->sortby('RAND()');
-        } else {
-            $c->sortby($this->sortby, $this->sortdir);
-        }
-        $c->limit($this->limit);
-        $c->where(array(
-            'CMLProduct.removed:='    => 0,
-            'AND:ProductData.product_listing:='     => 1,
-            'AND:ProductLanguage.lang_key:='        => $this->commerce->adapter->getOption('cultureKey'),
-            'AND:ProductLanguage.category:IN'       => $categoryIds, // only show products on the correct resources
-        ));
-        $c->select('CMLProduct.*,
-                    ProductData.alias,
-                    ProductLanguage.*,
-                    ProductImageLanguage.image');
-        //$c->prepare();
-        //echo $c->toSQL();
-        if ($c->prepare() && $c->stmt->execute()) {
-            $products = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            $output = '';
-            if($products) {
-                foreach ($products as $product) {
-                    //Add current document extension to product
-                    $product['extension'] = $extension;
-
-                    $url = $this->modx->makeUrl($product['category']);
-                    $product['product_link'] = $url .'/'. $product['alias'] . $extension;
-                    if($product['image']) {
-                        $uri = ltrim($this->options['baseImageUrl'], '/');
-                        $product['image'] = '/' . $uri . $product['image'];
-                    } else {
-                        $product['image'] = $this->commerce->adapter->getOption('commerce_multilang.assets_url').'img/placeholder.jpg';
-                    }
-
-                    $this->modx->setPlaceholders($product,'cml.list.');
-                    if ($scriptProperties['tpl']) {
-                        $output .= $this->modx->getChunk($scriptProperties['tpl']);
-                    } else {
-                        $output .= $this->modx->getChunk('cml.product_preview');
-                    }
-                }
-                if ($scriptProperties['debug']) {
-                    return '<pre>' . print_r($products, true) . '</pre>';
-                }
-                return $output;
-            } else {
-                // If nothing found
-                return $this->modx->lexicon('commerce_multilang.product.no_products');
-            }
-
-        }
-        return '';
-    }
-
-    /**
-     * Retrieves product information
-     *
-     * @param array $scriptProperties
-     * @return bool|string
-     */
-    public function getProductDetail($scriptProperties = array()) {
-        $output = '';
-
-        // Ensure product is an array (for Fred compatibility)
-        $product = (array)$_GET['product'];
-
-        if(isset($product['id'])) {
-            $productId = $product['id'];
-            if(!$productId = filter_var($productId, FILTER_SANITIZE_NUMBER_INT)) {
-                return '';
-            }
-        } else {
-            return 'Product Placeholder';
-        }
-
-
-        $c = $this->modx->newQuery('CMLProduct');
-        $c->leftJoin('CMLProductData','ProductData','ProductData.product_id=CMLProduct.id');
-        $c->leftJoin('CMLProductLanguage','ProductLanguage',array(
-            'ProductLanguage.product_id=CMLProduct.id',
-            'ProductLanguage.lang_key'=>$this->modx->getOption('cultureKey')
-        ));
-        $c->leftJoin('CMLProductImage','ProductImage',array(
-            'ProductImage.product_id=CMLProduct.id',
-            'ProductImage.main' =>  true
-        ));
-        $c->leftJoin('CMLProductImageLanguage','ProductImageLanguage',array(
-            'ProductImageLanguage.product_image_id=ProductImage.id',
-            'ProductImageLanguage.lang_key'=>$this->modx->getOption('cultureKey')
-        ));
-        $c->where(array('CMLProduct.id'=>$productId));
-        $c->select([
-            'CMLProduct.*',
-            'ProductData.alias',
-            'ProductLanguage.name',
-            'ProductLanguage.description',
-            'ProductLanguage.content',
-            'ProductLanguage.category',
-            'ProductImageLanguage.title as main_image_title',
-            'ProductImageLanguage.alt as main_image_alt',
-            'ProductImageLanguage.image as main_image'
-        ]);
-        //$c->prepare();
-        //$this->modx->log(1,$c->toSQL());
-
-        if ($c->prepare() && $c->stmt->execute()) {
-            $product = $c->stmt->fetch(PDO::FETCH_ASSOC);
-            if ($product) {
-                $variations = $this->getProductVariationFields($product['id'], $scriptProperties);
-                if ($variations) {
-                    $product['variations'] = $variations;
-                }
-                //unset($product['variations']);
-                if ($product['image']) {
-                    $uri = ltrim($this->options['baseImageUrl'], '/');
-                    $product['image'] = '/' . $uri . $product['image'];
-                    $product['image_nr'] = ltrim($product['image'], '/');
-                } else {
-                    $product['image'] = $this->commerce->adapter->getOption('commerce_multilang.assets_url') . 'img/placeholder.jpg';
-                }
-
-                // Set link to primary category as placeholder
-                // TODO: Change the way this is handled when multiple categories are added.
-                if($product['category']) {
-                    $product['category_link'] = $this->modx->makeUrl($product['category']);
-                }
-
-                // Checks for file extension and sets placeholder
-                $contentType = $this->modx->getObject('modContentType',array(
-                    'mime_type' => 'text/html'
-                ));
-                if($contentType) {
-                    $extension = $contentType->get('file_extensions');
-                    if ($extension) {
-                        $product['alias_ext'] = $extension;
-                    }
-                }
-
-                // Grab secondary images
-                $images = $this->getProductImages($product['id'],true,$scriptProperties);
-                $product['secondary_images'] = $images;
-
-                $productArray['cml'] = $product;
-                if ($scriptProperties['tpl'] === 'default') {
-                    $output = $this->modx->getChunk('cml.product_detail',$productArray);
-                } else if($scriptProperties['tpl']) {
-                    $output = $this->modx->getChunk($scriptProperties['tpl'],$productArray);
-                } else {
-                    $this->modx->setPlaceholders($product,'cml.');
-                }
-            }
-        }
-        return $output;
-
-    }
-
-
-    /**
-     * Returns templated ( cml.product_image ) images for a particular product
-     * @param int $productId
-     * @param bool $excludeMain
-     * @param array $scriptProperties
-     * @return string
-     */
-    public function getProductImages(int $productId, bool $excludeMain = false, array $scriptProperties = []) : string
-    {
-        $c = $this->commerce->adapter->newQuery('CMLProductImage');
-        $c->leftJoin('CMLProductImageLanguage','ImageLanguage',[
-            'ImageLanguage.product_image_id=CMLProductImage.id',
-            'ImageLanguage.lang_key'    =>  $this->commerce->adapter->getOption('cultureKey')
-        ]);
-        $c->select([
-            'CMLProductImage.*',
-            'ImageLanguage.image',
-            'ImageLanguage.alt',
-            'ImageLanguage.title',
-            'ImageLanguage.description'
-        ]);
-        $c->where(['CMLProductImage.product_id:=' => $productId]);
-        if($excludeMain) {
-            $c->where(['AND:CMLProductImage.main:=' => false]);
-        }
-        //$c->prepare();
-        //$this->modx->log(MODX_LOG_LEVEL_ERROR,$c->toSQL());
-        if ($c->prepare() && $c->stmt->execute()) {
-            $images = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        $c->sortby('ProductImage.position','ASC');
-        if(empty($images)) return '';
-
-
-
-        $output = '';
-        foreach($images as $image) {
-            $imageArray['cml'] = $image;
-            if($scriptProperties['imageTpl']) {
-                $output .= $this->modx->getChunk($scriptProperties['imageTpl'],$imageArray);
-            } else {
-                $output .= $this->modx->getChunk('cml.product_image',$imageArray);
-            }
-        }
-
-        return $output;
-    }
-
-    /**
-     * @param int $parentProductId
-     * @param array $scriptProperties
-     * @return string
-     */
-    public function getProductVariationFields(int $parentProductId,array $scriptProperties) {
-        $output = '';
-        // Gets primary product and children
-        $c = $this->commerce->adapter->newQuery('CMLProduct');
-        $c->leftJoin('CMLProductData','ProductData','ProductData.product_id=CMLProduct.id');
-        $c->leftJoin('CMLProductLanguage','ProductLanguage',array(
-            'ProductLanguage.product_id=CMLProduct.id',
-            'ProductLanguage.lang_key'=>$this->modx->getOption('cultureKey')
-        ));
-        $c->leftJoin('CMLAssignedVariation','AssignedVariation','AssignedVariation.type_id=ProductData.type');
-        $c->select(['CMLProduct.id','ProductData.type','AssignedVariation.name']);
-        $c->where([
-            'CMLProduct.removed:!=' =>  1,
-            [
-                'AND:ProductData.parent:='  =>  $parentProductId,
-                'OR:CMLProduct.id:='        =>  $parentProductId
-            ]
-        ]);
-        $c->sortby('AssignedVariation.name','DESC');
-        //$c->prepare();
-        //$this->modx->log(1,$c->toSQL());
-        if ($c->prepare() && $c->stmt->execute()) {
-            $productArray = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
-            $productIds = [];
-            // Collect the product ids into an array
-            foreach($productArray as $product) {
-                $productIds[] = $product['id'];
-            }
-            // Get assigned variations for current language if the product ID is in the array
-            $v = $this->commerce->adapter->newQuery('CMLAssignedVariation');
-            $v->select(['id','product_id','type_id','variation_id','name','lang_key','value']);
-            $v->where([
-                'product_id:IN'     =>  $productIds,
-                'lang_key'          =>  $this->commerce->adapter->getOption('cultureKey'),
-                'type_id'           =>  $productArray[0]['type']
-            ]);
-
-            //$v->prepare();
-            //$this->modx->log(1,$v->toSQL());
-            if ($v->prepare() && $v->stmt->execute()) {
-                $variations = $v->stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                $variations = $this->mergeVariationsByProductId($variations,$scriptProperties);
-                foreach($variations as $variation) {
-                    if($scriptProperties['variationTpl']) {
-                        $output .= $this->modx->getChunk($scriptProperties['variationTpl'],$variation);
-                    } else {
-                        $output .= $this->modx->getChunk('cml.variation',[
-                            'variation'             =>  $variation['value'],
-                            'variation_product_id'  =>  $variation['product_id']
-                        ]);
-                    }
-                }
-            }
-        }
-        return $output;
-    }
-
-    /**
-     * Merge array of different variation values together by common product_id
-     * @param array $variations
-     * @param array $scriptProperties
-     * @return array
-     */
-    public function mergeVariationsByProductId(array $variations,array $scriptProperties) {
-        // Duplicate the array of variations to compare with each other.
-        //$this->modx->log(1,print_r($variations,true));
-        $duplicateArr = $variations;
-        $nameKey = '';
-        $idx = 0;
-        $final = [];
-        foreach($variations as $variation) {
-            // Set the initial name on first iteration
-            if($idx === 0) {
-                $nameKey = $variation['name'];
-            }
-            // If another name comes is first, it's a repeat so skip it.
-            if($nameKey!=$variation['name']) {
-                continue;
-            }
-            $new = [];
-            //$this->modx->log(1,print_r($variation,true));
-            $new['product_id']    =   $variation['product_id'];
-            $new['variation_id']  =   $variation['variation_id'];
-
-            // Only show variation names if it's requested in the variationNames parameter.
-            if($scriptProperties['variationNames']) {
-                $new['value'] = ucfirst($variation['name']) . ': ' . $variation['value'];
-            } else {
-                $new['value'] = $variation['value'];
-            }
-            $new['lang_key']      =   $variation['lang_key'];
-
-            foreach($duplicateArr as $arr) {
-                if(($variation['product_id'] === $arr['product_id']) && ($variation['variation_id'] != $arr['variation_id'])) {
-                    $new['variation_id']  .=   ', '.$arr['variation_id'];
-                    // Only show variation names if it's requested in the variationNames parameter.
-                    if($scriptProperties['variationNames']) {
-                        $new['value'] .= ', ' . ucfirst($arr['name']) . ': ' . $arr['value'];
-                    } else {
-                        $new['value'] .= ', ' . $arr['value'];
-                    }
-                    //$this->modx->log(1,print_r($new,true));
-                }
-            }
-            if($new['value']) {
-                $final[] = $new;
-            }
-            $idx++;
-        }
-        //$this->modx->log(1,'|'.print_r($final,true).'|');
-        return $final;
-    }
-
-    /**
      * Returns array of active context keys with associated languages
      * @return array
      */
     public function getLanguages() {
-        $languages = array();
+        $languages = [];
         $c = $this->commerce->adapter->newQuery('modContext');
         $c->leftJoin('modContextSetting','ContextSettings','modContext.key=ContextSettings.context_key');
         $c->select('modContext.key,modContext.name,modContext.rank,ContextSettings.key as setting_key,ContextSettings.value as lang_key');
-        $c->where(array(
+        $c->where([
             'modContext.key:!=' => 'mgr',
             'AND:ContextSettings.key:=' => 'cultureKey'
-        ));
+        ]);
+        $c->sortby('modContext.rank','ASC');
         if ($c->prepare() && $c->stmt->execute()) {
             $contexts = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($contexts as $context) {
                 $v = $this->commerce->adapter->newQuery('modContextSetting');
-                $v->where(array(
-                    'context_key:='   =>  $context['key'],
-                    'AND:key:='       =>  'commerce_multilang.product_detail_page'
-                ));
+                $v->where([
+                    'context_key:='   =>  $context['key']
+                ]);
                 $v->select('modContextSetting.key,modContextSetting.value');
                 if ($v->prepare() && $v->stmt->execute()) {
                     $setting = $v->stmt->fetch(PDO::FETCH_ASSOC);
-                    $lang = array();
+                    $lang = [];
                     $lang['context_key'] = $context['key'];
                     $lang['lang_key'] = $context['lang_key'];
                     $lang['name'] = $context['name'];
@@ -494,4 +108,22 @@ class Commerce_MultiLang {
         return $languages;
     }
 
+    /**
+     * Returns an array of lang_key values that are not the default language
+     *
+     * @return array
+     */
+    public function getLanguageKeys() {
+        $languages = $this->getLanguages();
+        $langKeys = [];
+        foreach($languages as $language) {
+            $langKeys[] = $language['lang_key'];
+        }
+        // Remove default lang as that's already covered by the base product.
+        if (($key = array_search($this->modx->getOption('commerce_multilang.default_lang'), $langKeys)) !== false) {
+            unset($langKeys[$key]);
+        }
+
+        return $langKeys;
+    }
 }

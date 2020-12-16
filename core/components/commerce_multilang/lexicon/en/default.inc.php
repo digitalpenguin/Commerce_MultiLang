@@ -8,6 +8,9 @@
 
 $_lang['commerce_multilang'] = 'Commerce_MultiLang';
 
+$_lang['commerce.CMLProduct'] = 'Multilingual Product';
+$_lang['commerce.add_CMLProduct'] = 'Add Multilingual Product';
+
 $_lang['commerce_multilang.menu.commerce_multilang'] = 'Commerce_MultiLang';
 $_lang['commerce_multilang.menu.commerce_multilang_desc'] = 'Multilingual products for Commerce.';
 

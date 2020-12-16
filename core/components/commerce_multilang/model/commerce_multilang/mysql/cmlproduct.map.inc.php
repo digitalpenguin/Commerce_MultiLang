@@ -35,21 +35,5 @@ $xpdo_meta_map['CMLProduct']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
-    'ProductData' => 
-    array (
-      'local' => 'id',
-      'class' => 'CMLProductData',
-      'foreign' => 'product_id',
-      'cardinality' => 'one',
-      'owner' => 'local',
-    ),
-    'AssignedVariation' => 
-    array (
-      'class' => 'CMLAssignedVariation',
-      'local' => 'id',
-      'foreign' => 'variation_id',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
   ),
 );

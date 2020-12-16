@@ -1,4 +1,9 @@
-Changelog for CommerceMultiLang.
+Changelog for Commerce_MultiLang.
+
+Commerce_MultiLang 1.0.0-pl
+=============
+- A large rewrite focusing on a separation of concerns.
+- Commerce_Multilang now focuses solely on a multilingual product type.
 
 CommerceMultiLang 0.2.2 Alpha
 ==============

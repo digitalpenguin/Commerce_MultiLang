@@ -3,52 +3,17 @@
     "lowCaseName": "commerce_multilang",
     "description": "Custom multilingual products and Custom Manager Page for Commerce (MODX)",
     "author": "Murray Wood",
-    "version": "1.0.0-alpha1",
+    "version": "1.0.0-pl",
     "package":{
-        "menus": [{
-            "text": "commerce_multilang.menu.commerce_multilang",
-            "description": "commerce_multilang.menu.commerce_multilang_desc",
-            "action": "home"
-        }],
-        "elements": {
-            "plugins": [{
-                "name": "cml_redirect_to_product",
-                "file": "redirecttoproduct.plugin.php",
-                "events": ["OnPageNotFound"]
-            }],
-            "snippets": [{
-                "name": "cml.getLanguageLinks",
-                "file": "getlanguagelinks.snippet.php"
-            },{
-                "name": "cml.productDetail",
-                "file": "productdetail.snippet.php"
-            },{
-                "name": "cml.getProductList",
-                "file": "getproductlist.snippet.php"
-            }],
-            "chunks": [{
-                "name": "cml.language_links",
-                "file": "languagelinks.chunk.tpl"
-            },{
-                "name": "cml.product_detail",
-                "file": "productdetail.chunk.tpl"
-            },{
-                "name": "cml.product_preview",
-                "file": "productpreview.chunk.tpl"
-            },{
-                "name": "cml.variation",
-                "file": "variationrow.chunk.tpl"
-            },{
-                "name": "cml.product_image",
-                "file": "productimage.chunk.tpl"
-            }]
-        },
 
         "systemSettings": [{
             "key": "default_lang",
             "type": "textfield",
-            "area": "defaults",
-            "value": "en"
+            "area": "defaults"
+        },{
+            "key": "base_image_url",
+            "type": "textfield",
+            "area": "defaults"
         }]
     },
 

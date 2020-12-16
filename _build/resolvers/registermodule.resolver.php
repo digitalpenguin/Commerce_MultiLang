@@ -9,15 +9,9 @@ if ($object->xpdo) {
             $modelPath = $modx->getOption('core_path').'components/commerce_multilang/model/';
             $modx->addPackage('commerce_multilang', $modelPath);
             $manager = $modx->getManager();
-            $manager->createObjectContainer('CMLProductData');
             $manager->createObjectContainer('CMLProductLanguage');
             $manager->createObjectContainer('CMLProductImage');
             $manager->createObjectContainer('CMLProductImageLanguage');
-            $manager->createObjectContainer('CMLProductType');
-            $manager->createObjectContainer('CMLProductVariation');
-            $manager->createObjectContainer('CMLProductVariationLanguage');
-            $manager->createObjectContainer('CMLAssignedVariation');
-            $manager->createObjectContainer('CMLAssignedCategory');
 
 
             $modx->log(modX::LOG_LEVEL_INFO, 'Loading/updating available modules...');
