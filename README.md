@@ -3,6 +3,10 @@ Commerce_MultiLang
 =
 **A multilingual products module for Commerce on MODX.**
 
+
+This is the old branch. It was decided to split this up into separate modules so each one has a clear goal. Please use the master branch instead.
+==
+
 *Version: 1.0.0-alpha1*
 
 Developed by Murray Wood at Digital Penguin in Hong Kong.
