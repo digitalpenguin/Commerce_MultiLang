@@ -18,6 +18,9 @@ class MultiLang extends \modmore\Commerce\Modules\BaseModule {
     }
 
     public function initialize(EventDispatcher $dispatcher) {
+        // Load our lexicon
+        $this->adapter->loadLexicon('commerce_multilang:default');
+
         // Add template path to twig
         //$root = dirname(__DIR__, 2);
         //$this->commerce->view()->addTemplatesPath($root . '/templates/');

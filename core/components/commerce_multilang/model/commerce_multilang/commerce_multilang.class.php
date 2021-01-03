@@ -10,9 +10,6 @@ class Commerce_MultiLang {
     public $namespace = 'commerce_multilang';
     public $cache = null;
     public $options = array();
-    public $sortby = 'CMLProduct.id';
-    public $sortdir = 'ASC';
-    public $limit = '30';
 
 
     public function __construct(modX &$modx, array $options = array()) {

@@ -25,7 +25,7 @@ set_time_limit(0);
 define('PKG_NAME', 'Commerce_MultiLang');
 define('PKG_NAMESPACE', 'commerce_multilang');
 define('PKG_VERSION', '1.0.0');
-define('PKG_RELEASE', 'Alpha1');
+define('PKG_RELEASE', 'pl');
 
 /* load modx */
 require_once dirname(dirname(__FILE__)) . '/config.core.php';
@@ -67,24 +67,6 @@ $builder->registerNamespace(PKG_NAMESPACE,false,true,'{core_path}components/'.PK
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in namespace.'); flush();
 
-
-/**
- * MENU & ACTION
- */
-$menu = include $sources['data'].'transport.menu.php';
-if (empty($menu)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Could not package in menu.');
-} else {
-    $menuVehicle = $builder->createVehicle($menu, array(
-        xPDOTransport::PRESERVE_KEYS => true,
-        xPDOTransport::UPDATE_OBJECT => true,
-        xPDOTransport::UNIQUE_KEY    => 'text'
-    ));
-    $builder->putVehicle($menuVehicle);
-    $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in Menu');
-    unset($menuVehicle, $menu);
-}
-
 /**
  * SYSTEM SETTINGS
  */
@@ -112,93 +94,17 @@ $category->set('category', PKG_NAME);
 $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in category.');
 flush();
 
-/**
- * PLUGINS
- */
-$plugins = include $sources['data'].'transport.plugins.php';
-if (!is_array($plugins)) {
-    $modx->log(modX::LOG_LEVEL_FATAL, 'Adding plugins failed.');
-} else {
-    $category->addMany($plugins);
-    $attributes = array(
-        xPDOTransport::UNIQUE_KEY                => 'name',
-        xPDOTransport::PRESERVE_KEYS             => false,
-        xPDOTransport::UPDATE_OBJECT             => true,
-        xPDOTransport::RELATED_OBJECTS           => true,
-        xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array(
-            'PluginEvents' => array(
-                xPDOTransport::PRESERVE_KEYS => true,
-                xPDOTransport::UPDATE_OBJECT => false,
-                xPDOTransport::UNIQUE_KEY    => array('pluginid', 'event'),
-            ),
-        ),
-    );
-    foreach ($plugins as $plugin) {
-        $vehicle = $builder->createVehicle($plugin, $attributes);
-        $builder->putVehicle($vehicle);
-    }
-    $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in '.count($plugins).' plugins.');
-    flush();
-}
-unset($plugins, $plugin, $attributes);
-
-/**
- * SNIPPETS
- */
-$snippets = include $sources['data'].'transport.snippets.php';
-if (!is_array($snippets)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Could not package in snippets.');
-} else {
-    $category->addMany($snippets);
-    $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in '.count($snippets).' snippets.');
-}
-
-/**
- * CHUNKS
- */
-$chunks = include $sources['data'].'transport.chunks.php';
-if (!is_array($chunks)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Could not package in chunks.');
-} else {
-    $category->addMany($chunks);
-    $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in '.count($snippets).' chunks.');
-}
-
 /* create category vehicle */
 $attr    = array(
     xPDOTransport::UNIQUE_KEY                => 'category',
     xPDOTransport::PRESERVE_KEYS             => false,
     xPDOTransport::UPDATE_OBJECT             => true,
     xPDOTransport::RELATED_OBJECTS           => true,
-    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array(
-        'Chunks' => array(
-            xPDOTransport::PRESERVE_KEYS => false,
-            xPDOTransport::UPDATE_OBJECT => true,
-            xPDOTransport::UNIQUE_KEY    => 'name',
-        ),
-        'Snippets' => array(
-            xPDOTransport::PRESERVE_KEYS => false,
-            xPDOTransport::UPDATE_OBJECT => true,
-            xPDOTransport::UNIQUE_KEY    => 'name',
-        ),
-        'Plugins' => array(
-            xPDOTransport::PRESERVE_KEYS => false,
-            xPDOTransport::UPDATE_OBJECT => true,
-            xPDOTransport::UNIQUE_KEY    => 'name',
-        ),
-    ),
 );
 $vehicle = $builder->createVehicle($category, $attr);
 
 // Add the validator to check server requirements
 $vehicle->validate('php', array('source' => $sources['validators'] . 'requirements.script.php'));
-/**
- * ASSET FILES
- */
-$vehicle->resolve('file',array(
-    'source' => $sources['source_assets'],
-    'target' => "return MODX_ASSETS_PATH . 'components/';",
-));
 
 /**
  * CORE FILES
